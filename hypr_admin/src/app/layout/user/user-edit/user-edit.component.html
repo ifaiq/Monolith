@@ -1,0 +1,182 @@
+<div *ngxPermissionsOnly="['*','L_USERS']">
+  <div>
+    <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+  </div>
+  <div class="row mb-20">
+    <h3 class="mr-15">Users Management
+      <i class="fa fa-sync-alt"></i>
+    </h3>
+    <span class="refresh">
+      <img (click)="refresh()" src="assets/images/refresh-icon.png" />
+    </span>
+  </div>
+
+  <div class="row mb-20">
+    <div class="col-12 col-lg-6" *ngxPermissionsOnly="['*', 'L_BU']">
+      <div class="form-group">
+        <label for="exampleInputPassword1">Select Business Unit :</label>
+        <select [(ngModel)]="selectedBusinessUnitId" (change)="getlocations(false)" class="form-control">
+          <option class='option' [value]="''">All</option>
+          <option *ngFor='let bu of businessUnits' [value]="bu.id">
+            {{bu.name}}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <div class="col-12 col-lg-6" *ngxPermissionsOnly="['*', 'L_ALL_LOC']">
+      <div class="form-group">
+        <label for="exampleInputPassword1">Select Cell :</label>
+        <select [(ngModel)]="selectedLocationId" (change)="getRoles()" class="form-control">
+          <option class='option' [value]="''">All</option>
+          <option *ngFor='let location of locationsCopy' [value]="location.id">
+            {{location.name}}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <div class="col mt-20">
+      <div class="row mb-30" *ngxPermissionsOnly="['*', 'L_PROD']">
+        <div class="col-sm search-cross-box">
+          <input type="text" placeholder="Search" [(ngModel)]="search" (keyup.enter)="searchUsers('')"
+            class="form-control" />
+          <button aria-="true" (click)="undoSearch('')" class="btn btn-link fa fa-times crossbtn"></button>
+        </div>
+      </div>
+      <button class="skewbtn-secondary" routerLink="/user/create" *ngxPermissionsOnly="['*','U_SIGNUP']"> Add
+        User</button>
+      <button class="skewbtn-primary ml-10" routerLink="/user/role" *ngxPermissionsOnly="['*','C_ROLE']"> Add
+        Role</button>
+    </div>
+  </div>
+
+  <div class="row tableHolder">
+    <div class="row mb-20" *ngIf="!searchData">
+      <div class="col-lg-2" *ngxPermissionsOnly="['*', 'L_ROLES']">
+        <ul class="userRoles">
+          <li *ngFor='let role of roles' (click)="setRoleId(role.id)" [class.active]="role.id === selectedRoleId">
+            {{role.name}}</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="col-lg-10 padding0">
+      <table class="table user-table table-striped">
+        <thead class="thead-dark">
+          <tr class="tablehead">
+            <th>User ID</th>
+            <th>Name</th>
+            <th>Username</th>
+            <th [hidden]="searchData">Role</th>
+            <th>Phone</th>
+            <th>Password</th>
+            <th>Disable</th>
+            <th [hidden]="!assignHeading || searchData">{{assignHeading}}</th>
+            <th *ngxPermissionsOnly="['*']"><div *ngIf="isConsumer()">feature</div></th>
+            <th class="center" *ngxPermissionsOnly="['*', 'U_USER']">Update/Create</th>
+          </tr>
+        </thead>
+        <br>
+        <tr
+          *ngFor='let user of users| paginate: { id:paginationId , itemsPerPage: itemsPerPage, currentPage: currentPage,totalItems: totalItems};let userIndex=index'>
+          <td>
+            <input type="text" [(ngModel)]="user.id" class="form-control" />
+          </td>
+          <td>
+            <input type="text" [(ngModel)]="user.name" class="form-control" />
+          </td>
+          <td>
+            <input type="text" [(ngModel)]="user.username" class="form-control" />
+          </td>
+          <td *ngIf="!searchData">
+            <select [(ngModel)]="user.role" name="role_id" class="form-control"
+              (change)="userRoleChanged(userIndex,$event.target.value)" disabled=true>
+              <option *ngFor="let role of roles; let i= index" value={{role.id}}>{{role.name}}</option>
+            </select>
+          </td>
+          <td class="full-wirdh">
+            <input type="text" [(ngModel)]="user.phone" class="form-control"
+              style="width: 45%;display: inline-block;" />
+          </td>
+          <td class="full-wirdh">
+            <input type="password" [(ngModel)]="user.password" class="form-control"
+              style="width: 45%;display: inline-block;" />
+          </td>
+
+          <td class="full-wirdh-center">
+            <input type="checkbox" [(ngModel)]="user.disabled">
+          </td>
+          <td style="width: 160px;" [hidden]="!assignHeading || searchData">
+            <div class="row mb-20" *ngIf="user.isCompany">
+              <div class="col">
+                <select [(ngModel)]="user.seletedCompany" class="form-control"
+                  (change)="selectOption(userIndex,user.seletedCompany,companies,'seletedCompany')">
+                  <option *ngFor='let company of companies' [value]="company.id">
+                    {{company.name}}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="row mb-20" *ngIf="user.isBU">
+              <div class="col">
+                <select class="form-control" [(ngModel)]="user.seletedBU"
+                  (change)="selectOption(userIndex,user.seletedBU,businessUnits,'seletedBU')">
+                  <option *ngFor='let unit of businessUnits' [value]="unit.id">
+                    {{unit.name}}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="row mb-20" *ngIf="user.isLocation && !searchData">
+              <div class="col">
+                <select class="form-control" [(ngModel)]="user.seletedLoc"
+                  (change)="selectOption(userIndex,user.seletedLoc,locations,'seletedLoc')">
+                  <option *ngFor='let location of locations' [value]="location.id">
+                    {{location.name}}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="row chipsContainer">
+              <div class="label label-default chips" *ngFor="let option of user.selectedOptions;let i=index">
+                {{option.name}}
+                <i class="fa fa-times-circle pointer" (click)="removeSelectedOption(userIndex,i)"></i>
+              </div>
+            </div>
+          </td>
+
+          <td class="full-wirdh-center" *ngxPermissionsOnly="['*']">
+            <div *ngIf="isConsumer()">
+              <button class="btn btn-primary" *ngIf="!user.isCheckedFeature"
+                (click)="getUsersFeatures(userIndex,user.id)" [disabled]="user.disabled">check features</button>
+              <div class="row mb-20" *ngIf="user.isCheckedFeature">
+                <div class="col">
+                  <select class="form-control" [(ngModel)]="user.selectedUserFeatures"
+                    (change)="selectFeatureOption(userIndex,user.selectedUserFeatures,features)">
+                    <option *ngFor='let feature of features' [value]="feature.id">
+                      {{feature.name}}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="row chipsContainer">
+                <div class="label label-default chips" *ngFor="let option of user.userFeatures;let i=index">
+                  {{option.feature.name}}
+                  <i class="fa fa-times-circle pointer" (click)="removeUserFeatureSelectedOption(userIndex,i)"></i>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td *ngxPermissionsOnly="['*', 'U_USER']"><button (click)='updateUser(user)'
+              class="btn btn-primary skewbtn-secondary">Update</button>
+          </td>
+        </tr>
+        <br />
+      </table>
+      <pagination-controls class="mt-30" (pageChange)="pagination($event)" id="{{paginationId}}"
+        autoHide="{{totalItems<itemsPerPage}">
+      </pagination-controls>
+    </div>
+  </div>
+</div>

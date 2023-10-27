@@ -1,0 +1,111 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: _APP_NAME
+  name: _APP_NAME
+  namespace: _NAMESPACE
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: _APP_NAME
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: _APP_NAME
+      annotations:
+        log.config.scalyr.com/include: "true"
+        log.config.scalyr.com/istio-proxy.exclude: "true"
+    spec:
+      containers:
+      - image: gcr.io/_PROJECT_ID/_APP_NAME:BUILD_ID
+        command: ["bash", "-c", "db-migrate up --config config/database.json && node app.js"]
+        imagePullPolicy: Always
+        livenessProbe:
+          failureThreshold: 2
+          httpGet:
+            httpHeaders:
+            - name: Custom-Header
+              value: Awesome
+            path: /
+            port: _APP_PORT
+            scheme: HTTP
+          initialDelaySeconds: 20
+          periodSeconds: 5
+          successThreshold: 1
+          timeoutSeconds: 60
+        readinessProbe:
+          failureThreshold: 1
+          httpGet:
+            httpHeaders:
+            - name: Custom-Header
+              value: Awesome
+            path: /
+            port: _APP_PORT
+            scheme: HTTP
+          initialDelaySeconds: 20
+          periodSeconds: 5
+          successThreshold: 2
+          timeoutSeconds: 60
+        name: _APP_NAME
+        ports:
+        - containerPort: _APP_PORT
+          protocol: TCP
+        env:
+        - name: NODE_ENV
+          value: _NODE_ENV
+        - name: DB_ADDRESS
+          value: '_DB_ADDRESS'
+        - name: DB_NAME
+          value: _DB_NAME
+        - name: DB_USER
+          value: _DB_USER
+        - name: DB_PASSWORD
+          value: _DB_PASSWORD
+        - name: REDIS_SERVER
+          value: _REDIS_SERVER
+        - name: APP_SEARCH_EP
+          value: _APP_SEARCH_EP
+        - name: APP_SEARCH_ENGINE
+          value: _APP_SEARCH_ENGINE
+        - name: APP_SEARCH_KEY
+          value: _APP_SEARCH_KEY
+        - name: READ_REPLICA
+          value: _REPLICA_IP
+        - name: READ_REPLICA_DB
+          value: _DB_NAME
+        resources:
+          limits:
+            cpu: 900m
+            memory: 700Mi
+          requests:
+            cpu: 700m
+            memory: 600Mi
+      nodeSelector:
+        node-name: hypr-live
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: _APP_NAME
+  name: _APP_NAME
+  namespace: _NAMESPACE
+spec:
+  ports:
+  - port: _APP_PORT
+    protocol: TCP
+    targetPort: _APP_PORT
+    name: _PROTOCOL_HTTP
+  selector:
+    app: _APP_NAME
+  type: ClusterIP

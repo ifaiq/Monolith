@@ -1,0 +1,1 @@
+DELETE FROM permissions WHERE code = 'G_ORDER_GROWTH_DGMV_RBAC';

@@ -1,0 +1,349 @@
+<div *ngxPermissionsOnly="['*', 'R_CUST_PROF']">
+  <div class="row mb-20">
+    <h3 class="ml-5">Customer Information</h3>
+    <span class="refresh">
+      <img src="assets/images/refresh-icon.png" />
+    </span>
+  </div>
+
+  <div class="bg-gray-customer" *ngxPermissionsOnly="['*', 'U_CUST_PROF']">
+    <div class="cont-list">
+      <div class="row mb-20">
+        <div class="col">
+          <div class="form-group border-view">
+            <label>Name</label>
+            <input class="form-control" type="text" [(ngModel)]="customer.name" />
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-group border-view">
+            <label *ngIf="!isB2B">Phone</label>
+            <label *ngIf="isB2B">Primary Phone</label>
+            <input class="form-control" type="text" readonly [(ngModel)]="customer.phone" />
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-group border-view">
+            <label>{{customerID}}</label>
+            <input class="form-control" type="text" [(ngModel)]="customer.cnic" />
+          </div>
+        </div>
+        <div class="col" *ngIf="isB2B">
+          <div class="form-group border-view">
+            <label>Shop Name</label>
+            <input class="form-control" type="text" [(ngModel)]="customer.shop_name" />
+          </div>
+        </div>
+        <div class="col" *ngIf="isB2B">
+          <div class="form-group border-view">
+            <label>Order Mode</label>
+            <select [(ngModel)]="customer.order_mode" class="form-control" (change)="orderModeChanged()">
+              <option *ngFor='let mode of orderModes' [value]="mode.id">
+                {{mode.name}}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-group border-view">
+            <label>Address</label>
+            <input class="form-control" type="text" [(ngModel)]="customer.address" />
+          </div>
+        </div>
+        <div class="col" *ngIf="isB2B">
+          <div class="form-group border-view">
+            <label>Shop Type</label>
+            <select [(ngModel)]="customer.shop_type" class="form-control">
+              <option *ngFor='let shop of shopTypes' [value]="shop.name">
+                {{shop.name}}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="col" *ngIf="isB2B">
+          <div class="form-group border-view">
+            <label>City Area</label>
+            <select [(ngModel)]="customer.city_area" class="form-control">
+              <option *ngFor='let area of cityAreas' [value]="area.name">
+                {{area.name}}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="col" *ngIf="isB2B">
+          <div class="form-group border-view">
+            <label>Account Type</label>
+            <select [(ngModel)]="customer.customer_type" class="form-control">
+              <option [value]="1">Business</option>
+              <option [value]="2">Individual</option>
+            </select>
+          </div>
+        </div>
+        <div class="col" *ngIf="isB2B">
+          <div class="form-group border-view">
+            <label>Tax Groups</label>
+            <select [(ngModel)]="customer.taxGroupId"
+              (change)="onChangeTaxGroup($event.target.value)"
+              class="form-control">
+              <option class="option" selected="true"
+                disabled="disabled" value="">
+                Select Tax Group
+              </option>
+              <option *ngFor="let taxGroup of taxGroups" [value]="taxGroup.id">{{taxGroup.name}}</option>
+            </select>
+          </div>
+        </div>
+        <!-- <div class="col" *ngIf="isB2B">
+          <div class="form-group border-view">
+            <label>Shop Open Time</label>
+            <ngb-timepicker [(ngModel)]="shop_open_time" [meridian]="true"></ngb-timepicker>
+          </div>
+        </div>
+        <div class="col" *ngIf="isB2B">
+          <div class="form-group border-view">
+            <label>Shop Closed Time</label>
+            <ngb-timepicker [(ngModel)]="shop_close_time" [meridian]="true"></ngb-timepicker>
+          </div>
+        </div> -->
+        <!-- <div class="col" *ngIf="isB2B">
+          <div class="form-group border-view">
+            <label>Shop Preferred Delivery Time</label>
+            <p></p>
+            <div class="inline">
+              <input type="checkbox" [(ngModel)]="shop_preferred_delivery_time.morning" id="time1">
+              <label for="time1"></label>
+              <label class="form-control">Morning</label>
+            </div>
+            <div class="inline">
+              <input type="checkbox" [(ngModel)]="shop_preferred_delivery_time.afternoon" id="time2">
+              <label for="time2"></label>
+              <label class="form-control">Afternoon</label>
+            </div>
+            <div class="inline">
+              <input type="checkbox" [(ngModel)]="shop_preferred_delivery_time.evening" id="time3">
+              <label for="time3"></label>
+              <label class="form-control">Evening</label>
+            </div>
+            <div class="inline">
+              <input type="checkbox" [(ngModel)]="shop_preferred_delivery_time.night" id="time4">
+              <label for="time4"></label>
+              <label class="form-control">Night</label>
+            </div>
+          </div>
+        </div> -->
+        <div class="col" *ngIf="isB2B">
+          <div class="form-group border-view">
+            <!-- <label>Shop Closed Days</label>
+            <p></p>
+            <div class="inline">
+              <input type="checkbox" [(ngModel)]="shop_closed_days.monday" id="day1">
+              <label for="day1"></label>
+              <label class="form-control">Monday</label>
+            </div>
+            <div class="inline">
+              <input type="checkbox" [(ngModel)]="shop_closed_days.tuesday" id="day2">
+              <label for="day2"></label>
+              <label class="form-control">Tuesday</label>
+            </div>
+            <div class="inline">
+              <input type="checkbox" [(ngModel)]="shop_closed_days.wednesday" id="day3">
+              <label for="day3"></label>
+              <label class="form-control">Wednesday</label>
+            </div>
+            <div class="inline">
+              <input type="checkbox" [(ngModel)]="shop_closed_days.thursday" id="day4">
+              <label for="day4"></label>
+              <label class="form-control">Thursday</label>
+            </div>
+            <div class="inline">
+              <input type="checkbox" [(ngModel)]="shop_closed_days.friday" id="day5">
+              <label for="day5"></label>
+              <label class="form-control">Friday</label>
+            </div>
+            <div class="inline">
+              <input type="checkbox" [(ngModel)]="shop_closed_days.saturday" id="day6">
+              <label for="day6"></label>
+              <label class="form-control">Saturday</label>
+            </div>
+            <div class="inline">
+              <input type="checkbox" [(ngModel)]="shop_closed_days.sunday" id="day7">
+              <label for="day7"></label>
+              <label class="form-control">Sunday</label>
+            </div> -->
+          </div>
+        </div>
+      </div>
+      <ng-template #content let-c="close" let-d="dismiss">
+        <div class="form-group border-view">
+          <label>{{customerID}} Image</label>
+          <div class="uploadedImage mb-20">
+            <img src={{customer.cnic_picture}} alt="cnic">
+          </div>
+        </div>
+      </ng-template>
+      <ng-template #content2 let-c="close" let-d="dismiss">
+        <div class="form-group border-view">
+          <label>Shop Image</label>
+          <div class="uploadedImage mb-20">
+            <img src={{customer.shop_picture}} alt="shop">
+          </div>
+        </div>
+      </ng-template>
+      <div class="col" *ngIf="isB2B">
+        <div class="form-group border-view">
+          <label>{{customerID}} Image</label>
+          <div class="uploadedImage mb-20">
+            <a (click)="openModal1(content)"><img src={{customer.cnic_picture}} alt="{{customerID}}" class="mb-10"></a>
+            <div class="upload-file-wrapper">
+              <input *ngIf="!cnic_picture.file_name" type="file" class="mb-10"
+                (change)="onFileChange($event,'cnic_picture')" placeholder="Upload" class="uploadFileshere" />
+              <div *ngIf="cnic_picture.file_name">
+                <label>
+                  <div>{{cnic_picture.file_name}} <i class="removeFile fa fa-close" (click)="removeFile('cnic_picture')"
+                      style="font-size:20px;color:red"></i>
+                  </div>
+                </label>
+              </div>
+              <button type="button" class="skewbtn-secondary"
+                (click)="uploadFile(cnic_picture,'cnic_picture')"><span>Upload</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col" *ngIf="isB2B">
+        <div class="form-group border-view">
+          <label>Shop Image</label>
+          <div class="uploadedImage mb-20">
+            <a (click)="openModal1(content2)"><img src={{customer.shop_picture}} alt="shop" class="mb-10"></a>
+            <div class="upload-file-wrapper">
+              <input *ngIf="!shop_picture.file_name" type="file" (change)="onFileChange($event,'shop_picture')"
+                #fileInput placeholder="Upload Image..." class="uploadFileshere" />
+              <div *ngIf="shop_picture.file_name">
+                <label>
+                  <div>{{shop_picture.file_name}} <i class="removeFile fa fa-close" (click)="removeFile('shop_picture')"
+                      style="font-size:20px;color:red"></i>
+                  </div>
+                </label>
+              </div>
+              <button type="button" class="skewbtn-secondary"
+                (click)="uploadFile(shop_picture,'shop_picture')"><span>Upload</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col" *ngIf="isB2B">
+        <div class="form-group border-view">
+          <label>Business Unit</label>
+          <select [(ngModel)]="customer.business_unit_id" class="form-control" (change)="BUChanged()">
+            <option *ngFor='let bu of businessUnits' [value]="bu.id">
+              {{bu.name}}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="col" *ngIf="isB2B">
+        <div class="form-group border-view">
+          <label>VAT Number</label>
+          <input class="form-control" type="number" placeholder="Please add 15 digits vat number"
+            [(ngModel)]="customer.tax_id" />
+        </div>
+      </div>
+      <div *ngFor="let image of images">
+        <img src={{image}} />
+      </div>
+    </div>
+    <div class="map-customer">
+      <agm-map [zoom]="16" [latitude]="latitude" [longitude]="longitude" (mapClick)="mapClicked($event)">
+        <agm-marker [latitude]="currentLatitude" [longitude]="currentLongitude" [iconUrl]="getRedIcon()">
+        </agm-marker>
+        <agm-marker [latitude]="newLatitude" [longitude]="newLongitude" [iconUrl]="getGreenIcon()">
+        </agm-marker>
+      </agm-map>
+      <div>
+      </div>
+      <br *ngIf="isB2B">
+      <br *ngIf="isB2B">
+      <br *ngIf="isB2B">
+      <div class="form-group border-view">
+        <div class="col" *ngIf="isB2B">
+          <div class="form-group border-view">
+            <label>Latitude</label>
+            <input class="form-control" type="number" [(ngModel)]="newLatitude" />
+          </div>
+        </div>
+        <div class="col" *ngIf="isB2B">
+          <div class="form-group border-view">
+            <label>Longitude</label>
+            <input class="form-control" type="number" [(ngModel)]="newLongitude" />
+          </div>
+        </div>
+      </div>
+      <button [ngClass]="{'update-btn-b2b': isB2B}" class="skewbtn-primary mt-10"
+        (click)="updateCustomer()">Update</button>
+    </div>
+  </div>
+  <div *ngIf="this.taxInformation.length" class="col-12 bundle-details-wrapper orderEditArea d-inline-block mt-25">
+    <div class="mt-2">
+        <div class="col-lg-12 itemDetails p-0">
+            <table class="table user-table table-striped">
+                <thead class="thead-dark">
+                    <h5 class="mb-3">Tax Information</h5>
+                </thead>
+                  <tbody>
+                    <tr>
+                        <th>Tax Codes</th>
+                        <th>Tax Percentage</th>
+                    </tr>
+                    <tr *ngFor="let information of this.taxInformation;">
+                      <td>{{ information.taxCode ? information.taxCode: '-' }}</td>
+                      <td>{{ information.activePercentage ? information.activePercentage + '%' : '-' }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+          </div>
+  </div>
+
+  <!-- <div class="total-orders">
+    <ul>
+      <li>
+        <app-stat [bgClass]="'card-customer'" [icon]="'fa-shopping-cart'" [count]=customer.totalCompletedOrders [label]="'Total Completed
+          Orders'"></app-stat>
+      </li>
+      <li>
+        <app-stat [bgClass]="'card-customer'" [icon]="'fa-shopping-cart'" [count]=customer.totalOrders
+          [label]="'Total Orders'"></app-stat>
+      </li>
+      <li>
+        <app-stat [bgClass]="'card-customer'" [icon]="'fa-shopping-cart'" [count]=customer.totalValue
+          [label]="'Total Value of Orders'"></app-stat>
+      </li>
+      <li>
+        <app-stat [bgClass]="'card-customer'" [icon]="'fa-shopping-cart'" [count]=customer.pendingOrders
+          [label]="'Pending Orders'"></app-stat>
+      </li>
+    </ul>
+  </div> -->
+
+  <!-- <div class="row class-most-ordered">
+    <div class="col">
+      <h4 class="main-heading-onboard">Most Ordered Items</h4>
+    </div>
+  </div>
+  <table style="width:100%;" class="table user-table table-striped">
+    <thead class="thead-dark">
+      <tr class="border-4">
+        <th>Name</th>
+        <th>Quantity </th>
+        <th>SKU</th>
+      </tr>
+    </thead>
+    <tr *ngFor="let item of customer.mostOrderedItems">
+      <td>{{ item.name }}</td>
+      <td> {{item.orderedQuantity}}</td>
+      <td>{{item.sku}}</td>
+    </tr>
+  </table> -->
+</div>

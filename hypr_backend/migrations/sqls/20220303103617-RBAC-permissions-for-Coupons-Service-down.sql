@@ -1,0 +1,1 @@
+DELETE FROM permissions WHERE name = 'COUPON_SERVICE_RBAC';

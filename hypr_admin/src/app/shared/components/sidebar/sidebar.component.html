@@ -1,0 +1,614 @@
+<nav class="sidebar" [ngClass]="{ sidebarPushRight: isActive }">
+    <a
+        _ngcontent-c2=""
+        class="navbar-brand logo-holder"
+        href="javascript:void(0)"
+    >
+        <img _ngcontent-c2="" alt="" src="assets/images/retailo-logo-130x50.svg" />
+    </a>
+
+    <ul class="list-group">
+        <!-- <li class="nested-menu" *ngxPermissionsOnly="['*', 'L_DASH_DATA']">
+            <a
+                routerLink="/dashboard"
+                [routerLinkActive]="['router-link-active']"
+                class="list-group-item"
+            >
+                <i class="fa fa-tachometer" aria-hidden="true"></i>
+                <span>{{ "Dashboard" | translate }}</span>
+            </a>
+        </li> -->
+
+        <li class="nested-menu" *ngxPermissionsOnly="['*', 'L_PROD']">
+            <a
+                class="list-group-item"
+                [routerLinkActive]="['router-link-active']"
+                (click)="addExpandClass('products')"
+            >
+                <i class="fa fa-th-list" aria-hidden="true"></i>
+                <span>{{ "Products" | translate }}</span>
+            </a>
+            <ul class="nested" [class.expand]="showMenu === 'products'">
+                <li>
+                    <ul class="submenu">
+                        <li *ngxPermissionsOnly="['*', 'L_LOC_H']">
+                            <a (click)="linkToProductPortal()" [routerLinkActive]="['router-link-active']">
+                                <span>{{ "Products" | translate }}</span>
+                            </a
+                            >
+                        </li>
+                        <li *ngxPermissionsOnly="['*', 'L_LOC_H']">
+                            <a
+                                (click)="linkToProductPortal('app/product/tag')"
+                                [routerLinkActive]="['router-link-active']"
+                                ><span>{{ "Tags Management" | translate }}</span></a
+                            >
+                        </li>
+                        <li *ngxPermissionsOnly="['*', 'L_LOC_H']">
+                            <a
+                                (click)="linkToProductPortal('app/product/ed-reporting')"
+                                [routerLinkActive]="['router-link-active']"
+                                ><span>{{ "ED Reporting" | translate }}</span></a
+                            >
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+
+        <!-- <li class="nested-menu" *ngxPermissionsOnly="['*', 'L_CATALOGUE']">
+            <a
+                class="list-group-item"
+                routerLink="/catalogue"
+                [routerLinkActive]="['router-link-active']"
+                [routerLinkActiveOptions]="{ exact: true }"
+                (click)="addExpandClass('')"
+            >
+                <i class="fa fa-th-list" aria-hidden="true"></i>
+                <span>{{ "Catalogues" | translate }}</span>
+            </a>
+        </li> -->
+
+        <li class="nested-menu" *ngxPermissionsOnly="['*', 'L_ORDERS']">
+            <a
+                class="list-group-item"
+                [routerLinkActive]="['router-link-active']"
+                (click)="addExpandClass('orders')"
+            >
+                <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                <span>{{ "Orders" | translate }}</span>
+            </a>
+            <ul class="nested" [class.expand]="showMenu === 'orders'">
+                <li>
+                    <ul class="submenu">
+                        <li *ngxPermissionsOnly="['*', 'L_ORDERS']">
+                            <a routerLink="/order">
+                                <span>{{ "Orders" | translate }}</span>
+                            </a>
+                        </li>
+                        <li *ngxPermissionsOnly="['*', 'L_ORDER_BY_STATUS']">
+                            <a routerLink="/order/approved-orders">
+                                <span>{{
+                                    "Reserved Orders" | translate
+                                }}</span></a
+                            >
+                        </li>
+                        <li *ngxPermissionsOnly="['*', 'L_ORDER_BY_STATUS']">
+                            <a routerLink="/order/packer/awaiting">
+                                <span>{{
+                                    "Awaiting Packing" | translate
+                                }}</span></a
+                            >
+                        </li>
+                        <li *ngxPermissionsOnly="['*', 'L_ORDER_BY_STATUS']">
+                            <a routerLink="/order/pack-orders">
+                                <span>{{ "Packed Orders" | translate }}</span>
+                            </a>
+                        </li>
+                        <li *ngxPermissionsOnly="['*', 'L_ORDER_BY_STATUS']">
+                            <a routerLink="/order/intransit-orders">
+                                <span>{{
+                                    "In Transit Orders" | translate
+                                }}</span></a
+                            >
+                        </li>
+                        <li *ngxPermissionsOnly="['*', 'L_ORDER_BY_STATUS']">
+                            <a routerLink="/order/cancelled-orders">
+                                <span>{{
+                                    "Cancelled Orders" | translate
+                                }}</span></a
+                            >
+                        </li>
+
+                        <li *ngxPermissionsOnly="['*', 'L_ORDER_BY_STATUS']">
+                            <a routerLink="/order/onhold-orders">
+                                <span>{{ "On hold Orders" | translate }}</span>
+                            </a>
+                        </li>
+                        <li *ngxPermissionsOnly="['*', 'L_END_STATE_ORDERS']">
+                            <a routerLink="/order/end-state-orders">
+                                <span>{{ "End State Orders" | translate }}</span></a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li class="nested-menu" *ngxPermissionsOnly="['*', 'L_DASH_DATA']">
+            <a
+                (click)="linkToBatchPortal()"
+                [routerLinkActive]="['router-link-active']"
+                class="list-group-item"
+            >
+                <i class="fa fa-truck" aria-hidden="true"></i>
+                <span>{{ "Batches" | translate }}</span>
+            </a>
+        </li>
+        <li class="nested-menu" *ngxPermissionsOnly="['*', 'L_ADMIN_CAT']">
+            <a
+                class="list-group-item"
+                [routerLinkActive]="['router-link-active']"
+                (click)="addExpandClass('funnel')"
+            >
+                <i class="fa fa-list-alt" aria-hidden="true"></i>
+                <span>{{ "Categories" | translate }}</span>
+            </a>
+            <ul class="nested" [class.expand]="showMenu === 'funnel'">
+                <li>
+                    <ul class="submenu">
+                        <li *ngxPermissionsOnly="['*', 'L_ADMIN_CAT']">
+                            <a routerLink="/product/category">
+                                <span>{{ "Merchandising Categories" | translate }}</span>
+                            </a>
+                        </li>
+                        <li *ngxPermissionsOnly="['*', 'L_ADMIN_CAT']">
+                            <a 
+                              [routerLinkActive]="['router-link-active']"
+                              (click)="linkToCategoryPortal('app/master-category')"
+                            >
+                                <span>{{
+                                    "Master Catalog Categories" | translate
+                                }}</span></a
+                            >
+                        </li>   
+                        <li *ngxPermissionsOnly="['*', 'L_ADMIN_CAT']">
+                            <a 
+                              [routerLinkActive]="['router-link-active']"
+                              (click)="linkToCategoryPortal('app/commercial')"
+                            >
+                                <span>{{
+                                    "Commercial Categories (L1)" | translate
+                                }}</span></a
+                            >
+                        </li>   
+                        <li *ngxPermissionsOnly="['*', 'L_ADMIN_CAT']">
+                            <a 
+                              [routerLinkActive]="['router-link-active']"
+                              (click)="linkToCategoryPortal('app/commercial-sub')"
+                            >
+                                <span>{{
+                                    "Commercial Sub Categories (L2)" | translate
+                                }}</span></a
+                            >
+                        </li>                       
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li class="nested-menu" *ngxPermissionsOnly="['*', 'L_ADMIN_CAT']">
+            <a
+                class="list-group-item"
+                [routerLinkActive]="['router-link-active']"
+                (click)="addExpandClass('brand')"
+            >
+                <i class="fa fa-list-alt" aria-hidden="true"></i>
+                <span>{{ "Brands" | translate }}</span>
+            </a>
+            <ul class="nested" [class.expand]="showMenu === 'brand'">
+                <li>
+                    <ul class="submenu">
+                        <li *ngxPermissionsOnly="['*', 'L_ADMIN_CAT']">
+                            <a routerLink="/product/brand">
+                                <span>{{
+                                    "Merchandising Brands" | translate
+                                }}</span></a
+                            >
+                        </li>
+                        <li *ngxPermissionsOnly="['*', 'L_ADMIN_CAT']">
+                            <a 
+                              [routerLinkActive]="['router-link-active']"
+                              (click)="linkToCategoryPortal('app/commercial-corporate')"
+                            >
+                                <span>{{
+                                    "Commercial Corporate Brand (L1)" | translate
+                                }}</span></a
+                            >
+                        </li>   
+                        <li *ngxPermissionsOnly="['*', 'L_ADMIN_CAT']">
+                            <a 
+                              [routerLinkActive]="['router-link-active']"
+                              (click)="linkToCategoryPortal('app/commercial-sub-brand')"
+                            >
+                                <span>{{
+                                    "Commercial Sub Brand (L2)" | translate
+                                }}</span></a
+                            >
+                        </li>                        
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li class="nested-menu" *ngxPermissionsOnly="['*', 'L_INV']">
+            <a
+                class="list-group-item"
+                [routerLinkActive]="['router-link-active']"
+                (click)="addExpandClass('inventory')"
+            >
+                <i class="fa fa-houzz" aria-hidden="true"></i>
+                <span>{{ "Inventory" | translate }}</span>
+            </a>
+            <ul class="nested" [class.expand]="showMenu === 'inventory'">
+                <li>
+                    <ul class="submenu">
+                        <li *ngxPermissionsOnly="['*', 'L_INV']">
+                            <a routerLink="/inventory/inventory-management">
+                                <span>{{
+                                    "Inventory Management" | translate
+                                }}</span>
+                            </a>
+                        </li>
+                        <li *ngxPermissionsOnly="['*', 'L_INV']">
+                            <a routerLink="/inventory/inventory-history"
+                                ><span>{{
+                                    "Inventory
+                            History"
+                                        | translate
+                                }}</span></a
+                            >
+                        </li>
+                        <!--<li *ngxPermissionsOnly="['*']">
+                            <a routerLink="/inventory/inventory-in">
+                                <span>{{ 'Inventory In' | translate }}</span>
+                            </a>
+                        </li>
+                        <li *ngxPermissionsOnly="['*']">
+                            <a routerLink="/inventory/si-history"><span>{{ 'SI History' |
+                            translate }}</span></a>
+                        </li>
+                        <li *ngxPermissionsOnly="['*']">
+                            <a routerLink="/inventory/si-approval"><span>{{ 'SI Approval' |
+                            translate }}</span></a>
+                        </li>-->
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li class="nested-menu" *ngxPermissionsOnly="['*', 'L_COUPON']">
+            <a
+                class="list-group-item"
+                [routerLinkActive]="['router-link-active']"
+                (click)="linkToCouponPortal()"
+            >
+                <i class="fa fa-gift" aria-hidden="true"></i>
+                <span>{{ "Coupon" | translate }}</span>
+            </a>
+        </li>
+        <li class="nested-menu" *ngxPermissionsOnly="['*', 'L_USERS']">
+            <a
+                class="list-group-item"
+                [routerLinkActive]="['router-link-active']"
+                routerLink="/user/edit"
+            >
+                <i class="fa fa-users" aria-hidden="true"></i>
+                <span>{{ "Users " | translate }}</span>
+            </a>
+        </li>
+
+        <li class="nested-menu" *ngxPermissionsOnly="['*', 'L_CUSTOMERS']">
+            <a
+                class="list-group-item"
+                [routerLinkActive]="['router-link-active']"
+                routerLink="/customers/all-customers"
+                (click)="addExpandClass('')"
+            >
+                <i class="fa fa-user-o" aria-hidden="true"></i>
+                <span>{{ "Customers" | translate }}</span>
+            </a>
+        </li>
+
+        <li
+            class="nested-menu"
+            [hidden]="isLocationLahore"
+            *ngxPermissionsOnly="['*', 'L_NOTI_MSG', 'L_RETAILERS_BY_APP']"
+        >
+            <a
+                class="list-group-item"
+                [routerLinkActive]="['router-link-active']"
+                (click)="addExpandClass('notifications')"
+            >
+                <i class="fa fa-bell" aria-hidden="true"></i>
+                <span>{{ "Notification Center" | translate }}</span>
+            </a>
+            <ul class="nested" [class.expand]="showMenu === 'notifications'">
+                <li *ngxPermissionsOnly="['*', 'L_NOTI_MSG']">
+                    <ul class="submenu">
+                        <li>
+                            <a routerLink="/notifications">
+                                <span>{{ "Notifications" | translate }}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li *ngxPermissionsOnly="['*', 'L_RETAILERS_BY_APP']">
+                    <ul class="submenu">
+                        <li>
+                            <a routerLink="/notifications/send">
+                                <span>{{
+                                    "Push Notifications" | translate
+                                }}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+
+        <li class="nested-menu" *ngxPermissionsOnly="['*', 'L_DELIVERY_SLOTS']">
+            <a
+                routerLink="/delivery-slots"
+                class="list-group-item"
+                [routerLinkActive]="['router-link-active']"
+                (click)="addExpandClass('')"
+            >
+                <i class="fa fa-dropbox" aria-hidden="true"></i>
+                <span>{{ "Delivery Slots" | translate }}</span>
+            </a>
+        </li>
+        <li class="nested-menu" *ngxPermissionsOnly="['*', 'L_ALL_LOC_SIDE']">
+            <a
+                routerLink="/location/show-location"
+                class="list-group-item"
+                [routerLinkActive]="['router-link-active']"
+                (click)="addExpandClass('')"
+            >
+                <i class="fa fa-location-arrow" aria-hidden="true"></i>
+                <span>{{ "Location" | translate }}</span>
+            </a>
+        </li>
+        <li class="nested-menu" *ngxPermissionsOnly="['*', 'L_ALL_LOC_SIDE']">
+            <a
+                (click)="linkToProductPortal('app/zone')"
+                [routerLinkActive]="['router-link-active']"
+                class="list-group-item"
+            >
+                <i class="fa fa-location-arrow" aria-hidden="true"></i>
+                <span>{{ "Zones" | translate }}</span>
+            </a>
+        </li>
+        <li class="nested-menu" *ngxPermissionsOnly="['*', 'L_ALL_LOC_SIDE']">
+            <a
+                (click)="linkToProductPortal('app/mov')"
+                [routerLinkActive]="['router-link-active']"
+                class="list-group-item"
+            >
+                <i class="fa fa-th-list" aria-hidden="true"></i>
+                <span>{{ "MOV Rules" | translate }}</span>
+            </a>
+        </li>
+        <li class="nested-menu" *ngxPermissionsOnly="['*', 'L_ALL_LOC_SIDE']">
+            <a
+                routerLink="/banners"
+                class="list-group-item"
+                [routerLinkActive]="['router-link-active']"
+                (click)="addExpandClass('')"
+            >
+                <i class="fa fa-picture-o" aria-hidden="true"></i>
+                <span>{{ "Banners" | translate }}</span>
+            </a>
+        </li>
+        <li class="nested-menu">
+            <a
+                routerLink="/bnpl-transactions"
+                class="list-group-item"
+                [routerLinkActive]="['router-link-active']"
+                (click)="addExpandClass('')"
+            >
+                <i class="fa fa-credit-card" aria-hidden="true"></i>
+                <span>{{ "BNPL Transactions" | translate }}</span>
+            </a>
+        </li>
+        <li class="nested-menu">
+            <a
+                routerLink="/invoicing"
+                class="list-group-item"
+                [routerLinkActive]="['router-link-active']"
+                (click)="addExpandClass('')"
+            >
+                <i class="fa fa-file" aria-hidden="true"></i>
+                <span>{{ "Invoicing" | translate }}</span>
+            </a>
+        </li>
+        <li class="nested-menu">
+            <a
+                routerLink="/bnpl-transactions"
+                class="list-group-item"
+                (click)="linkToLoyaltyPortal()"
+            >
+                <i class="fa fa-superpowers" aria-hidden="true"></i>
+                <span>{{ "Rewards" | translate }}</span>
+            </a>
+        </li>
+
+        <!-- <li class="nested-menu" *ngxPermissionsOnly="['*']">
+            <a
+                class="list-group-item"
+                [routerLinkActive]="['router-link-active']"
+                routerLink="/mailing-list"
+                (click)="addExpandClass('')"
+            >
+                <i class="fa fa-list-alt" aria-hidden="true"></i>
+                <span>{{ "Mailing Lists" | translate }}</span>
+            </a>
+        </li> -->
+
+        <li
+            class="nested-menu"
+            *ngxPermissionsOnly="['*', 'L_COMP', 'L_BU_H', 'L_LOC_H']"
+        >
+            <a
+                class="list-group-item"
+                [routerLinkActive]="['router-link-active']"
+                (click)="addExpandClass('hierarchy')"
+            >
+                <i class="fa fa-cogs" aria-hidden="true"></i>
+                <span>{{ "Hierarchy" | translate }}</span>
+            </a>
+            <ul class="nested" [class.expand]="showMenu === 'hierarchy'">
+                <li>
+                    <ul class="submenu">
+                        <li *ngxPermissionsOnly="['*', 'L_COMP']">
+                            <a
+                                routerLink="/hierarchy/company"
+                                [routerLinkActive]="['router-link-active']"
+                                ><span>{{ "Company" | translate }}</span></a
+                            >
+                        </li>
+                        <li *ngxPermissionsOnly="['*', 'L_BU_H']">
+                            <a
+                                routerLink="/hierarchy/business-unit"
+                                [routerLinkActive]="['router-link-active']"
+                                ><span>{{
+                                    "Business Unit" | translate
+                                }}</span></a
+                            >
+                        </li>
+                        <li *ngxPermissionsOnly="['*', 'L_LOC_H']">
+                            <a
+                                routerLink="/hierarchy/location"
+                                [routerLinkActive]="['router-link-active']"
+                                ><span>{{ "Location" | translate }}</span></a
+                            >
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li class="nested-menu" *ngxPermissionsOnly="['*', 'L_TAXATION']">
+            <a
+                class="list-group-item"
+                [routerLinkActive]="['router-link-active']"
+                (click)="addExpandClass('taxation')"
+            >
+                <i class="fa fa-th-list" aria-hidden="true"></i>
+                <span>{{ "Taxation" | translate }}</span>
+            </a>
+            <ul class="nested" [class.expand]="showMenu === 'taxation'">
+                <li>
+                    <ul class="submenu">
+                        <li *ngxPermissionsOnly="['*', 'L_TAX_GROUPS']">
+                            <a
+                                routerLink="/taxation/tax-groups"
+                                [routerLinkActive]="['router-link-active']"
+                                [routerLinkActiveOptions]="{ exact: true }"
+                                ><span>{{ "Tax Groups" | translate }}</span></a
+                            >
+                        </li>
+                        <li *ngxPermissionsOnly="['*', 'L_TAX_CODES']">
+                            <a
+                                routerLink="/taxation/tax-codes"
+                                [routerLinkActive]="['router-link-active']"
+                                ><span>{{ "Tax Codes" | translate }}</span></a
+                            >
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <!-- <li class="nested-menu" *ngxPermissionsOnly="['*']">
+            <a
+                class="list-group-item"
+                [routerLinkActive]="['router-link-active']"
+                (click)="addExpandClass('settings')"
+            >
+                <i class="fa fa-cogs" aria-hidden="true"></i>
+                <span>{{ "Settings" | translate }}</span>
+            </a>
+            <ul class="nested" [class.expand]="showMenu === 'settings'">
+                <li>
+                    <ul class="submenu">
+                        <li>
+                            <a
+                                routerLink="/settings/app-versions"
+                                [routerLinkActive]="['router-link-active']"
+                                ><span>{{
+                                    "App
+                    Versions"
+                                        | translate
+                                }}</span></a
+                            >
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nested" [class.expand]="showMenu === 'settings'">
+                <li>
+                    <ul class="submenu">
+                        <li>
+                            <a
+                                routerLink="/settings/app-types"
+                                [routerLinkActive]="['router-link-active']"
+                                ><span>{{
+                                    "App
+                    Types" | translate
+                                }}</span></a
+                            >
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nested" [class.expand]="showMenu === 'settings'">
+                <li>
+                    <ul class="submenu">
+                        <li>
+                            <a
+                                routerLink="/settings/shipment-methods"
+                                [routerLinkActive]="['router-link-active']"
+                                ><span>{{
+                                    "Shipment
+                    Methods"
+                                        | translate
+                                }}</span></a
+                            >
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nested" [class.expand]="showMenu === 'settings'">
+                <li>
+                    <ul class="submenu">
+                        <li>
+                            <a
+                                routerLink="/settings/role-api-permissions"
+                                [routerLinkActive]="['router-link-active']"
+                                ><span>{{
+                                    "Permissions
+                  " | translate
+                                }}</span></a
+                            >
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </li> -->
+        <li class="nested-menu d-block d-sm-none">
+            <a
+                routerLink="/login"
+                [routerLinkActive]="['router-link-active']"
+                (click)="onLoggedout()"
+                class="list-group-item"
+            >
+                <i class="fa fa-fw fa-power-off"></i>
+                <span> {{ "Log Out" | translate }}</span>
+            </a>
+        </li>
+    </ul>
+</nav>

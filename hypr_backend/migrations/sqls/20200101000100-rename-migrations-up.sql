@@ -1,0 +1,20 @@
+/* Replace with your SQL commands */
+UPDATE migrations SET name = '/20201209084243-roles-taxonomy' WHERE name like '%-roles-taxonomy' and id>0;
+UPDATE migrations SET name = '/20200630108141-company_code' WHERE name like '%-company_code' and id>0;
+UPDATE migrations SET name = '/20200630108141-customer_arrd_post_code' WHERE name like '%-customer_arrd_post_code' and id>0;
+UPDATE migrations SET name = '/20200715108141-tip_amount_decimal' WHERE name like '%-tip_amount_decimal' and id>0;
+UPDATE migrations SET name = '/20200716108141-company_customer' WHERE name like '%-company_customer' and id>0;
+UPDATE migrations SET name = '/20200716108141-company_type' WHERE name like '%-company_type' and id>0;
+UPDATE migrations SET name = '/20200716108141-last_sync' WHERE name like '%-last_sync' and id>0;
+UPDATE migrations SET name = '/20200716108141-weekdays' WHERE name like '%-weekdays' and id>0;
+UPDATE migrations SET name = '/20201116108141-batch_orders_perms' WHERE name like '%-batch_orders_perms' and id>0;
+UPDATE migrations SET name = '/20201116108141-unassign_del_perm' WHERE name like '%-unassign_del_perm' and id>0;
+UPDATE migrations SET name = '/20201816108141-order_dump_perm' WHERE name like '%-order_dump_perm' and id>0;
+UPDATE migrations SET name = '/20202316108141-AccountSettings_location_bu' WHERE name like '%-AccountSettings_location_bu' and id>0;
+UPDATE migrations SET name = '/20202316108141-order_history_JSON' WHERE name like '%-order_history_JSON' and id>0;
+UPDATE migrations SET name = '/20202316108141-order_status_history' WHERE name like '%-order_status_history' and id>0;
+UPDATE migrations SET name = '/20202416108141-customer_bu' WHERE name like '%-customer_bu' and id>0;
+UPDATE migrations SET name = '/20200816108141-location_delivery_time' WHERE name like '%-location_delivery_time' and id>0;
+UPDATE migrations SET name = '/20200816108141-store_events_timing' WHERE name like '%-store_events_timing' and id>0;
+UPDATE migrations SET name = '/20200816108141-store_operating_days' WHERE name like '%-store_operating_days' and id>0;
+UPDATE migrations SET name = '/20200816108141-weekday_values' WHERE name like '%-weekday_values' and id>0;

@@ -1,0 +1,147 @@
+.tableHolder{
+  background: #fafafa;
+}
+.table tbody{
+  height: 450px;
+  overflow: scroll;
+}
+.userRoles {
+  padding: 0;
+  list-style: none;
+  margin-top: 40px;
+}
+.userRoles li {
+  cursor: pointer;
+  border-right-color: transparent;
+  border-right: 1px solid #ddd;
+  padding: 10px 14px;
+  font-size: 14px;
+  line-height: 16px;
+  text-transform: capitalize;
+  color: #616161;
+}
+.userRoles li.active {
+  color: #e65400;
+  border: 1px solid #ddd;
+  border-right: transparent;
+  border-radius: 4px 0 0 4px;
+}
+
+.table .tablehead {
+  height: 40px;
+}
+.table .tablehead th {
+  background: #fafafa;
+  padding: 9px;
+  text-align: center;
+  border-bottom: 1px solid #dddddd;
+  font-size: 15px;
+  line-height: 22px;
+  font-weight: 400;
+  border-top: none;
+
+}
+
+.user-table tbody tr {
+  background-color: #fafafa;
+}
+
+.user-table tbody tr td {
+  padding: 4px;
+  vertical-align: top;
+  border-top: 0px solid #eceeef;
+}
+
+.user-table tbody tr td .form-control {
+  display: block;
+  width: 100%;
+  padding: 11px 4px;
+  font-size: 13px;
+  line-height: 15px;
+  color: #464a4c;
+  background-color: #fafafa;
+  background-image: none;
+  background-clip: padding-box;
+  border: 1px solid #e1e1e1;
+  border-radius: 0.25rem;
+  transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+}
+
+.user-table {
+  background-color: #fafafa;
+}
+
+.user-table tbody tr td button {
+  width: 130px;
+  margin-left: 20px;
+  float: right;
+}
+.table .tablehead th.center {
+  text-align: center;
+}
+
+.full-wirdh input {
+  width: 100% !important;
+}
+
+.full-wirdh-center {
+  padding-top: 18px !important;
+  padding-left: 30px !important;
+}
+.cont-list .search-cross-box .crossbtn {
+  top: 0;
+  right: 0%;
+  position: absolute;
+  color: #666666;
+  text-decoration: none !important;
+}
+
+.cont-list .search-cross-box input {
+  width: 100%;
+}
+
+.table.admin-table-sale thead th {
+  color: #e65400;
+  padding: 5px;
+  border: 1px solid #e65400;
+  text-align: center;
+  cursor: pointer;
+  background: #fff;
+  font-weight: 400;
+  text-transform: lowercase;
+  -webkit-transition: all 0.3s ease;
+  -ms-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+}
+
+.table.admin-table-sale thead th:hover {
+  color: #fff;
+  cursor: pointer;
+  background: #e65400;
+}
+
+.table.admin-table-sale thead th.active {
+  color: #fff;
+  cursor: pointer;
+  background: #e65400;
+  text-align: center;
+}
+
+.btn-user {
+  width: 170px;
+  text-align: center;
+  margin-left: -1px;
+  transform: skew(-10deg) !important;
+}
+.refresh {
+  float: left;
+  margin-top: -4px;
+  width: 48px;
+  cursor: pointer;
+  height: 40px;
+}
+
+.refresh img {
+  width: 100%;
+  height: 100%;
+}

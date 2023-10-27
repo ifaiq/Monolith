@@ -1,0 +1,573 @@
+<div style="background: white; display: block; margin: 5px auto; width: 1000px">
+    <div style="font-family: sans-serif; width: 1000px; margin: 0px auto">
+        <div style="border: 1px solid grey">
+            <div style="width: 60%; float: left">
+                <table style="width: 100%; border-spacing: 0; font-size: 14px">
+                    <tbody>
+                        <tr>
+                            <td style="text-align: center; padding: 0px">
+                                <span
+                                    style="
+                                        background-color: #eeeff1;
+                                        display: block;
+                                        padding: 5px;
+                                        border: 1px solid grey;
+                                        border-top: transparent;
+                                        margin-right: 10px;
+                                    "
+                                >
+                                    Order # :
+                                </span>
+                                <span
+                                    style="
+                                        background-color: #eeeff1;
+                                        display: block;
+                                        padding: 5px;
+                                        border: 1px solid grey;
+                                        margin-top: 5px;
+                                        margin-right: 10px;
+                                        margin-bottom: 10px;
+                                    "
+                                >
+                                    Order Date :
+                                </span>
+                                <span
+                                    *ngIf="order.packer_name"
+                                    style="
+                                        background-color: #eeeff1;
+                                        display: block;
+                                        padding: 5px;
+                                        border: 1px solid grey;
+                                        margin-top: 5px;
+                                        margin-right: 10px;
+                                        margin-bottom: 10px;
+                                    "
+                                >
+                                    Packer Name :
+                                </span>
+                            </td>
+                            <td style="text-align: center; padding: 0px">
+                                <span
+                                    style="
+                                        display: block;
+                                        padding: 5px;
+                                        border: 1px solid grey;
+                                        border-top: transparent;
+                                    "
+                                >
+                                    {{ order.id }}
+                                </span>
+                                <span
+                                    style="
+                                        display: block;
+                                        padding: 5px;
+                                        border: 1px solid grey;
+                                        margin-top: 5px;
+                                        margin-bottom: 10px;
+                                    "
+                                >
+                                    {{ order.placed_at }}
+                                </span>
+                                <span
+                                    *ngIf="order.packer_name"
+                                    style="
+                                        display: block;
+                                        padding: 5px;
+                                        border: 1px solid grey;
+                                        margin-top: 5px;
+                                        margin-bottom: 10px;
+                                    "
+                                >
+                                    {{ order.packer_name }}
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h4 style="text-align: center">Item Detail</h4>
+                <table
+                    style="
+                        font-family: Arial sans-serif;
+                        border-collapse: auto;
+                        width: 100%;
+                        border: 1px solid black;
+                    "
+                >
+                    <th
+                        style="
+                            border: 1px solid #ddd;
+                            padding: 10px;
+                            text-align: left;
+                            background-color: lightgray;
+                            color: black;
+                            font-size: 12px;
+                        "
+                    >
+                        Name
+                    </th>
+                    <th
+                        style="
+                            border: 1px solid #ddd;
+                            padding: 10px;
+                            text-align: left;
+                            background-color: lightgrey;
+                            color: black;
+                            font-size: 12px;
+                        "
+                    >
+                        Brand
+                    </th>
+                    <th
+                        style="
+                            border: 1px solid #ddd;
+                            padding: 10px;
+                            text-align: left;
+                            background-color: lightgray;
+                            color: black;
+                            font-size: 12px;
+                        "
+                    >
+                        Size
+                    </th>
+                    <th
+                        style="
+                            border: 1px solid #ddd;
+                            padding: 10px;
+                            text-align: left;
+                            background-color: lightgray;
+                            color: black;
+                            font-size: 12px;
+                        "
+                    >
+                        SKU
+                    </th>
+                    <th
+                        style="
+                            border: 1px solid #ddd;
+                            padding: 10px;
+                            text-align: left;
+                            background-color: lightgray;
+                            color: black;
+                            font-size: 12px;
+                        "
+                    >
+                        Price Per Unit
+                    </th>
+                    <th
+                        style="
+                            border: 1px solid #ddd;
+                            padding: 10px;
+                            text-align: left;
+                            background-color: lightgray;
+                            color: black;
+                            font-size: 12px;
+                        "
+                    >
+                        Original Quantity
+                    </th>
+                    <th
+                        *ngIf="order.packer_name"
+                        style="
+                            border: 1px solid #ddd;
+                            padding: 10px;
+                            text-align: left;
+                            background-color: lightgray;
+                            color: black;
+                            font-size: 12px;
+                        "
+                    >
+                        Packed Quantity
+                    </th>
+                    <th
+                        style="
+                            border: 1px solid #ddd;
+                            padding: 10px;
+                            text-align: left;
+                            background-color: lightgray;
+                            color: black;
+                            font-size: 12px;
+                        "
+                    >
+                        Total Amount
+                    </th>
+
+                    <tbody>
+                        <tr
+                            *ngFor="
+                                let item of order.items;
+                                let j = index;
+                                let i = index
+                            "
+                        >
+                            <td style="border: 1px solid #ddd; padding: 8px">
+                                {{ item.product_id.name }}
+                            </td>
+                            <td style="border: 1px solid #ddd; padding: 8px">
+                                {{ getValue(item.product_id.brand) }}
+                            </td>
+                            <td style="border: 1px solid #ddd; padding: 8px">
+                                {{ getValue(item.product_id.size) }}
+                            </td>
+                            <td style="border: 1px solid #ddd; padding: 8px">
+                                {{ getValue(item.product_id.sku) }}
+                            </td>
+                            <td style="border: 1px solid #ddd; padding: 8px">
+                                {{ getAmount(item, 1) }}
+                            </td>
+                            <td style="border: 1px solid #ddd; padding: 8px">
+                                {{ getValue(item.original_quantity) }}
+                            </td>
+
+                            <td
+                                style="border: 1px solid #ddd; padding: 8px"
+                                *ngIf="order.packer_name"
+                            >
+                                <span [hidden]="editingOrderIndex == i">{{
+                                    getValue(item.packed_quantity)
+                                }}</span
+                                ><span [hidden]="!(editingOrderIndex == i)">
+                                    <input
+                                        style="max-width: 70px"
+                                        class="form-control"
+                                        type="number"
+                                        [(ngModel)]="item.quantity"
+                                        (change)="setOrderItemTotal(order, j)"
+                                        min="1"
+                                    />
+                                </span>
+                            </td>
+                            <td style="border: 1px solid #ddd; padding: 8px">
+                                {{ order.currency }}
+                                {{ getAmount(item, 2) }}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <h4 style="text-align: center">Order Detail</h4>
+            <div style="width: 38%; float: right; padding-left: 10px">
+                <table
+                    style="
+                        width: 100%;
+                        border: 1px solid grey;
+                        border-spacing: 0;
+                        margin-bottom: 10px;
+                        padding-bottom: 10px;
+                        font-size: 14px;
+                    "
+                >
+                    <tbody>
+                        <tr>
+                            <td
+                                colspan="2"
+                                style="
+                                    background-color: #eeeff1;
+                                    text-align: center;
+                                "
+                            >
+                                <!-- <img alt="Store Logo" src="http://www.pngmart.com/files/7/Barcode-PNG-Photos.png" style="max-width: 160px; max-height: 30px;"> -->
+                            </td>
+                        </tr>
+                        <tr>
+                            <td
+                                style="
+                                    font-weight: 700;
+                                    width: 26%;
+                                    text-align: left;
+                                    padding: 10px 10px 0px 10px;
+                                "
+                            >
+                                Customer Name:
+                            </td>
+                            <td
+                                style="
+                                    text-align: left;
+                                    padding: 10px 10px 0px 10px;
+                                "
+                            >
+                                {{ order.name }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td
+                                style="
+                                    font-weight: 700;
+                                    width: 26%;
+                                    text-align: left;
+                                    padding: 10px 10px 0px 10px;
+                                "
+                            >
+                                Contact:
+                            </td>
+                            <td
+                                style="
+                                    text-align: left;
+                                    padding: 10px 10px 0px 10px;
+                                "
+                            >
+                                {{ order.phone }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td
+                                style="
+                                    font-weight: 700;
+                                    width: 26%;
+                                    text-align: left;
+                                    padding: 10px 10px 0px 10px;
+                                "
+                            >
+                                Address:
+                            </td>
+                            <td
+                                style="
+                                    text-align: left;
+                                    padding: 10px 10px 0px 10px;
+                                "
+                            >
+                                {{ order.delivery_address }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td
+                                style="
+                                    font-weight: 700;
+                                    width: 26%;
+                                    text-align: left;
+                                    padding: 10px 10px 0px 10px;
+                                "
+                            >
+                                Payment Method:
+                            </td>
+                            <td
+                                style="
+                                    text-align: left;
+                                    padding: 10px 10px 0px 10px;
+                                "
+                            >
+                                {{ order.payment_method }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td
+                                style="
+                                    font-weight: 700;
+                                    width: 26%;
+                                    text-align: left;
+                                    padding: 10px 10px 0px 10px;
+                                "
+                            >
+                                Status:
+                            </td>
+                            <td
+                                style="
+                                    text-align: left;
+                                    padding: 10px 10px 0px 10px;
+                                "
+                            >
+                                {{ order.status }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td
+                                style="
+                                    font-weight: 700;
+                                    width: 26%;
+                                    text-align: left;
+                                    padding: 10px 10px 0px 10px;
+                                "
+                            >
+                                Store Name:
+                            </td>
+                            <td
+                                style="
+                                    text-align: left;
+                                    padding: 10px 10px 0px 10px;
+                                "
+                            >
+                                {{ order.cell_name }}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table
+                    style="
+                        width: 100%;
+                        border-spacing: 0;
+                        margin-top: 10px;
+                        font-size: 14px;
+                        border: 1px solid grey;
+                        border-collapse: collapse;
+                        border-right: transparent;
+                    "
+                >
+                    <tbody>
+                        <tr style="font-size: 14px">
+                            <td
+                                style="
+                                    font-weight: bold;
+                                    font-weight: bold;
+                                    background-color: #eeeff1;
+                                    border: 1px solid grey;
+                                    padding: 10px;
+                                    border-bottom: transparent;
+                                    border-right: transparent;
+                                "
+                            >
+                                Tax
+                            </td>
+                            <td
+                                style="
+                                    text-align: center;
+                                    font-weight: bold;
+                                    font-weight: normal;
+                                    border: 1px solid grey;
+                                    padding: 10px;
+                                    border-bottom: transparent;
+                                    border-right: transparent;
+                                "
+                            >
+                                &nbsp; {{ order.currency }}.
+                                {{ order.tax ? order.tax : 0 }}
+                            </td>
+                        </tr>
+                        <tr style="font-size: 14px">
+                            <td
+                                style="
+                                    font-weight: bold;
+                                    font-weight: bold;
+                                    background-color: #eeeff1;
+                                    border: 1px solid grey;
+                                    padding: 10px;
+                                    border-right: transparent;
+                                    border-bottom: transparent;
+                                "
+                            >
+                                Sub Total
+                            </td>
+                            <td
+                                style="
+                                    text-align: center;
+                                    font-weight: normal;
+                                    border: 1px solid grey;
+                                    padding: 10px;
+                                    border-right: transparent;
+                                    border-bottom: transparent;
+                                "
+                            >
+                                {{ order.currency }}. {{ order.sub_total }}
+                            </td>
+                        </tr>
+                        <tr style="font-size: 14px">
+                            <td
+                                style="
+                                    font-weight: bold;
+                                    font-weight: bold;
+                                    background-color: #eeeff1;
+                                    border: 1px solid grey;
+                                    padding: 10px;
+                                    border-right: transparent;
+                                "
+                            >
+                                Driver Tip
+                            </td>
+                            <td
+                                style="
+                                    text-align: center;
+                                    font-weight: normal;
+                                    border: 1px solid grey;
+                                    padding: 10px;
+                                    border-right: transparent;
+                                "
+                            >
+                                &nbsp; {{ order.currency }}. {{ order.tip }}
+                            </td>
+                        </tr>
+                        <tr style="font-size: 14px">
+                            <td
+                                style="
+                                    font-weight: bold;
+                                    font-weight: bold;
+                                    background-color: #eeeff1;
+                                    border: 1px solid grey;
+                                    padding: 10px;
+                                    border-right: transparent;
+                                "
+                            >
+                                Charges (inc. service/delivery)
+                            </td>
+                            <td
+                                style="
+                                    text-align: center;
+                                    font-weight: normal;
+                                    border: 1px solid grey;
+                                    padding: 10px;
+                                    border-right: transparent;
+                                "
+                            >
+                                &nbsp; {{ order.currency }}.
+                                {{ order.total_charges }}
+                            </td>
+                        </tr>
+                        <tr
+                            *ngIf="order.coupon_discount"
+                            style="font-size: 14px"
+                        >
+                            <td
+                                style="
+                                    font-weight: normal;
+                                    border: 1px solid grey;
+                                    padding: 10px;
+                                    border-right: transparent;
+                                    background-color: #eeeff1;
+                                "
+                            >
+                                Coupon Discount
+                            </td>
+
+                            <td
+                                style="
+                                    font-weight: bold;
+                                    font-weight: bold;
+                                    text-align: center;
+                                    border: 1px solid grey;
+                                    padding: 10px;
+                                    border-right: transparent;
+                                "
+                            >
+                                &nbsp; {{ order.currency }}.
+                                {{ order.coupon_discount }}
+                            </td>
+                        </tr>
+                        <tr style="font-size: 14px">
+                            <td
+                                style="
+                                    font-weight: bold;
+                                    font-weight: bold;
+                                    background-color: #eeeff1;
+                                    border-left: 1px solid grey;
+                                    padding: 6px;
+                                "
+                            >
+                                &nbsp; Grand Total
+                            </td>
+                            <td
+                                style="
+                                    font-weight: normal;
+                                    text-align: center;
+                                    padding: 5px 20px;
+                                    background-color: #eeeff1;
+                                "
+                            >
+                                {{ order.currency }}.
+                                {{ order.grand_total }}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div style="clear: both"></div>
+        </div>
+    </div>
+</div>

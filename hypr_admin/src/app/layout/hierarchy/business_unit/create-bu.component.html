@@ -1,0 +1,45 @@
+<div *ngxPermissionsOnly="['*', 'C_BU']">
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title">
+                <span class="h1">Create Business Unit</span>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-20">
+        <div class="col-12 col-sm-4">
+            <div class="form-group">
+                <label for="">Business Unit Name</label>
+                <input type="text" class="form-control" placeholder="Enter Business Unit Name"
+                    [(ngModel)]="business_unit.name">
+            </div>
+        </div>
+        <div class="col-12 col-sm-4">
+            <div class="form-group fg1">
+                <label class="d-block">Status</label>
+                <div class="cutom-switch">
+                    <label> Enabled </label>
+                    <ui-switch class="switchHolder" [(ngModel)]="business_unit.disabled" color="#e65400" size="small"
+                        checkedLabel="on" reverse>
+                    </ui-switch>
+                    <label> Disabled </label>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-4" *ngxPermissionsOnly="['*', 'L_ALL_COMP']">
+            <div>
+                <label>Select Company</label>
+                <select [(ngModel)]="business_unit.company_id" name="company_id" class="form-control">
+                    <option *ngFor="let company of companies" [value]="company.id">{{company.name}}</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="button-wrapper text-right mt-20">
+                <button class="btn btn-primary btn-text" (click)="createBU()"><span>Create</span></button>
+            </div>
+        </div>
+    </div>
+</div>

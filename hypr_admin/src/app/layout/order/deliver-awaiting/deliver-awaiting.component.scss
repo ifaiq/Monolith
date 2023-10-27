@@ -1,0 +1,77 @@
+.tdFont {
+    font-size: 12px;
+}
+.h5Margin {
+    margin-left: 2px;
+}
+.closepopupbtn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+}
+.ng-template {
+    width: 50%;
+}
+.waiverpopup {
+    padding: 20px;
+    h2 {
+        font-size: 24px;
+        font-weight: 500;
+        line-height: 0.83;
+        letter-spacing: -0.8px;
+        color: #000000;
+        margin-bottom: -10px;
+        margin-left: 6px;
+    }
+    p {
+        margin-bottom: 20px;
+        margin-left: 6px;
+    }
+    .blockholder {
+        padding: 20px;
+        border-radius: 5px;
+        text-align: center;
+        margin-bottom: 10px;
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+        h6 {
+            font-size: 18px;
+            font-weight: 500;
+            line-height: 2.22;
+            color: #000000;
+            display: inline-block;
+        }
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+        }
+        input {
+            margin-bottom: 20px;
+            margin-left: 40px;
+            display: inline-block;
+            width: 50%;
+        }
+        select {
+            margin-left: 40px;
+            display: inline-block;
+            width: 50%;
+        }
+    }
+    .waiver-footer {
+        text-align: right;
+        margin-top: 20px;
+        button {
+            margin-left: 5px;
+        }
+    }
+}
+/deep/.modal-content {
+    margin: auto;
+    width: 75%;
+    height: 340px;
+}
+.inline {
+    display: inline-block;
+}

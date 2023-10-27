@@ -1,0 +1,88 @@
+# Default values for chart.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 2
+
+image:
+  repository: 641416064212.dkr.ecr.me-south-1.amazonaws.com/monolith-backend
+  pullPolicy: Always
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "05.09.22.14.31.04"
+  container_port: 8080
+
+nameOverride: "hyper-backend-app"
+fullnameOverride: "hyper-backend"
+environment: "Dev"
+
+command: ["/bin/bash"]
+args:
+  - "-c"
+  - "db-migrate up --config config/database.json -e development; node app.js"
+healthCheckPath: "/health-check"
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::641416064212:role/voyager-v1-execution-task-role
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: "sa-voyager"
+
+podAnnotations: {}
+
+
+service:
+  type: ClusterIP
+  port: 8080
+
+ingress:
+  enabled: true
+  className: "alb"
+  annotations: 
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/group.name: retailo-dev
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:me-south-1:641416064212:certificate/7693fd8f-0262-4979-acad-5a6d74cf1e69
+    alb.ingress.kubernetes.io/healthcheck-path: /health-check
+    alb.ingress.kubernetes.io/group.order: '1000'
+  hosts:
+    - host: 
+      paths:
+        - path: /
+          pathType: Prefix
+
+initalDelaySeconds: 100
+timeoutSeconds: 30
+failureThreshold: 3
+
+resources:
+  limits:
+    cpu: 2000m
+    memory: 6144Mi
+  requests:
+    cpu: 1500m
+    memory: 4096Mi
+
+    
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 4
+  targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 80
+
+
+AppName: "monolith-backend"
+
+tolerations: 
+    - effect: "NoSchedule"
+      key: "app"
+      operator: "Equal"
+      value: "monolith-backend" 
+nodeSelector: {}
+
+
+affinity: {}

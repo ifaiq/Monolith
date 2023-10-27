@@ -1,0 +1,91 @@
+<div class="row mb-30" *ngxPermissionsOnly="['*', 'C_ORDER_F_FILE']">
+  <h3>FROM FILE</h3>
+  <input class="ml-20 mb-10" type="file" #fileInput placeholder="Upload file..." />
+  <button type="button" (click)="upload()" class="skewbtn-primary">Upload</button>
+</div>
+
+<div *ngxPermissionsOnly="['*', 'C_ADMIN_ORDER']">
+
+  <h3 class="mb-20">Manual Process </h3>
+
+  <div class="row">
+    <div class="col">
+      <div class="form-group">
+        <span class="form-control">Customer Phone</span>
+        <input (blur)="checkCustomer()" type="text" [(ngModel)]="customerPhone" name="username" class="form-control">
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="form-group">
+        <span class="form-control">Order Date</span>
+        <input (blur)="checkCustomer()" type="date" [(ngModel)]="orderDate" name="username" class="form-control">
+      </div>
+    </div>
+  </div>
+
+
+  <div class="row ">
+    <div class="form-group">
+      <span class="form-control">Delivery Time</span>
+      <input type="datetime-local" [(ngModel)]="deliveryTime" name="delivery time" class="form-control">
+    </div>
+  </div>
+
+
+
+  <div class="row mb-10">
+    <div class="col">
+      <div>
+        <select class="form-control" [(ngModel)]="paymentType" name="role_id">
+          <span class="form-control">Payment Type</span>
+          <option value="1">Cash On Delivery</option>
+          <option value="2">Firepay</option>
+          <option value="3">Firepay With SMS</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <div *ngFor="let order of orders; let j= index">
+        <select class="form-control mb-10" [(ngModel)]="order.product" name="role_id">
+          <option *ngFor="let product of products; let i= index" value={{i}}>{{product.name
+          + ' ' + product.brand + '
+          ' +
+          product.price}}</option>
+        </select>
+        <div class="form-group">
+          <span class="form-control">Quantity</span>
+          <input type="text" [(ngModel)]="order.quantity" name="username" class="form-control">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <div class="form-group">
+        <label for="exampleInputPassword1">Select Cell :</label>
+        <select [(ngModel)]="selectedLocationId" class="form-control">
+          <option *ngFor='let location of locations' [value]="location.id">
+            {{location.name}}
+          </option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <a (click)="addItem()" class="addMoreOrders">+ Add More</a>
+    </div>
+    <div class="col">
+      <button class="btn btn-primary skewbtn-primary mt-20" type="button" (click)="createOrder()">Create</button>
+    </div>
+    <div class="col"></div>
+    <div class="col"></div>
+  </div>
+
+</div>

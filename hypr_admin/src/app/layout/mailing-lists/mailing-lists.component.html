@@ -1,0 +1,30 @@
+<div class="row mb-20"  *ngxPermissionsOnly="['*']">
+  <div>
+    <h4 class="d-inline text-capitalize">Name</h4>
+    <button class="skewbtn-secondary ml-20">Edit</button>
+
+  </div>
+</div>
+
+<div class="row" *ngxPermissionsOnly="['*']">
+  <div *ngFor="let list of mailingList; let i =index;">
+    <h4 class="d-inline text-capitalize">{{list.mailing_list_name}}</h4>
+    <button (click)="expandList(i)" class="skewbtn-secondary ml-20">Edit</button>
+    <div [hidden]="!(activeIndex == i)">
+      <div class="mb-20 mt-20">
+          <input type="text" [(ngModel)]="newEmail" class="form-control mb-10" />
+          <button (click)="addEmailToList()" class="skewbtn-primary">Add</button>
+      </div>
+      
+      <div class="mb-20">
+        <div *ngFor="let email of list.mailing_list_user; let j = index;">
+          <span>{{email}}</span>
+          <button aria-hidden="true" (click)="removeFromList(j)" class="btn btn-link fa fa-times crossbtn"></button>
+        </div>
+      </div>
+
+      <button (click)="updateList(list)" class="skewbtn-primary">Update</button>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,373 @@
+<div *ngxPermissionsOnly="['*', 'L_BATCH_ORDER']">
+  <div>
+    <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <div class="page-title">
+        <span class="h1">Batches</span>
+        <button class="btn btn-icon btn-refresh ml-20" (click)="refresh()"><span></span></button>
+      </div>
+    </div>
+  </div>
+  <div class="row mb-20">
+    <div class="col-sm search-cross-box">
+      <input type="text" placeholder="Search" [(ngModel)]="search" (keyup.enter)="searchBatches()"
+        class="form-control" />
+      <button class="create" aria-hidden="true" (click)="undoSearch()"
+        class="btn btn-link fa fa-times crossbtn"></button>
+    </div>
+    <div class="col-sm"></div>
+    <div class="col-sm"></div>
+  </div>
+  <div class="row">
+    <div class="col-6 col-lg-2" *ngxPermissionsOnly="['*', 'L_BU']">
+      <div class="form-group">
+        <label for="">Select Business Unit</label>
+        <select [(ngModel)]="selectedBusinessUnitId" class="form-control" (change)="getlocations()">
+          <option class='option' [value]="''">All</option>
+          <option *ngFor='let bu of businessUnits' [value]="bu.id">
+            {{bu.name}}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="col-6 col-lg-2" *ngxPermissionsOnly="['*', 'L_ALL_LOC']">
+      <div class="form-group">
+        <label for="exampleInputPassword1">Select Cell :</label>
+        <select [(ngModel)]="selectedLocationId" class="form-control" (change)="getDeliveryAgents()">
+          <option class="option" [value]="''">All</option>
+          <option *ngFor="let location of locations" [value]="location.id">
+            {{ location.name }}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="col-6 col-lg-2" *ngxPermissionsOnly="['*', 'L_ROLE_USER']">
+      <div class="form-group">
+        <label for="exampleInputPassword1">Select Delivery Agent :</label>
+        <select [(ngModel)]="selectedDeliveryAgentId" class="form-control">
+          <option class="option" [value]="''">All</option>
+          <option *ngFor="let agent of allDeliveryAgents" [value]="agent.id">
+            {{ agent.name }}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="form-group" style="height: 70px;">
+        <label for="">From</label>
+        <input type="date" [(ngModel)]="startDate" class="form-control" />
+      </div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="form-group" style="height: 70px;">
+        <label for="">To</label>
+        <input type="date" [(ngModel)]="endDate" class="form-control" />
+      </div>
+    </div>
+    <div class="col-6 col-lg-2">
+      <button class="skewbtn-primary mt-10" (click)="getBatchOrders(true)">
+        GO
+      </button>
+    </div>
+  </div>
+  <div class="row" [hidden]="loading" *ngxPermissionsOnly="['*', 'L_ORDER_BY_STATUS']">
+    <div class="col-12">
+      <div class="table-responsive">
+        <div class="custom-table">
+          <ul class="row thead">
+            <li class="col-1">#
+            <li>
+            <li class="col-1">Batch ID</li>
+            <li class="col-2">Delivery Agent</li>
+            <li class="col-2">Location</li>
+            <li class="col-2">date</li>
+            <li class="col-2">Status</li>
+            <li class="col-2">Action</li>
+          </ul>
+          <ul class="table-body">
+            <li class="row table-row align-items-center" *ngFor="let batch of batchTableData
+            | paginate: { 
+              id:paginationId, 
+              itemsPerPage: itemsPerPage, 
+              currentPage: currentPage,
+              totalItems: totalItems
+            }; 
+            let i = index ">
+              <div class="col-1 tcell">{{ batch.rowCount }}</div>
+              <div class="col-1 tcell">{{ batch.id }}</div>
+              <div class="col-2 tcell">{{ batch.delivery_agent }}</div>
+              <div class="col-2 tcell">{{ batch.location }}</div>
+              <div class="col-2 tcell">{{ batch.date }}</div>
+              <div class="col-2 tcell">{{ batch.status_name }}</div>
+              <div class="col-2 tcell">
+                <button class="btn btn-icon btn-edit" (click)="setActiveIndex('activeIndex', i)"></button>
+              </div>
+              <div class="col-12 table-row-details bundle-details-wrapper batchEditArea" [hidden]="!(activeIndex == i)">
+                <div class="user-table mt-10">
+                  <b>Orders</b>
+                </div>
+                <table class="table user-table middle">
+                  <thead class="thead-dark">
+                    <tr class="border-4">
+                      <th></th>
+                      <th>#</th>
+                      <th>Order ID</th>
+                      <th>Customer Name</th>
+                      <th>Shop Name</th>
+                      <th>Address</th>
+                      <th>Sadad Amount</th>
+                      <th>Wallet Amount</th>
+                      <th>Cash Received</th>
+                      <th>Discount</th>
+                      <th>Discount Type</th>
+                      <th>Ops-Waiver</th>
+                      <th>Order Date</th>
+                      <th>Order Status</th>
+                    </tr>
+                  </thead>
+                  <tr *ngFor="let order of batch.orders">
+                    <td></td>
+                    <td>{{ order.rowCount }}</td>
+                    <td>{{ order.id }}</td>
+                    <td>{{ order.customer_name }}</td>
+                    <td>{{ order.shop_name }}</td>
+                    <td>{{ order.customer_address }}</td>
+                    <td>{{ order.sadad_amount }}</td>
+                    <td>{{ order.wallet_amount }}</td>
+                    <td>{{ order.total_amount }}</td>
+                    <td>{{ order.coupon_discount_amount }}</td>
+                    <td>{{ order.coupon_discount_type }}</td>
+                    <td>{{ order.waiver_amount }}</td>
+                    <td>{{ order.order_date }}</td>
+                    <td>{{ order.order_status }}</td>
+                  </tr>
+                </table>
+                <div class="user-table">
+                  <b>Order Items</b>
+                </div>
+                <table class="table user-table middle">
+                  <thead class="thead-dark">
+                    <tr class="border-4">
+                      <th></th>
+                      <th>#</th>
+                      <th>Product ID</th>
+                      <th>Product Name</th>
+                      <th>Onboarded Quantity</th>
+                      <th>Current Quantity</th>
+                      <th *ngIf="batch.status_id === batchStatusCompleted || batch.status_id === batchStatusClosed">
+                        Received Quantity</th>
+                      <th *ngIf="batch.status_id === batchStatusCompleted || batch.status_id === batchStatusClosed">
+                        Reason For Change</th>
+                      <th *ngIf="batch.status_id === batchStatusCompleted || batch.status_id === batchStatusClosed">
+                        Estimated Value</th>
+                    </tr>
+                  </thead>
+                  <tr *ngFor="let product of batch.products">
+                    <td></td>
+                    <td>{{ product.rowCount }}</td>
+                    <td>{{ product.id }}</td>
+                    <td>{{ product.name }}</td>
+                    <td>{{ product.onboarded }}</td>
+                    <td>{{ product.current }}</td>
+                    <td *ngIf="batch.status_id === batchStatusCompleted || batch.status_id === batchStatusClosed">
+                      <button *ngIf="batch.status_id != batchStatusClosed" class="btn btn-icon fa-btn"
+                        (click)="changeReceivedQuantity(batch, product, false)">
+                        <i class="fa fa-minus"></i>
+                      </button>
+                      &emsp;{{ product.received }}&emsp;
+                      <button *ngIf="batch.status_id != batchStatusClosed" class="btn btn-icon fa-btn"
+                        (click)="changeReceivedQuantity(batch, product, true)">
+                        <i class="fa fa-plus"></i>
+                      </button>
+                    </td>
+                    <td *ngIf="batch.status_id === batchStatusCompleted">
+                      <select class="form-control option" [(ngModel)]="product.reason">
+                        <option class="disabled" selected="true" [value]=null>
+                          Select Reason
+                        </option>
+                        <option [value]="ReturnReasonMissingInventory">
+                          Missing Inventory
+                        </option>
+                        <option [value]="ReturnReasonDamagedInventory">
+                          Damaged Inventory
+                        </option>
+                      </select>
+                    </td>
+                    <td *ngIf="batch.status_id === batchStatusClosed">
+                      {{ product.reason === ReturnReasonMissingInventory ? "Missing Inventory"
+                      : product.reason === ReturnReasonLostInventory ? "Lost Inventory"
+                      : product.reason === ReturnReasonDamagedInventory ? "Damaged Inventory"
+                      : "" }}
+                    </td>
+                    <td *ngIf="batch.status_id === batchStatusCompleted || batch.status_id === batchStatusClosed">
+                      {{ (product.price * product.received).toFixed(2) }}</td>
+                  </tr>
+                </table>
+                <div class="user-table"
+                  *ngIf="batch.status_id === batchStatusCompleted || batch.status_id === batchStatusClosed">
+                  <b>Batch Closing</b>
+                </div>
+                <div class="row closing">
+                  <div class="table-expand-box col-12">
+                    <div class="col-lg-4 orderdetail">
+                      <table class="table user-table closing-input">
+                        <tr *ngIf="batch.status_id === batchStatusCompleted || batch.status_id === batchStatusClosed">
+                          <td>Actual cash to be collected:</td>
+                          <td>{{ (batch.cash_receivable).toFixed(2) }}</td>
+                        </tr>
+                        <tr *ngIf="batch.status_id === batchStatusCompleted || batch.status_id === batchStatusClosed">
+                          <td>Inventory shortage:</td>
+                          <td>{{ (batch.inventory_shortage).toFixed(2) }}</td>
+                        </tr>
+                        <tr *ngIf="batch.status_id === batchStatusCompleted || batch.status_id === batchStatusClosed">
+                          <td>Sadad amount:</td>
+                          <td>{{ (batch.payment_sadad_balance).toFixed(2) }}</td>
+                        </tr>
+                        <tr *ngIf="batch.status_id === batchStatusCompleted || batch.status_id === batchStatusClosed">
+                          <td>Wallet amount:</td>
+                          <td>{{ (batch.payment_wallet_balance).toFixed(2) }}</td>
+                        </tr>
+                        <tr *ngIf="batch.status_id === batchStatusCompleted || batch.status_id === batchStatusClosed">
+                          <td>Cash to be collected:</td>
+                          <td>{{ (batch.cash_receivable + batch.inventory_shortage - batch.payment_wallet_balance - batch.payment_sadad_balance).toFixed(2) }}</td>
+                        </tr>
+                        <tr *ngIf="batch.status_id === batchStatusCompleted">
+                          <div class=" middle">
+                            <td>Cash Collected:</td>
+                          </div>
+                          <td><input type="number" min="0"
+                              onkeydown="return ![8, 37, 39].includes(event.keyCode)?(/[0-9.]/g.test(event.key)):true"
+                              class="form-control closing-input" [(ngModel)]="batch.cash_collected" /></td>
+                        </tr>
+                        <tr *ngIf="batch.status_id === batchStatusClosed">
+                          <td>Cash Collected:</td>
+                          <td>{{ (batch.cash_collected).toFixed(2) }}</td>
+                        </tr>
+                        <tr *ngIf="batch.status_id === batchStatusCompleted">
+                          <div class=" middle">
+                            <td>Non-Cash Collected:</td>
+                          </div>
+                          <td><input type="number" min="0"
+                              onkeydown="return ![8, 37, 39].includes(event.keyCode)?(/[0-9.]/g.test(event.key)):true"
+                              class="form-control closing-input" [(ngModel)]="batch.non_cash_collected" /></td>
+                        </tr>
+                        <tr *ngIf="batch.status_id === batchStatusClosed">
+                          <td>Non-Cash Collected:</td>
+                          <td>{{ (batch.non_cash_collected).toFixed(2) }}</td>
+                        </tr>
+                        <tr *ngIf="batch.status_id === batchStatusCompleted">
+                          <div class="middle">
+                            <td>Non-Cash Source:</td>
+                          </div>
+                          <td>
+                            <select class="form-control closing-input" [(ngModel)]="batch.non_cash_type">
+                              <option class="disabled" selected="true" [value]=null>
+                                Select Source
+                              </option>
+                              <option [value]="NonCashTypeBankTransfer">
+                                Bank Transfer
+                              </option>
+                              <option [value]="NonCashTypeCheque">
+                                Cheque
+                              </option>
+                              <option [value]="NonCashTypeDigitalWallet">
+                                Digital Wallet
+                              </option>
+                              <option [value]="NonCashTypeFinjaPayments">
+                                Finja Payments
+                              </option>
+                              <option [value]="NonCashTypePendingPayments">
+                                Pending/Promised Payments
+                              </option>
+                            </select>
+                          </td>
+                        </tr>
+                        <tr *ngIf="batch.status_id === batchStatusClosed">
+                          <td>Non-Cash Source:</td>
+                          <td>{{ batch.non_cash_type === NonCashTypeBankTransfer ? "Bank Transfer"
+                            : batch.non_cash_type === NonCashTypeCheque ? "Cheque"
+                            : batch.non_cash_type === NonCashTypeDigitalWallet ? "Digital Wallet"
+                            : batch.non_cash_type === NonCashTypeFinjaPayments ? "Finja Payments"
+                            : batch.non_cash_type === NonCashTypePendingPayments ? "Pending/Promised Payments"
+                            : "" }}</td>
+                        </tr>
+                        <tr *ngIf="batch.status_id === batchStatusCompleted || batch.status_id === batchStatusClosed">
+                          <td>Cash shortage/excess:</td>
+                          <td>{{ 
+                            ((batch.cash_collected + batch.non_cash_collected) - (batch.cash_receivable + batch.inventory_shortage)).toFixed(2) === '-0.00' ?
+                            '0.00' : (
+                              (batch.cash_collected + batch.non_cash_collected) - 
+                              (batch.cash_receivable + batch.inventory_shortage - batch.payment_wallet_balance - batch.payment_sadad_balance)
+                              ).toFixed(2)
+                          }}</td>
+                        </tr>
+                        <tr *ngIf="batch.status_id === batchStatusCompleted">
+                          <div class="middle">
+                            <td>Difference Reason:</td>
+                          </div>
+                          <td>
+                            <select class="form-control closing-input " [(ngModel)]="batch.difference_reason">
+                              <option class="disabled" selected="true" [value]=null>
+                                Select Reason
+                              </option>
+                              <option [value]="DifferenceReasonTheft">
+                                Theft
+                              </option>
+                              <option [value]="DifferenceReasonLostMoney">
+                                Lost money
+                              </option>
+                              <option [value]="DifferenceReasonLostItems">
+                                Lost Items
+                              </option>
+                              <option [value]="DifferenceReasonOther">
+                                Other
+                              </option>
+                            </select>
+                          </td>
+                        </tr>
+                        <tr *ngIf="batch.status_id === batchStatusClosed">
+                          <td>Difference Reason:</td>
+                          <td>{{ findBatchDifferenceReason(batch.difference_reason) }}</td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mb-20">
+                  <!-- Code to be used in future release. Do not remove. -->
+                  <!-- <div class="ml-5 mr-5">
+                    <label>
+                      <b>Select Delivery Agent</b>
+                    </label>
+                    <select [(ngModel)]="newDeliveryAgentId" class="form-control delivery-agent-button">
+                      <option *ngFor="let agent of allDeliveryAgents" [value]="agent.id"
+                        [selected]="agent.id == batchDeliveryAgents[activeIndex]">
+                        {{ agent.name }}
+                      </option>
+                    </select>
+                  </div>
+                  <button (click)="updateDeliveryAgent(activeIndex)" class="skewbtn-primary mt-30 ml-5">
+                    Assign
+                  </button> -->
+                  <button *ngIf="batch.status_id === batchStatusPending" (click)="askForPermission(batch, true)"
+                    class="skewbtn-primary mt-30 ml-5">
+                    Cancel
+                  </button>
+                  <button *ngIf="batch.status_id === batchStatusCompleted" (click)="askForPermission(batch, false)"
+                    class="skewbtn-primary mt-30 ml-5">
+                    Close Batch
+                  </button>
+                </div>
+              </div>
+            </li>
+          </ul>
+          <pagination-controls class="mt-30" (pageChange)="pagination($event)" id="{{paginationId}}"
+            autoHide="{{totalItems<itemsPerPage}">
+          </pagination-controls>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

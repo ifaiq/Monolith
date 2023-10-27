@@ -1,0 +1,26 @@
+<div class="login-page" [@routerTransition]>
+    <div class="row">
+        <div class="col-md-5 push-md-4">
+            <div class="form-holder">
+                <img src="assets/images/retailo-logo-150x60.svg" width="150px" />
+                <form role="form">
+                    <div class="form-content">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i>
+                            </span>
+                            <input type="text" [(ngModel)]="username" name="username" class="form-control input-underline input-lg" id="username" placeholder="Email">
+                        </div>
+
+
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-lock" aria-hidden="true"></i></span>
+                            <input type="password" [(ngModel)]="password" name="password" class="form-control input-underline input-lg" id="password" placeholder="Password" (keyup.enter) ="onLoggedin()">
+                        </div>
+
+                    </div>
+                    <button (click)="onLoggedin()" class="skewbtn-secondary">Log in</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

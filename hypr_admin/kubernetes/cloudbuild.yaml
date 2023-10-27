@@ -1,0 +1,47 @@
+steps:
+    # pull latest code and test
+    # only lang-specic step
+    - name: "golang:latest"
+      id: Test
+      entrypoint: /bin/sh
+      args:
+          ["-c", "export GO111MODULE=on", "go mod download", "go test ./... -v"]
+
+    - name: 'ubuntu'
+      args: ['bash', './hypr_admin/kubernetes/environment.sh']
+      env:
+      - 'ENV=$_ENV'
+
+    # build image
+    - name: "gcr.io/cloud-builders/docker"
+      env:
+          - "BUILD=$BUILD_ID"
+      args:
+          [
+              "build",
+              "--tag=gcr.io/${_PROJECT_ID}/${_APP_NAME}:$BUILD_ID",
+              "./hypr_admin",
+          ]
+
+    # push image to gcr
+    - name: "gcr.io/cloud-builders/docker"
+      args: ["push", "gcr.io/${_PROJECT_ID}/${_APP_NAME}:$BUILD_ID"]
+
+    - name: "gcr.io/cloud-builders/gcloud"
+      args:
+          [
+              "beta",
+              "run",
+              "deploy",
+              "${_CLOUDRUN_SERVICE}",
+              "--image",
+              "gcr.io/${_PROJECT_ID}/${_APP_NAME}:$BUILD_ID",
+              "--region",
+              "us-central1",
+              "--platform",
+              "managed",
+              "--quiet",
+          ]
+
+options:
+    machineType: "N1_HIGHCPU_8"

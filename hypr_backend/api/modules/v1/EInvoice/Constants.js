@@ -1,0 +1,51 @@
+module.exports = {
+  SELLER: {
+    name: "شركة ريتيلو العربي لتقنية نظم المعلومات شركة شخص واحد",
+    businessName: "شركة ريتيلو العربي لتقنية نظم المعلومات شركة شخص واحد",
+    phone: "+966540482814",
+    website: "www.retailo.co",
+    address: `شارع أنس بن مالك، حي المالقا، الرياض، 13521، الرياض، المملكة العربية السعودية,3141`,
+    vat: "310798963700003",
+  },
+  TAX_INVOICE: "Tax Invoice",
+  CN_TAX_INVOICE: "Credit Note",
+  ZONE: "Asia/Riyadh",
+  DATE_TIME_FORMAT: "YYYY-MM-DD HH:mm:ss",
+  EINVOICE_QR_CONFIG: { type: "svg", size: "3" },
+  THERMAL_INVOICE_QR_CONFIG: { type: "svg", size: "1.8" },
+  THERMAL_INVOICE_PAPERSIZE: "80mm",
+  EINVOICE_VERSIONING: {
+    v1: "v1",
+    v2: "v2",
+    latest: "v2",
+  },
+  MULTI_DOWNLOAD_MIN_VERSION_SUPPORT_ANDROID: "2.3.0",
+  MULTI_DOWNLOAD_MIN_VERSION_SUPPORT_iOS: "1.1.0",
+  MULTI_DOWNLOAD_MIN_VERSION_LOGISTICS: "3.4.7",
+  ARRAY_OF_OBJECTS_RESPONSE_SUPPORT_MIN_VERSION_ANDROID: "2.3.7",
+  ARRAY_OF_OBJECTS_RESPONSE_SUPPORT_MIN_VERSION_iOS: "1.1.4",
+  SELLER_UAE: {
+    name: "DX BUY GOODS TRADING L.L.C",
+    businessName: "DX BUY GOODS TRADING L.L.C",
+    phone: "04 4192111",
+    website: "www.retailo.co",
+    address: "Warehouse No: B-5/55, Al Ramool, Rashidiya, Dubai, Dubai, United Arab Emirates, 99999",
+    vat: "100476036700003",
+  },
+  COUNTRY_CODES: {
+    SAUDI: "Saudi",
+    UAE: "UAE",
+  },
+  TAX_RATES: {
+    UAE_TAX_RATE: 5,
+    OTHERS_TAX_RATE: 15,
+  },
+  DELIVERY_FEE_TITLE: {
+    ARABIC: "رسوم الخدمة",
+    ENGLISH: "Delivery Fee",
+  },
+  SERVICE_FEE_TITLE: {
+    ARABIC: "رسوم التوصيل",
+    ENGLISH: "Service Fee",
+  },
+};

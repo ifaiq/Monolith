@@ -1,0 +1,63 @@
+<div class="row">
+  <h4>SI Approval</h4>
+</div>
+<div class="row mb-20">
+  <div class="col" *ngxPermissionsOnly="['*', 'L_BU']">
+    <div class="form-group" >
+      <label for="exampleInputPassword1">Select Business Unit :</label>
+      <select (change)="getAllLocations()" [(ngModel)]="selectedBusinessUnitId" class="form-control">
+        <option class='option' [value]="''">All</option>
+        <option *ngFor='let bu of businessUnits' [value]="bu.id">
+          {{bu.name}}
+        </option>
+      </select>
+    </div>
+  </div>
+
+  <div class="col">
+    <div class="form-group">
+      <label for="exampleInputPassword1">Select Cell :</label>
+      <select [(ngModel)]="selectedLocationId" class="form-control">
+        <option class='option' [value]="''">All</option>
+        <option *ngFor='let location of locations' [value]="location.id">
+          {{location.name}}
+        </option>
+      </select>
+    </div>
+  </div>
+
+  <div class="col mt-20">
+    <button class="create" (click)="getSmartProcs()">GO</button>
+  </div>
+</div>
+
+<table class="table">
+  <thead>
+    <tr class="colored-thead">
+      <th scope="col">SKU</th>
+      <th scope="col">NAME</th>
+      <th scope="col">BRAND</th>
+      <th scope="col">SIZE</th>
+      <th scope="col">Recomended</th>
+      <th scope="col">Approve Qty</th>
+      <th scope="col">Approve</th>
+      <th scope="col">Remove</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr
+      *ngFor="let proc of smartProcs| paginate: { id:paginationId , itemsPerPage: itemsPerPage, currentPage: currentPage,totalItems: totalItems}">
+      <td>{{proc.product_sku.sku}}</td>
+      <td>{{proc.product_sku.name}}</td>
+      <td>{{proc.product_sku.brand}}</td>
+      <td>{{proc.product_sku.size}}</td>
+      <td>{{proc.quantity}}</td>
+      <td><input [(ngModel)]="proc.modified" type="text" class="form-control" /></td>
+      <td><button class="create" (click)="approveSmartProc(proc)">Approve</button></td>
+      <td><button class="create" (click)="removeSmartProc(proc)">Remove</button></td>
+    </tr>
+
+  </tbody>
+</table>
+<pagination-controls class="mt-30" (pageChange)="pagination($event)" id="{{paginationId}}" autoHide="{{totalItems<itemsPerPage}">
+  </pagination-controls>

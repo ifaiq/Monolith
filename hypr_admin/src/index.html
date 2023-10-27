@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Hypr Admin</title>
+    <base href="/adminportal/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <script
+      src="https://browser.sentry-cdn.com/7.12.1/bundle.min.js"
+      integrity="sha384-ds3MEkwHMg1Vl0XMXl86pZU3gIntwqCNJtYn0etV2sTjuKLdqrtEKFzCwgj3uzcL"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <app-root></app-root>
+  </body>
+  <script language="javascript">
+    window.addEventListener("DOMContentLoaded", (event) => {
+      loadStyleSheets();
+    });
+    function loadStyleSheets() {
+      var x = document.getElementsByName("preload-style");
+      var i;
+      for (i = 0; i < x.length; i++) {
+        x[i].setAttribute("rel", "stylesheet");
+        x[i].removeAttribute("as");
+      }
+    }
+  </script>
+</html>

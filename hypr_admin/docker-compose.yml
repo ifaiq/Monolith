@@ -1,0 +1,22 @@
+version: "2"
+
+services:
+  hypr_admin:
+    build:
+     context: .
+    command: ["dumb-init", "-cv", "--", "bash", "-c", "npm i && npm run local"]
+    environment:
+      - NODE_ENV=local
+    container_name: hypr_admin
+    ports:
+      - "4200:8084"
+    volumes:
+      - .:/code/
+      - /node_modules
+
+    networks:
+      - hypr-network
+
+networks:
+  hypr-network:
+    driver: bridge

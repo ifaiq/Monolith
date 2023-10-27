@@ -1,0 +1,40 @@
+steps:
+# pull latest code and test
+# only lang-specic step
+- name: 'golang:latest'
+  id: Test
+  entrypoint: /bin/sh
+  args: ['-c','export GO111MODULE=on','go mod download','go test ./... -v']
+
+
+# build image
+- name: 'gcr.io/cloud-builders/docker'
+  env:
+  - 'BUILD=$BUILD_ID'
+  args: ['build', '--tag=gcr.io/${_PROJECT_ID}/${_APP_NAME}:$BUILD_ID', './hypr_admin']
+
+
+# push image to gcr
+- name: 'gcr.io/cloud-builders/docker'
+  args: ["push", "gcr.io/${_PROJECT_ID}/${_APP_NAME}:$BUILD_ID"]
+
+
+# update manifest with few env var (mainly release tag)
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: Manifest
+  entrypoint: /bin/sh
+  args:
+  - '-c'
+  - |
+      sed -e \
+      's/_HOST/${_HOST}/g; s/BUILD_ID/${BUILD_ID}/g; s/_PROJECT_ID/${_PROJECT_ID}/g; s/_APP_NAME/${_APP_NAME}/g; s/_NAMESPACE/${_NAMESPACE}/g; s/_PROTOCOL_HTTP/${_PROTOCOL_HTTP}/g; s/_APP_PORT/${_APP_PORT}/g; s/_NODE_ENV/${_NODE_ENV}/g;' \
+      hypr_admin/live_kubernetes/service.yaml > hypr_admin/live_kubernetes/final.yaml\
+
+
+# deploy service to Knative cluster using the above gen'd manifest
+- name: 'gcr.io/cloud-builders/kubectl'
+  id: Deploy
+  args: ['apply','-f','hypr_admin/live_kubernetes/final.yaml']
+  env:
+  - 'CLOUDSDK_COMPUTE_ZONE=${_CLUSTER_ZONE}'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=${_CLUSTER_NAME}'

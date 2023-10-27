@@ -1,0 +1,139 @@
+<div>
+  <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+</div>
+
+<div *ngxPermissionsOnly="['*', 'L_PROD_CAT']">
+  <h3 class="ml-30 mb-20">Added Products</h3>
+  <div
+    *ngFor="let item of addedProducts| paginate: { id:paginationId , itemsPerPage: itemsPerPage, currentPage: currentPage,totalItems: totalItems};let i = index"
+    class="mb-40">
+    <div class="cont-list">
+      <p *ngIf="item.product_id">{{item.product_id.name}} {{item.product_id.brand}} {{item.product_id.size}}</p>
+      <div class="row mb-0" *ngxPermissionsOnly="['*', 'U_PROD_CAT']">
+        <div class="col">
+          <button (click)="removeItem(getItemNumber(i))"
+            class="btn btn-lg btn-outline-primary skewbtn-primary mr-20 dlt-img">
+            <img src="assets/images/dlt-img.png" />
+          </button>
+        </div>
+      </div>
+      <div *ngIf="item.product_id">
+        <div *ngFor="let promotion of item.product_id.promotions;let i = index">
+
+          <div class="row mb-20 mt-20">
+            <div class="col">
+              <div class="form-group border-view">
+                <label>Promotional Price</label>
+                <input [(ngModel)]="promotion.price" class="form-control">
+              </div>
+            </div>
+
+            <div class="col">
+              <div class="form-group border-view">
+                <label>Total Quantity</label>
+                <input [(ngModel)]="promotion.total_quantity" class="form-control">
+              </div>
+            </div>
+
+            <div class="col">
+              <div class="form-group border-view">
+                <label>Max Quantity</label>
+                <input [(ngModel)]="promotion.max_quantity" class="form-control">
+              </div>
+            </div>
+          </div>
+          <div>
+
+
+            <div class="row mb-20">
+              <div class="col">
+                <div class="form-group border-view">
+                  <label>Start Time</label>
+                  <angular2-date-picker [(ngModel)]="promotion.start_time" [settings]="settings"></angular2-date-picker>
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-group border-view">
+                  <label>End Time</label>
+                  <angular2-date-picker [(ngModel)]="promotion.end_time" [settings]="settings"></angular2-date-picker>
+                </div>
+              </div>
+
+              <div class="col">
+                <button (click)="removePromotion(item, i)" class="btn btn-lg btn-outline-primary skewbtn-primary"
+                  style="margin-top: 25px;margin-left:  40px;">Delete Promotion</button>
+              </div>
+            </div>
+
+
+          </div>
+
+        </div>
+        <!--end-->
+
+      </div>
+    </div>
+
+  </div>
+  <pagination-controls class="mt-30" (pageChange)="pagination($event)" id="{{paginationId}}" autoHide="{{totalItems<itemsPerPage}">
+  </pagination-controls>
+
+  <div class="right-box-add-save" *ngxPermissionsOnly="['*', 'U_PROD_CAT']">
+    <h3>Settings</h3>
+    <span>
+      <img src="assets/images/setting-img.png" />
+    </span>
+    <p>Add a product to a category
+      <br />Save overall Changes/Promotion </p>
+    <button class="btn btn-lg btn-outline-primary skewbtn-primary" (click)="open(content)">Add Item</button>
+
+    <button class="btn btn-lg btn-outline-primary skewbtn-primary" (click)="updateCategory()">Update</button>
+  </div>
+
+</div>
+
+
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header" *ngxPermissionsOnly="['*', 'U_PROD_CAT']">
+    <h4 class="modal-title">Add Item</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" *ngxPermissionsOnly="['*', 'U_PROD_CAT']">
+    <input class="input-popup" type="text" placeholder="Search Product" [(ngModel)]="search">
+    <button type="button" class="btn button-popup btn-lg btn-outline-primary skewbtn-primary" (click)="SearchProduct('clearProducts')">Reset</button>
+
+    <table style="width:100%">
+      <tr class="border-4">
+        <th>Name</th>
+        <th>Brand</th>
+        <th>Price</th>
+        <th>Size</th>
+        <th></th>
+      </tr>
+      <br />
+      <tr class="inner-td" *ngFor="let product of products| paginate: { id:paginationIdPopup , itemsPerPage: itemsPerPagePopup, currentPage: currentPagePopup,totalItems: totalItemsPopup}">
+        <td>{{ product.name }}</td>
+        <td> {{product.brand}}</td>
+        <td>{{product.price}}</td>
+        <td>{{product.size}}</td>
+        <button class=" btn-popup-add" (click)="AddProduct(product)">Add item</button>
+    </tr>
+    <pagination-controls class="mt-30" (pageChange)="paginationPopup($event)" id="{{paginationIdPopup}}" autoHide="{{totalItemsPopup<itemsPerPagePopup}">
+      </pagination-controls>
+    </table>
+
+  </div>
+
+
+  <div class="modal-footer" *ngxPermissionsOnly="['*', 'U_PROD_CAT']">
+    <button type="button" class="btn btn-outline-dark" class="btn button-popup btn-lg btn-outline-primary skewbtn-primary" (click)="c('Close click')">Close</button>
+  </div>
+</ng-template>
+
+<div class="row mb-100"></div>
+<div class="row mb-100"></div>
+<div class="row mb-100"></div>
+<div class="row mb-100"></div>
+<div class="row mb-50"></div>

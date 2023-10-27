@@ -1,0 +1,196 @@
+<div *ngxPermissionsOnly="['*','C_NOTI_MSG']">
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title">
+                <span class="h1">Create Message</span>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-20">
+        <div class="col-12 col-sm-12">
+            <div class="form-group">
+                <label for="">Template Name</label>
+                <input type="text" maxlength="150" class="form-control" placeholder="Enter Template Name" [(ngModel)]="message.templateName">
+            </div>
+        </div>
+        <div class="col-12 col-sm-12">
+            <div class="form-group">
+                <label for="">Message Title</label>
+                <input type="text" maxlength="150" class="form-control" placeholder="Enter Message Title" [(ngModel)]="message.title">
+            </div>
+        </div>
+        <div class="col-12 col-sm-12">
+            <div class="form-group">
+                <div class="row">
+                    <label for="">Message Text</label>
+                </div>
+                <div class="row">
+                    <textarea rows="4" [(ngModel)]="message.text">
+                    </textarea>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-12" *ngxPermissionsOnly="['*', 'L_ALL_COMP']">
+            <div class="form-group" style="padding: 0 5px !important">
+                <label>Select Company: </label>
+                <select
+                    [(ngModel)]="message.companyId"
+                    class="form-control"
+                >
+                    <option
+                        *ngFor="let company of companies"
+                        [value]="company.id"
+                    >
+                        {{ company.name }}
+                    </option>
+                </select>
+            </div>
+        </div>
+        <form class="col-12 col-sm-12" id="upload-image-0">
+            <div class="uploadedImage mb-30">
+                <img
+                    src="{{ message.image_url }}"
+                    class="mb-10"
+                />
+
+                <div
+                    class="upload-file-wrapper"
+                    *ngxPermissionsOnly="[
+                        '*',
+                        'C_IMG_S3'
+                    ]"
+                >
+                    <input
+                        type="file"
+                        class="mb-10"
+                        (change)="
+                            onFileChange($event, 0)
+                        "
+                        #fileInput
+                        placeholder="Upload file..."
+                        class="uploadFileshere"
+                    />
+                    <button
+                        type="button"
+                        class="btn btn-secondary btn-text"
+                        (click)="removeImage()"
+                    >
+                        <span>Remove</span>
+                    </button>
+                </div>
+            </div>
+        </form>
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title">
+                    <span class="h1">Create Link</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 blockholder row">
+            <div class="col-6 col-lg-2" >
+                <div class="form-group">
+                    <label>Select Company: </label>
+                    <select [(ngModel)]="companyId" class="form-control" (change)="getbusinessUnits(); ">
+                        <option *ngFor="let company of companies" [value]="company.id">
+                            {{ company.name }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-6 col-lg-2" *ngIf='companyId'>
+                <div class="form-group">
+                    <label>Business Unit</label>
+                    <select [(ngModel)]="selectedBusinessUnitId" (change)="getlocations()"
+                        class="form-control">
+                        <option *ngFor="let bu of businessUnits" [value]="bu.id">
+                            {{ bu.name }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-6 col-lg-2"  *ngIf='selectedBusinessUnitId'>
+                <div class="form-group">
+                    <label>Location</label>
+                    <select [(ngModel)]="selectedLocationId" (change)="refresh()" class="form-control">
+                        <option *ngFor="let location of locations" [value]="location.id">
+                            {{ location.name }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-6 col-lg-2" *ngIf='selectedLocationId'>
+                <div class="form-group">
+                    <label>Select Screen</label>
+                    <select [(ngModel)]="selectedScreen" class="form-control" (change)="setScreen(selectedScreen); setPath(selectedScreen); ">
+                        <option *ngFor="let screen of screens" class="option" [value]="screen.id">
+                            {{ screen.name }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-6 col-lg-2" *ngIf="selectedScreen === '4' || selectedScreen==='5'" >
+                <div class="form-group">
+                    <label>Select Category</label>
+                      <select [(ngModel)]="selectedCategory" class="form-control"
+                        (change)="getCategories() ; categoryChanged($event); setPath(selectedCategory); ">
+                        <option *ngFor="let category of categories" class="option"
+                            [value]="category.id">
+                            {{ category.name | uppercase }}
+                        </option>
+                    </select> 
+                </div>
+            </div>
+            <div class="col-6 col-lg-2" *ngIf="subCategories.length && selectedScreen==='5'">
+                <div class="form-group">
+                    <label>Select Sub-Category</label>
+                    <select [(ngModel)]="selectedSubCategory" class="form-control" (change)="setPath(selectedSubCategory)"  >
+                        <option *ngFor="let category of subCategories" class="option" [value]="category.id">
+                            {{ category.name }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex flex-column">
+            <div class="my-3">
+                <h5> Select your channel type(s) *</h5>
+                <div>
+                    <input type="checkbox" (change)="addChannelType('Notification', $event)">
+                    <label class="form-check-label">Notification</label>
+                </div>
+    
+                <div>
+                    <input type="checkbox" (change)="addChannelType('Sms', $event)">
+                    <label class="form-check-label">SMS</label>
+                </div>
+    
+                <div>
+                    <input type="checkbox" (change)="addChannelType('Email', $event)">
+                    <label class="form-check-label">Email</label>
+                </div>
+            </div>
+
+            <div class="my-3">
+                <h5> Select your message type(s) *</h5>
+                <div>
+                    <input type="checkbox" (change)="addMessageType('Promotional', $event)">
+                    <label class="form-check-label">Promotional</label>
+                </div>
+                <div>
+                    <input type="checkbox" (change)="addMessageType('Transactional', $event)">
+                    <label class="form-check-label">Transactional</label>
+                </div>
+            </div>
+            <p style="color: red;">* You can select more than one channel or message types!</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="button-wrapper text-right mt-20">
+                <button class="btn btn-primary btn-text" (click)="createMessage()"><span>Create</span></button>
+            </div>
+        </div>
+    </div>
+</div>

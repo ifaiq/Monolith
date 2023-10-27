@@ -1,0 +1,694 @@
+<div *ngxPermissionsOnly="['*', 'L_ORDERS']">
+  <div>
+    <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+  </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title">
+                <span class="h1">Orders</span>
+                <button
+                    class="btn btn-icon btn-refresh ml-20"
+                    (click)="refresh()"
+                >
+                    <span></span>
+                </button>
+                <button
+                    class="skewbtn-secondary ml-20"
+                    (click)="openModalOrderExport(orderDump)"
+                >
+                    Export
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-20">
+        <div class="col-sm search-cross-box">
+            <input
+                type="text"
+                placeholder="Search"
+                [(ngModel)]="search"
+                (keyup.enter)="SearchOrders()"
+                class="form-control"
+            />
+            <button
+                class="create"
+                aria-hidden="true"
+                (click)="undoSearch()"
+                class="btn btn-link fa fa-times crossbtn"
+            ></button>
+        </div>
+        <div class="col-sm"></div>
+        <div class="col-sm"></div>
+    </div>
+
+    <div class="row all-orders">
+        <div class="col-6 col-lg-3">
+            <div class="form-group" style="height: 70px">
+                <label for="">From</label>
+                <input
+                    type="date"
+                    [(ngModel)]="startDate"
+                    class="form-control"
+                />
+            </div>
+        </div>
+
+        <div class="col-6 col-lg-3">
+            <div class="form-group" style="height: 70px">
+                <label for="">To</label>
+                <input type="date" [(ngModel)]="endDate" class="form-control" />
+            </div>
+        </div>
+
+        <div
+            class="col-6 col-lg-2"
+            *ngxPermissionsOnly="['*', 'L_ORDER_STATUSES']"
+        >
+            <div class="form-group">
+                <label for="">Select Status</label>
+                <select
+                    class="select-option"
+                    [(ngModel)]="selectedStatus"
+                    class="form-control"
+                >
+                    <option class="option" [value]="''">All</option>
+                    <option
+                        *ngFor="let status of statuses"
+                        class="option"
+                        [value]="status.id"
+                    >
+                        {{ getValue(status.name) }}
+                    </option>
+                </select>
+            </div>
+        </div>
+        <div class="col-6 col-lg-2" *ngxPermissionsOnly="['*', 'L_ALL_COMP']">
+            <div class="form-group">
+                <label for="">Select Company</label>
+                <select
+                    [(ngModel)]="companyId"
+                    class="form-control"
+                    (change)="getbusinessUnits()"
+                >
+                    <option class="option" [value]="''">All</option>
+                    <option
+                        *ngFor="let company of companies"
+                        [value]="company.id"
+                    >
+                        {{ company.name }}
+                    </option>
+                </select>
+            </div>
+        </div>
+
+        <div class="col-6 col-lg-2" *ngxPermissionsOnly="['*', 'L_BU']">
+            <div class="form-group">
+                <label for="">Select Business Unit</label>
+                <select
+                    [(ngModel)]="selectedBusinessUnitId"
+                    class="form-control"
+                    (change)="getlocations()"
+                >
+                    <option class="option" [value]="''">All</option>
+                    <option *ngFor="let bu of businessUnits" [value]="bu.id">
+                        {{ bu.name }}
+                    </option>
+                </select>
+            </div>
+        </div>
+
+        <div class="col-6 col-lg-2" *ngxPermissionsOnly="['*', 'L_ALL_LOC']">
+            <div class="form-group">
+                <label for="">Select Cell</label>
+                <select [(ngModel)]="selectedLocationId" class="form-control">
+                    <option class="option" [value]="''">All</option>
+                    <option
+                        *ngFor="let location of locations"
+                        [value]="location.id"
+                    >
+                        {{ location.name }}
+                    </option>
+                </select>
+            </div>
+        </div>
+
+        <div class="col-6 col-lg-4">
+            <button class="skewbtn-primary mt-10" (click)="SearchOrders()">
+                GO
+            </button>
+        </div>
+    </div>
+
+    <div class="row" [hidden]="loading">
+        <div class="col-12">
+            <div class="table-responsive">
+                <div class="custom-table">
+                    <ul class="row thead">
+                        <li class="col-1"><span>#</span></li>
+                        <li class="col-1"><span>ID</span></li>
+                        <li class="col-1"><span>Customer Name</span></li>
+                        <li class="col-2"><span>Customer Address</span></li>
+                        <li class="col-1"><span>Amount</span></li>
+                        <li class="col-1"><span>Cell</span></li>
+                        <li class="col-1"><span>Medium</span></li>
+                        <li class="col-1"><span>Date</span></li>
+                        <li class="col-1"><span>MOP</span></li>
+                        <li class="col-1"><span>Status</span></li>
+                        <li class="col-1"><span>Action</span></li>
+                    </ul>
+                    <ul class="table-body">
+                        <li
+                            class="row table-row bb align-items-center"
+                            *ngFor="
+                                let order of tableData
+                                    | paginate
+                                        : {
+                                              id: paginationId,
+                                              itemsPerPage: itemsPerPage,
+                                              currentPage: currentPage,
+                                              totalItems: totalItems
+                                          };
+                                let i = index
+                            "
+                        >
+                            <div class="col-1 tcell">
+                                <span>{{ order.rowCount }}</span>
+                            </div>
+                            <div class="col-1 tcell">
+                                <span>{{ order.id }}</span>
+                            </div>
+                            <div class="col-1 tcell">
+                                <span>{{ order.name }}</span>
+                            </div>
+                            <div class="col-2 tcell">
+                                <span>{{ order.delivery_address }}</span>
+                            </div>
+                            <div class="col-1 tcell">
+                                <span
+                                    >{{ order.currency }}
+                                    {{ order.grand_total - order.waiver.amount }}</span
+                                >
+                            </div>
+                            <div class="col-1 tcell">
+                                <span>{{ order.cell_name }}</span>
+                            </div>
+                            <div class="col-1 tcell">
+                                <span>{{getOrderMedium(order)}}</span>
+                            </div>
+                            <div class="col-1 tcell">
+                                <span>{{ order.placed_at }}</span>
+                            </div>
+                            <div class="col-1 tcell">
+                                <span>{{ order.payment_method }}</span>
+                            </div>
+                            <div class="col-1 tcell">
+                                <span>{{ order.status }}</span>
+                            </div>
+                            <div class="col-1 tcell">
+                                <button
+                                    class="btn btn-icon btn-edit"
+                                    (click)="setActiveIndex('activeIndex', i)"
+                                ></button>
+                            </div>
+
+                            <div
+                                class="col-12 table-row-details bundle-details-wrapper orderEditArea"
+                                [hidden]="!(activeIndex == i)"
+                            >
+                                <div>
+
+                                    <div id="progressBarHeader">
+                                        <div
+                                            class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+                                        >
+                                            <div class="progressBar">
+                                                <div class="orderType">
+                                                    Order Status: {{order.supervisor_id ? 'InOrganic' : 'Organic'}}
+                                                </div>
+                                                <div
+                                                    class="holder"
+                                                    *ngFor="
+                                                        let history of order.history
+                                                    "
+                                                >
+
+                                                    <span class="status" >{{
+                                                        getValue(
+                                                            history.status_id
+                                                                ? history
+                                                                      .status_id
+                                                                      .name
+                                                                : ""
+                                                        )
+                                                    }}</span>
+                                                    <span
+                                                        class="circle avtive"
+                                                    ></span>
+                                                    <span class="line"></span>
+                                                    <span class="date">{{
+                                                        sharedFunctions.getFormattedDate(
+                                                            history.created_at,
+                                                            1
+                                                        )
+                                                    }}</span>
+                                                    <div>
+                                                        <span class="deliveryAgent">{{
+                                                            history.status_id
+                                                                ? (history.status_id.id === inTransitId)
+                                                                    ? history.delivery_agent 
+                                                                    : null
+                                                                : null
+                                                        }}</span>
+                                                        <br/>
+
+                                                        <span class="deliveryAgent">{{history.delivery_agent_phone}}</span>
+
+                                                    </div>
+
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="table-expand-box col-12">
+                                            <div class="col-lg-2 orderdetail">
+                                                <h5>Order Details</h5>
+                                                <table class="table user-table">
+                                                    <tr>
+                                                        <td>ID</td>
+                                                        <td>
+                                                            {{ order.id }}
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td>Customer Name</td>
+                                                        <td>
+                                                            {{ order.name }}
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td>Telephone</td>
+                                                        <td>
+                                                            {{ order.phone }}
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td>Date</td>
+                                                        <td>
+                                                            {{
+                                                                order.placed_at
+                                                            }}
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td>Status</td>
+                                                        <td>
+                                                            {{ order.status }}
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td>Payment Method</td>
+                                                        <td>
+                                                            {{
+                                                                order.payment_method
+                                                            }}
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td>
+                                                            Delivery Address
+                                                        </td>
+                                                        <td>
+                                                            {{
+                                                                order.delivery_address
+                                                            }}
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr
+                                                        *ngIf="
+                                                            order.packer_name
+                                                        "
+                                                    >
+                                                        <td>Packer Name</td>
+                                                        <td>
+                                                            {{
+                                                                order.packer_name
+                                                            }}
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr
+                                                        *ngIf="
+                                                            order.waiver.amount
+                                                        "
+                                                    >
+                                                        <td>
+                                                            Waiver
+                                                        </td>
+                                                        <td>
+                                                            {{order.waiver.amount}}
+                                                            <br />
+                                                            {{order.currency}}
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-10 itemDetails">
+                                        <table
+                                            class="table user-table table-striped"
+                                        >
+                                            <thead class="thead-dark">
+                                                <h5>Item Details</h5>
+                                                <tr>
+                                                    <th scope="col"></th>
+                                                    <th scope="col"></th>
+                                                    <th scope="col"></th>
+                                                    <th scope="col"></th>
+                                                    <th scope="col"></th>
+                                                    <th scope="col"></th>
+                                                    <th
+                                                        *ngIf="
+                                                            order.packer_name
+                                                        "
+                                                        scope="col"
+                                                    ></th>
+                                                    <th scope="col"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <th>Name</th>
+                                                    <th>Brand</th>
+                                                    <th>Size</th>
+                                                    <th>Sku</th>
+                                                    <!-- <td>Status</td> -->
+                                                    <th>Price Per Unit</th>
+                                                    <th>Original Quantity</th>
+                                                    <th
+                                                        *ngIf="
+                                                            order.packer_name
+                                                        "
+                                                    >
+                                                        Packed Quantity
+                                                    </th>
+                                                    <th>Total Amount</th>
+                                                </tr>
+                                                <tr
+                                                    *ngFor="
+                                                        let item of order.items;
+                                                        let j = index
+                                                    "
+                                                >
+                                                    <td>
+                                                        {{
+                                                            getValue(
+                                                                item.product_id
+                                                                    .name
+                                                            )
+                                                        }}
+                                                    </td>
+                                                    <td>
+                                                        {{
+                                                            getValue(
+                                                                item.product_id
+                                                                    .brand
+                                                            )
+                                                        }}
+                                                    </td>
+                                                    <td>
+                                                        {{
+                                                            getValue(
+                                                                item.product_id
+                                                                    .size
+                                                            )
+                                                        }}
+                                                    </td>
+                                                    <td>
+                                                        {{
+                                                            getValue(
+                                                                item.product_id
+                                                                    .sku
+                                                            )
+                                                        }}
+                                                    </td>
+                                                    <td>
+                                                        {{ getAmount(item, 1) }}
+                                                    </td>
+                                                    <td>
+                                                        {{
+                                                            getValue(
+                                                                item.original_quantity
+                                                            )
+                                                        }}
+                                                    </td>
+                                                    <td
+                                                        *ngIf="
+                                                            order.packer_name
+                                                        "
+                                                    >
+                                                        <span
+                                                            [hidden]="
+                                                                editingOrderIndex ==
+                                                                i
+                                                            "
+                                                            >{{
+                                                                getValue(
+                                                                    item.packed_quantity
+                                                                )
+                                                            }}</span
+                                                        ><span
+                                                            [hidden]="
+                                                                !(
+                                                                    editingOrderIndex ==
+                                                                    i
+                                                                )
+                                                            "
+                                                        >
+                                                            <input
+                                                                style="
+                                                                    max-width: 70px;
+                                                                "
+                                                                class="form-control"
+                                                                type="number"
+                                                                [(ngModel)]="
+                                                                    item.quantity
+                                                                "
+                                                                (change)="
+                                                                    setOrderItemTotal(
+                                                                        order,
+                                                                        j
+                                                                    )
+                                                                "
+                                                                min="1"
+                                                            />
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        {{ order.currency }}.{{
+                                                            getAmount(item, 2)
+                                                        }}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="6">Tax</td>
+                                                    <td
+                                                        *ngIf="
+                                                            order.packer_name
+                                                        "
+                                                    ></td>
+                                                    <td>
+                                                        {{ order.currency }}.
+                                                        {{
+                                                            order.tax
+                                                                ? order.tax
+                                                                : 0
+                                                        }}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td
+                                                        id="alignmentName"
+                                                        colspan="6"
+                                                    >
+                                                        Charges (inc.
+                                                        service/delivery)
+                                                    </td>
+                                                    <td
+                                                        *ngIf="
+                                                            order.packer_name
+                                                        "
+                                                    ></td>
+                                                    <td>
+                                                        {{ order.currency }}.
+                                                        {{
+                                                            order.total_charges
+                                                        }}
+                                                    </td>
+                                                </tr>
+
+                                                <tr
+                                                    *ngIf="
+                                                        order.coupon_discount
+                                                    "
+                                                >
+                                                    <td colspan="6">
+                                                        Coupon Discount
+                                                    </td>
+                                                    <td
+                                                        *ngIf="
+                                                            order.packer_name
+                                                        "
+                                                    ></td>
+                                                    <td>
+                                                        {{ order.currency }}.
+                                                        {{
+                                                            order.coupon_discount
+                                                        }}
+                                                    </td>
+                                                </tr>
+
+                                                <tr
+                                                *ngIf="
+                                                    order.volume_based_discount
+                                                "
+                                            >
+                                                <td colspan="6">
+                                                    Volume Based Discount
+                                                </td>
+                                                <td>
+                                                    {{ order.currency }}.
+                                                    {{
+                                                        order.volume_based_discount
+                                                    }}
+                                                </td>
+                                            </tr>
+
+                                                <tr
+                                                *ngIf="
+                                                    order.waiver.amount
+                                                "
+                                            >
+                                                <td colspan="6">
+                                                    Waiver
+                                                </td>
+                                                <td
+                                                    *ngIf="
+                                                        order.waiver.amount
+                                                    "
+                                                ></td>
+                                                <td>
+                                                    {{ order.currency }}.
+                                                    {{
+                                                        order.waiver.amount
+                                                    }}
+                                                </td>
+                                            </tr>
+
+                                                <tr>
+                                                    <td colspan="6">
+                                                        Grand Total
+                                                    </td>
+                                                    <td
+                                                        *ngIf="
+                                                            order.packer_name
+                                                        "
+                                                    ></td>
+                                                    <td>
+                                                        {{ order.currency }}.
+                                                        {{ order.grand_total }}
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <div class="col-lg-12">
+                                        <div class="pull-right">
+                                            <button
+                                                class="skewbtn-secondary"
+                                                (click)="revertEditOrder(order)"
+                                                [hidden]="
+                                                    !(editingOrderIndex == i)
+                                                "
+                                            >
+                                                Cancel
+                                            </button>
+                                            <button
+                                                class="skewbtn-primary"
+                                                (click)="editOrder(order)"
+                                                [hidden]="
+                                                    !(editingOrderIndex == i)
+                                                "
+                                            >
+                                                Save
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button
+                                    class="skewbtn-primary"
+                                    (click)="printOrder(order)"
+                                >
+                                    Print Order
+                                </button>
+                            </div>
+                            <app-print-page
+                                [order]="order"
+                                id="{{ order.rowCount }}"
+                            ></app-print-page>
+                        </li>
+                        <pagination-controls
+                            class="mt-30"
+                            (pageChange)="pagination($event)"
+                            id="{{ paginationId }}"
+                            autoHide="{{totalItems<itemsPerPage}"
+                        >
+                        </pagination-controls>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #orderDump let-c="close" let-d="dismiss">
+  <div class="row filesdownloadpopup">
+      <div class="col-lg-12">
+          <h2>Order Dump</h2>
+      </div>
+      <div class="col-lg-6">
+          <div class="blockholder">
+              <h6>Export Excel File</h6>
+              <button
+              class="skewbtn-secondary ml-20"
+              (click)="exportOrders('excel')"
+          >
+              Export
+          </button>
+          </div>
+      </div>
+      <div class="col-lg-6">
+          <div class="blockholder">
+              <h6>Export CSV File</h6>
+              <button
+              class="skewbtn-secondary ml-20"
+              (click)="exportOrders('csv')"
+          >
+              Export
+          </button>
+          </div>
+      </div>
+  </div>
+</ng-template>

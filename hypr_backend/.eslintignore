@@ -1,0 +1,10 @@
+assets/dependencies/**/*.js
+views/**/*.ejs
+api/modules/v1/ejs
+utils
+
+# Start by ignoring everything by default
+api/**/*.js
+# Enable linting just for some files
+!api/controllers/v1/**/*
+!api/modules/v1/**/*

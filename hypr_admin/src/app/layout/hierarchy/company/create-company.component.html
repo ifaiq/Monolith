@@ -1,0 +1,83 @@
+<div *ngxPermissionsOnly="['*', 'C_COMP']">
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title">
+                <span class="h1">Create Company</span>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-20">
+        <div class="col-12 col-sm-4">
+            <div class="form-group">
+                <label for="">Company Name</label>
+                <input type="text" class="form-control" placeholder="Enter Company Name" [(ngModel)]="company.name">
+            </div>
+        </div>
+        <div class="col-12 col-sm-4">
+            <div class="form-group">
+                <label for="">Company Code</label>
+                <input type="text" class="form-control" placeholder="Enter Company Code" [(ngModel)]="company.code">
+            </div>
+        </div>
+        <!--<div class="col-12 col-sm-4">
+            <div class="form-group">
+                <label for="">Service Charge Type</label>
+                <input type="text" class="form-control" placeholder="Enter Service Charge Type"
+                    [(ngModel)]="company.service_charge_type">
+            </div>
+        </div>
+        <div class="col-12 col-sm-4">
+            <div class="form-group">
+                <label for="">Service Charge Value</label>
+                <input type="number" class="form-control" placeholder="Enter Service Charge Value"
+                    [(ngModel)]="company.service_charge_value">
+            </div>
+        </div>
+        <div class="col-12 col-sm-4">
+            <div class="form-group">
+                <label for="">Delivery Charge Type</label>
+                <input type="text" class="form-control" placeholder="Enter Delivery Charge Type"
+                    [(ngModel)]="company.delivery_charge_type">
+            </div>
+        </div>
+        <div class="col-12 col-sm-4">
+            <div class="form-group">
+                <label for="">Delivery Charge Value</label>
+                <input type="number" class="form-control" placeholder="Enter Delivery Charge Value"
+                    [(ngModel)]="company.delivery_charge_value">
+            </div>
+        </div>
+        <div class="col-12 col-sm-2">
+            <div class="form-group fg1">
+                <label class="d-block">Send Events</label>
+                <div class="cutom-switch">
+                    <label> No </label>
+                    <ui-switch class="switchHolder" [(ngModel)]="company.send_events" color="#e65400" size="small"
+                        checkedLabel="on">
+                    </ui-switch>
+                    <label> Yes </label>
+                </div>
+            </div>
+        </div>-->
+        <div class="col-12 col-sm-3">
+            <div class="form-group fg1">
+                <label class="d-block">Status</label>
+                <div class="cutom-switch">
+                    <label> Enabled </label>
+                    <ui-switch class="switchHolder" [(ngModel)]="company.disabled" color="#e65400" size="small"
+                        checkedLabel="on" reverse>
+                    </ui-switch>
+                    <label> Disabled </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="button-wrapper text-right mt-20">
+                <button class="btn btn-primary btn-text" (click)="createCompany()"><span>Create</span></button>
+            </div>
+        </div>
+    </div>
+
+</div>

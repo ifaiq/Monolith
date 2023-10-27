@@ -1,0 +1,2018 @@
+{
+  "info": {
+    "_postman_id": "99651eac-31ff-4e14-bdbf-a4a02f251ab8",
+    "name": "Docs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "18216192"
+  },
+  "item": [
+    {
+      "name": "Cart [v1]",
+      "item": [
+        {
+          "name": "Update Cart",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTA1MjMsInBob25lIjoiOTIzMDI5NDIyODEzIiwiY25pYyI6IjM1MjAyLTM3NDY5MjMtNiIsInJvbGUiOnsiaWQiOjgsIm5hbWUiOiJDT05TVU1FUiJ9LCJpYXQiOjE2NTA5NjU4MDYsImV4cCI6MTY1MDk4NzQwNiwiYXVkIjoicmV0YWlsZXJzIiwiaXNzIjoicmV0YWlsby5jbyAifQ.ZmTs7-jYDkFG544wiy1AZa8QkoX_EL2DQBTqIosSJ__V32HF9sFWYBsYEOSL2GceeGDluahMjWMsbiN9r6szLTYUojHB9laicY5hTpz3V3l_Xsc7-VoWoux2QywBVwmr1sKzXV1ny70XLJJ8cHHQaGrI9Qnn-nNmE3FalUr9cjo",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjcmVhdGVkX2F0IjoiMjAyMS0wOS0xOFQxNzo1MjowMi4wMDBaIiwidXBkYXRlZF9hdCI6IjIwMjEtMTEtMjlUMDk6NDU6MDIuMDAwWiIsImRlbGV0ZWRfYXQiOm51bGwsImlkIjo0NTQsIm5hbWUiOiJNYXJpalhhZ2VudCIsInVzZXJuYW1lIjoiTWFyaWpYYWdlbnQiLCJkaXNhYmxlZCI6ZmFsc2UsInBob25lIjoiOTIzMjEwMDAwMDAwIiwiY25pY19waWN0dXJlIjoiIiwiY25pYyI6IiIsImFkZHJlc3MiOiIiLCJlbWFpbCI6IiIsImRlbGV0ZWRfYnkiOm51bGwsInJvbGUiOnsiaWQiOjE2LCJuYW1lIjoiU1VQRVJWSVNPUiJ9LCJzZXNzaW9uX3V1aWQiOiJkMmVhYzE1OC1jNmI1LTQ3ZWItYWFjOS1lODY2MjlhMzM0ZWUiLCJpYXQiOjE2MzkzODI0OTEsImF1ZCI6Imh5cHIucGsiLCJpc3MiOiJoeXByLnBrIn0.kIaZyeuw7PkN2Iqjc7HwcVh4DzKY0fQWAee2r1DDyww",
+                "type": "text",
+                "disabled": true
+              },
+              {
+                "key": "clienttimeoffset",
+                "value": "300",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"products\": [\n        {\n            \"id\": 59872,\n            \"quantity\": 4\n        }\n    ],\n    \"coupon\": {\n        \"name\":\"test-27\"\n    },\n    \"locationId\": 13,\n    \"paymentType\": \"COD\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{api_url}}/api/v1/cart?calculateTotal=true&validateCoupon=true&validateProducts=false",
+              "host": ["{{api_url}}"],
+              "path": ["api", "v1", "cart"],
+              "query": [
+                {
+                  "key": "calculateTotal",
+                  "value": "true"
+                },
+                {
+                  "key": "validateCoupon",
+                  "value": "true"
+                },
+                {
+                  "key": "validateProducts",
+                  "value": "false"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Update Cart",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "{{consumer_auth_token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"products\": [\n        {\n            \"id\": 60020,\n            \"quantity\": 20\n        }\n    ],\n    \"locationId\": 13,\n    \"paymentType\": \"CREDIT\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{api_url}}/api/v1/cart?calculateTotal=true&customerId=10625&validateCoupon=true&validateProducts=false",
+                  "host": ["{{api_url}}"],
+                  "path": ["api", "v1", "cart"],
+                  "query": [
+                    {
+                      "key": "calculateTotal",
+                      "value": "true"
+                    },
+                    {
+                      "key": "customerId",
+                      "value": "10625"
+                    },
+                    {
+                      "key": "validateCoupon",
+                      "value": "true"
+                    },
+                    {
+                      "key": "validateProducts",
+                      "value": "false"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Thu, 04 Nov 2021 05:42:56 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "1505"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "Sails <sailsjs.com>"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                },
+                {
+                  "key": "Access-Control-Allow-Credentials",
+                  "value": "true"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"5e1-LjTz5JYuKongKrxw+1BXGjCFPsg\""
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"code\": \"OK\",\n    \"message\": \"Operation is successfully executed\",\n    \"userMessage\": \"Cart updated successfully!\",\n    \"data\": {\n        \"loanDuration\":14,\n        \"products\": [\n            {\n                \"createdAt\": \"2020-11-28T09:12:58.000Z\",\n                \"updatedAt\": \"2021-11-04T04:10:20.000Z\",\n                \"deletedAt\": null,\n                \"id\": 60020,\n                \"name\": \"Mezan Canola Oil 1Ltr x5\",\n                \"sku\": \"044-019-00040\",\n                \"imageUrl\": \"\",\n                \"description\": \"\",\n                \"stockQuantity\": 200,\n                \"weight\": 0,\n                \"length\": 0,\n                \"width\": 0,\n                \"height\": 0,\n                \"price\": 501,\n                \"costPrice\": 501,\n                \"mrp\": 501,\n                \"tradePrice\": null,\n                \"size\": \"\",\n                \"unit\": \"\",\n                \"brand\": \"Mezan\",\n                \"urduName\": \"\",\n                \"urduUnit\": \"\",\n                \"urduSize\": \"\",\n                \"urduBrand\": \"\",\n                \"disabled\": false,\n                \"barcode\": \"HYPR919697986\",\n                \"consentRequired\": false,\n                \"taxInclusive\": false,\n                \"taxPercent\": 0,\n                \"taxCategory\": null,\n                \"deletedBy\": null,\n                \"updatedBy\": null,\n                \"locationId\": 13,\n                \"catalogueProductId\": null,\n                \"tax\": 0,\n                \"quantity\": 20,\n                \"total\": 10020,\n                \"discount\": \"\"\n            }\n        ],\n        \"locationId\": 13,\n        \"paymentType\": \"CREDIT\",\n        \"retailerId\": 10561,\n        \"tax\": 0,\n        \"grandTotal\": 10163,\n        \"subTotal\": 10020,\n        \"total\": 10020,\n        \"couponDiscount\": 0,\n        \"eligibleProducts\": [],\n        \"waiver\": 0,\n        \"amountPayable\": 10020,\n        \"creditBuyFee\": 143\n    },\n\n    \"success\": true\n}"
+            }
+          ]
+        },
+        {
+          "name": "GenerateCart",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{consumer_auth_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjcmVhdGVkX2F0IjoiMjAyMS0wOC0yM1QwNjozODo1Ny4wMDBaIiwidXBkYXRlZF9hdCI6IjIwMjEtMDgtMjNUMDY6Mzg6NTcuMDAwWiIsImRlbGV0ZWRfYXQiOm51bGwsImlkIjoxMDM3MCwibmFtZSI6InZhbGt5cmllLXJldGFpbG8iLCJhZGRyZXNzIjpudWxsLCJwaG9uZSI6IjkyMzEyNTcxMDAzOSIsImVtYWlsIjpudWxsLCJjbmljIjoiMTIzMTIzMTIzMTIzMyIsIkRPQiI6bnVsbCwidmVyaWZpY2F0aW9uX2NvZGUiOjM1MDU2LCJ2ZXJpZmllZF9hdCI6IjIwMjEtMDgtMjNUMDY6Mzg6NTcuMDAwWiIsImNuaWNfcGljdHVyZSI6IiIsImN1c3RvbWVyX2xvY2F0aW9uIjpudWxsLCJ0ZXJtc19hY2NlcHRlZCI6dHJ1ZSwiY3VzdG9tZXJfc3RyaXBlX2lkIjpudWxsLCJoYXNfc21hcnRfcGhvbmUiOnRydWUsInNlY29uZGFyeV9waG9uZSI6IiIsImRpc2FibGVkIjpmYWxzZSwiYXBwX25hbWUiOm51bGwsImFwcF92ZXJzaW9uIjpudWxsLCJkZXZpY2VfbmFtZSI6bnVsbCwic3RvcmVfY2FyZF9pbmZvIjp0cnVlLCJsYW5ndWFnZSI6bnVsbCwiYnVpbGRfdmVyc2lvbiI6bnVsbCwic3VwZXJ2aXNvcl9pZCI6bnVsbCwib3JkZXJfbW9kZSI6MSwiY29tcGFueV9pZCI6NCwiYnVzaW5lc3NfdW5pdF9pZCI6bnVsbCwicm9sZSI6eyJjcmVhdGVkX2F0IjpudWxsLCJ1cGRhdGVkX2F0IjpudWxsLCJkZWxldGVkX2F0IjpudWxsLCJpZCI6OCwibmFtZSI6IkNPTlNVTUVSIn0sInNlc3Npb25fdXVpZCI6ImI1N2QwNDkyLWVlM2YtNDJhOC1iNWU2LTVjMzBjMmQ0NmE1NSIsImlhdCI6MTYzMzYwMjM3NCwiYXVkIjoiaHlwci5wayIsImlzcyI6Imh5cHIucGsifQ.D-eGeQlXAi35DDzHyn48EZVrHbYsKirGAnIB-D5OBWk",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"products\": [\n        {\n            \"id\": 3619,\n            \"quantity\": 1\n        }\n    ],\n    \"locationId\": 13,\n    \"orderId\": 11610,\n    \"paymentType\": \"COD\",\n    \"retailerId\": 5356\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{api_url}}/api/v1/cart?calculateTotal=true&customerId=5356",
+              "host": ["{{api_url}}"],
+              "path": ["api", "v1", "cart"],
+              "query": [
+                {
+                  "key": "calculateTotal",
+                  "value": "true"
+                },
+                {
+                  "key": "customerId",
+                  "value": "5356"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Cart",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{consumer_auth_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjcmVhdGVkX2F0IjoiMjAyMS0wOS0xOFQxNzo1MjowMi4wMDBaIiwidXBkYXRlZF9hdCI6IjIwMjEtMTEtMjlUMDk6NDU6MDIuMDAwWiIsImRlbGV0ZWRfYXQiOm51bGwsImlkIjo0NTQsIm5hbWUiOiJNYXJpalhhZ2VudCIsInVzZXJuYW1lIjoiTWFyaWpYYWdlbnQiLCJkaXNhYmxlZCI6ZmFsc2UsInBob25lIjoiOTIzMjEwMDAwMDAwIiwiY25pY19waWN0dXJlIjoiIiwiY25pYyI6IiIsImFkZHJlc3MiOiIiLCJlbWFpbCI6IiIsImRlbGV0ZWRfYnkiOm51bGwsInJvbGUiOnsiaWQiOjE2LCJuYW1lIjoiU1VQRVJWSVNPUiJ9LCJzZXNzaW9uX3V1aWQiOiJkMmVhYzE1OC1jNmI1LTQ3ZWItYWFjOS1lODY2MjlhMzM0ZWUiLCJpYXQiOjE2MzkzODI0OTEsImF1ZCI6Imh5cHIucGsiLCJpc3MiOiJoeXByLnBrIn0.kIaZyeuw7PkN2Iqjc7HwcVh4DzKY0fQWAee2r1DDyww",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "url": {
+              "raw": "{{api_url}}/api/v1/cart?customerId=9785",
+              "host": ["{{api_url}}"],
+              "path": ["api", "v1", "cart"],
+              "query": [
+                {
+                  "key": "customerId",
+                  "value": "9785"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Calculate Cart logistics",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NTMwLCJuYW1lIjoiYWxwaGF0ZXN0IiwiYWRkcmVzcyI6IiIsInBob25lIjoiMDMwMDEyMzEyMzEiLCJlbWFpbCI6IiIsImNuaWMiOiIiLCJjbmljX3BpY3R1cmUiOiIiLCJ1c2VybmFtZSI6ImFscGhhIiwiZGlzYWJsZWQiOjAsInJvbGUiOnsiY3JlYXRlZF9hdCI6bnVsbCwidXBkYXRlZF9hdCI6bnVsbCwiZGVsZXRlZF9hdCI6bnVsbCwiaWQiOjYsIm5hbWUiOiJERUxJVkVSWSIsImRpc2FibGVkIjpmYWxzZX0sImFjY2Vzc0hpZXJhcmNoeSI6eyJjb21wYW5pZXMiOltdLCJidXNpbmVzc191bml0cyI6W10sImxvY2F0aW9ucyI6WzEzLDE5NCwyMDYsMTk2LDIwOCw3OCwyMTEsOTMsMjA3XX0sInNlc3Npb25fdXVpZCI6IjRkZDU1YzVkLWI2NGEtNGM1Yy05MjlhLTRkZTJlYTI2ZTdlMCIsImlhdCI6MTY0OTUyNzI2MCwiYXVkIjoiaHlwci5wayIsImlzcyI6Imh5cHIucGsifQ.2Ojdtq-nPT22195sPfV0VovuWoG2oQlmnXzKqJv4DjA",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjcmVhdGVkX2F0IjoiMjAyMS0wOC0yM1QwNjozODo1Ny4wMDBaIiwidXBkYXRlZF9hdCI6IjIwMjEtMDgtMjNUMDY6Mzg6NTcuMDAwWiIsImRlbGV0ZWRfYXQiOm51bGwsImlkIjoxMDM3MCwibmFtZSI6InZhbGt5cmllLXJldGFpbG8iLCJhZGRyZXNzIjpudWxsLCJwaG9uZSI6IjkyMzEyNTcxMDAzOSIsImVtYWlsIjpudWxsLCJjbmljIjoiMTIzMTIzMTIzMTIzMyIsIkRPQiI6bnVsbCwidmVyaWZpY2F0aW9uX2NvZGUiOjM1MDU2LCJ2ZXJpZmllZF9hdCI6IjIwMjEtMDgtMjNUMDY6Mzg6NTcuMDAwWiIsImNuaWNfcGljdHVyZSI6IiIsImN1c3RvbWVyX2xvY2F0aW9uIjpudWxsLCJ0ZXJtc19hY2NlcHRlZCI6dHJ1ZSwiY3VzdG9tZXJfc3RyaXBlX2lkIjpudWxsLCJoYXNfc21hcnRfcGhvbmUiOnRydWUsInNlY29uZGFyeV9waG9uZSI6IiIsImRpc2FibGVkIjpmYWxzZSwiYXBwX25hbWUiOm51bGwsImFwcF92ZXJzaW9uIjpudWxsLCJkZXZpY2VfbmFtZSI6bnVsbCwic3RvcmVfY2FyZF9pbmZvIjp0cnVlLCJsYW5ndWFnZSI6bnVsbCwiYnVpbGRfdmVyc2lvbiI6bnVsbCwic3VwZXJ2aXNvcl9pZCI6bnVsbCwib3JkZXJfbW9kZSI6MSwiY29tcGFueV9pZCI6NCwiYnVzaW5lc3NfdW5pdF9pZCI6bnVsbCwicm9sZSI6eyJjcmVhdGVkX2F0IjpudWxsLCJ1cGRhdGVkX2F0IjpudWxsLCJkZWxldGVkX2F0IjpudWxsLCJpZCI6OCwibmFtZSI6IkNPTlNVTUVSIn0sInNlc3Npb25fdXVpZCI6ImI1N2QwNDkyLWVlM2YtNDJhOC1iNWU2LTVjMzBjMmQ0NmE1NSIsImlhdCI6MTYzMzYwMjM3NCwiYXVkIjoiaHlwci5wayIsImlzcyI6Imh5cHIucGsifQ.D-eGeQlXAi35DDzHyn48EZVrHbYsKirGAnIB-D5OBWk",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"products\": [\n        {\n            \"id\": 3619,\n            \"quantity\": 1\n        }\n    ],\n    \"locationId\": 206,\n    \"orderId\": 11610,\n    \"paymentType\": \"CREDIT\",\n    \"retailerId\": 5356,\n     \"coupon\":{\n      \"id\":9664\n   }\n\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{api_url}}/api/v1/cart/v2/calculateCartTotal?calculateTotal=true&customerId=5356",
+              "host": ["{{api_url}}"],
+              "path": ["api", "v1", "cart", "v2", "calculateCartTotal"],
+              "query": [
+                {
+                  "key": "calculateTotal",
+                  "value": "true"
+                },
+                {
+                  "key": "customerId",
+                  "value": "5356"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Order [v1]",
+      "item": [
+        {
+          "name": "Create Order",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{consumer_auth_token}}",
+                "type": "text",
+                "disabled": true
+              },
+              {
+                "key": "Authorization",
+                "value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAzOTUsInBob25lIjoiOTIzMDg0NTY3MzIxIiwiY25pYyI6IjM1MjAyMDk4NjM2NzkiLCJyb2xlIjp7ImlkIjo4LCJuYW1lIjoiQ09OU1VNRVIifSwiaWF0IjoxNjUyNjk0NTYzLCJleHAiOjE2NTI3MTYxNjMsImF1ZCI6InJldGFpbGVycyIsImlzcyI6InJldGFpbG8uY28gIn0.GVuEF2l5ktWC60xtdqC5yhXwBx42BaIzxCYzypqccn2OmEWXLBSiw9QG3_MhaRdsoeISTu-GWN0m4ao7k47_5lGQwcR7-0DE5bp4VQQdxNyDVE0S4QdL8cSkK4iZemea6po-EgcCvsppDFTyqC57RsZm2HJPOZy5-yFCxSsc1ho",
+                "type": "text"
+              },
+              {
+                "key": "clienttimeoffset",
+                "value": "9000",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"deliveryTime\": \"2149488823748\",\n    \"locationId\": 13,\n    \"paymentType\": \"COD\",\n    \"products\": [\n{\n            \"id\": 59824,\n            \"quantity\": 16\n        }\n       \n    ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{api_url}}/api/v1/order",
+              "host": ["{{api_url}}"],
+              "path": ["api", "v1", "order"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update status | Portal",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{user_auth_token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"orderId\": 223362,\n    \"statusId\": 4,\n    \"orderItems\": [\n        {\n            \"created_at\": \"2021-02-15T09:35:28.000Z\",\n            \"updated_at\": \"2021-02-15T09:35:35.000Z\",\n            \"deleted_at\": null,\n            \"id\": 512354590,\n            \"quantity\": 5,\n            \"original_quantity\": 5,\n            \"price\": 900.90,\n            \"packedQuantity\": null,\n            \"removed\": false,\n            \"tax\": 0,\n            \"order_id\": 223362,\n            \"product_id\": 1598\n        }\n    ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{api_url}}/api/v1/order/setOrderStatusPortal",
+              "host": ["{{api_url}}"],
+              "path": ["api", "v1", "order", "setOrderStatusPortal"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update status | Logistic",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{consumer_auth_token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"orderId\": 223110,\n    \"statusId\": 8,\n    \"orderItems\": [\n        {\n            \"id\": 1602,\n            \"removed\": false,\n            \"quantity\": 3\n        }\n    ],\n    \"waiver\" : 50\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{api_url}}/api/v1/order/setOrderStatusLogistic",
+              "host": ["{{api_url}}"],
+              "path": ["api", "v1", "order", "setOrderStatusLogistic"],
+              "query": [
+                {
+                  "key": "dsds",
+                  "value": "sdsd",
+                  "disabled": true
+                },
+                {
+                  "key": "one ",
+                  "value": "1",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "bulk expire coupons",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{user_auth_token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"couponNameList\": [\n     \"fixeverysup\", \"fixselsup\", \"fixexp\", \"bothexp\", \"bothexpired\", \"salesspecific\", \"salesexpired\", \"fixedexpired\"\n    ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{api_url}}/api/v1/order/bulkExpireCoupons",
+              "host": ["{{api_url}}"],
+              "path": ["api", "v1", "order", "bulkExpireCoupons"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET ORDERS | CONSUMER ( order listing )",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{consumer_auth_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjcmVhdGVkX2F0IjoiMjAyMC0xMi0xMlQxNToyMzo0My4wMDBaIiwidXBkYXRlZF9hdCI6IjIwMjEtMDktMjRUMDk6MTk6MzUuMDAwWiIsImRlbGV0ZWRfYXQiOm51bGwsImlkIjozMjMsIm5hbWUiOiJBdGlmIE5vbWFuIEFjcSIsInVzZXJuYW1lIjoiYXRpZmFjcSIsImRpc2FibGVkIjpmYWxzZSwicGhvbmUiOiI5MjM0Njc1MzQwMDIiLCJjbmljX3BpY3R1cmUiOiIiLCJjbmljIjoiIiwiYWRkcmVzcyI6IiIsImVtYWlsIjoiIiwiZGVsZXRlZF9ieSI6bnVsbCwicm9sZSI6eyJpZCI6MTYsIm5hbWUiOiJTVVBFUlZJU09SIn0sInNlc3Npb25fdXVpZCI6IjczNDNiMWM5LTI1NWUtNDcwYi04NWM2LTNhM2M4Yjc3NmY0YiIsImlhdCI6MTYzMzUyMjczMCwiYXVkIjoiaHlwci5wayIsImlzcyI6Imh5cHIucGsifQ.zahomOtDZK7raXW7h0SvFsb-6dzKBv9I4nBk8aFNIz8",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{api_url}}/api/v1/order/statuses?page=1&perPage=50",
+              "host": ["{{api_url}}"],
+              "path": ["api", "v1", "order", "statuses"],
+              "query": [
+                {
+                  "key": "customerId",
+                  "value": "10567",
+                  "disabled": true
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "perPage",
+                  "value": "50"
+                }
+              ]
+            },
+            "description": "?id=123 ( can be used for searching specific order )"
+          },
+          "response": []
+        },
+        {
+          "name": "GET ORDER DETAILS",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{consumer_auth_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjcmVhdGVkX2F0IjoiMjAyMC0xMi0xMlQxNToyMzo0My4wMDBaIiwidXBkYXRlZF9hdCI6IjIwMjEtMDktMjRUMDk6MTk6MzUuMDAwWiIsImRlbGV0ZWRfYXQiOm51bGwsImlkIjozMjMsIm5hbWUiOiJBdGlmIE5vbWFuIEFjcSIsInVzZXJuYW1lIjoiYXRpZmFjcSIsImRpc2FibGVkIjpmYWxzZSwicGhvbmUiOiI5MjM0Njc1MzQwMDIiLCJjbmljX3BpY3R1cmUiOiIiLCJjbmljIjoiIiwiYWRkcmVzcyI6IiIsImVtYWlsIjoiIiwiZGVsZXRlZF9ieSI6bnVsbCwicm9sZSI6eyJpZCI6MTYsIm5hbWUiOiJTVVBFUlZJU09SIn0sInNlc3Npb25fdXVpZCI6IjczNDNiMWM5LTI1NWUtNDcwYi04NWM2LTNhM2M4Yjc3NmY0YiIsImlhdCI6MTYzMzUyMjczMCwiYXVkIjoiaHlwci5wayIsImlzcyI6Imh5cHIucGsifQ.zahomOtDZK7raXW7h0SvFsb-6dzKBv9I4nBk8aFNIz8",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{api_url}}/api/v1/order/238936",
+              "host": ["{{api_url}}"],
+              "path": ["api", "v1", "order", "238936"],
+              "query": [
+                {
+                  "key": "",
+                  "value": "",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Find Order Payment Type",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTA2NjAsInBob25lIjoiOTIzMzM1MDg3MzQ2IiwiY25pYyI6IjgwMTIxLTI4OTM2MTItMSIsInJvbGUiOnsiaWQiOjgsIm5hbWUiOiJDT05TVU1FUiJ9LCJpYXQiOjE2NDYwNDU3MjQsImV4cCI6MTY0NjA2NzMyNCwiYXVkIjoicmV0YWlsZXJzIiwiaXNzIjoicmV0YWlsby5jbyAifQ.PbdO1JUURLTx19KuLaCpIPXT8fz5M_ljkd0bUL_Q1QfBxyAK00gRZbn3z1it9gIhihD-5Q7SrEXzxuZGkeIkxY-x-Ey3XXnwpYodhcISr0xJvLwwniSH0cdizDWxjbur74WFwSTEgAh4MfA-3Tw8CF9B743ewAHyQsWe9l8LPl4",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{api_url}}/api/v1/order/findOrderPaymentType?id=233803",
+              "host": ["{{api_url}}"],
+              "path": ["api", "v1", "order", "findOrderPaymentType"],
+              "query": [
+                {
+                  "key": "id",
+                  "value": "233803"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Order [Legacy]",
+      "item": [
+        {
+          "name": "CREATE CART",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var response = pm.response.json();",
+                  "pm.environment.set(\"cart_id\", response.data.result.id);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{consumer_auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"id\": \"asdf\",\n\t\"location_id\": 13,\n\t\"cartItems\": [\n        {\n            \"product_sku\": \"044-017-00001\",\n            \"quantity\": -1\n        },\n         {\n            \"product_sku\": \"044-017-00002\",\n            \"quantity\": -20\n        }\n       \n\n        \n    ]\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/order/createOrderFromCart",
+              "host": ["{{api_url}}"],
+              "path": ["order", "createOrderFromCart"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "UPDATE CART",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYwLCJuYW1lIjoiaGFzaF9hIiwiYWRkcmVzcyI6IjEyMzIzIiwicGhvbmUiOiIwOTAwNzg2MDEiLCJlbWFpbCI6IiIsImNuaWMiOiIxMjMxMjMxMjMiLCJjbmljX3BpY3R1cmUiOiIiLCJ1c2VybmFtZSI6Imhhc2hfYSIsImRpc2FibGVkIjowLCJyb2xlIjp7ImNyZWF0ZWRfYXQiOm51bGwsInVwZGF0ZWRfYXQiOm51bGwsImRlbGV0ZWRfYXQiOm51bGwsImlkIjo5LCJuYW1lIjoiQ09NUEFOWSBPV05FUiIsImRpc2FibGVkIjpmYWxzZX0sImFjY2Vzc0hpZXJhcmNoeSI6eyJjb21wYW5pZXMiOls0XSwiYnVzaW5lc3NfdW5pdHMiOls0LDI2LDI3LDIyMiwyMjMsMjI1LDIyNiwyMjcsMjI4XSwibG9jYXRpb25zIjpbNyw4LDksMTAsMTMsNzgsODEsMTQ4LDE5NCwxOTYsMTk4LDkzLDEwMSwyMDAsMjAxLDIwMiwxOTEsMTk1LDE5OSwyMDNdfSwic2Vzc2lvbl91dWlkIjoiMTY0MWEyYTMtMjM2YS00ZGM3LWIyNzktZThhNzBkNWVkYmY1IiwiaWF0IjoxNjQ2Mjk1NDczLCJhdWQiOiJoeXByLnBrIiwiaXNzIjoiaHlwci5wayJ9.2Ci_gyVZ4VEtjD0R7yI1qb3fg5FXo_1ThuNOo3EFV74"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"cartId\": \"{{cart_id}}\",\n    \"cartItems\": [\n        {\n            \"product_sku\": \"044-017-00001\",\n            \"quantity\": 2\n        },\n         {\n            \"product_sku\": \"044-017-00002\",\n            \"quantity\": 3\n        }\n    ]\n}\n"
+            },
+            "url": {
+              "raw": "{{api_url}}/order/updateOrderFromCart",
+              "host": ["{{api_url}}"],
+              "path": ["order", "updateOrderFromCart"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "RESERVE CART",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{consumer_auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"cartId\": \"{{cart_id}}\"\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/order/reservedQuantityByCart",
+              "host": ["{{api_url}}"],
+              "path": ["order", "reservedQuantityByCart"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET CART AMOUNT",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{consumer_auth_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://{{dev_url}}/order/getCartAmount?id=3ff057fe-ba5e-47f4-8cc6-2513c80449db",
+              "protocol": "http",
+              "host": ["{{dev_url}}"],
+              "path": ["order", "getCartAmount"],
+              "query": [
+                {
+                  "key": "id",
+                  "value": "3ff057fe-ba5e-47f4-8cc6-2513c80449db"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET ORDERS BY STATUS",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTE4MDgsInBob25lIjoiOTIzMzM4MzYzMTQ3IiwiY25pYyI6IjcxODAwLTI0ODA1OTMtMSIsInJvbGUiOnsiaWQiOjgsIm5hbWUiOiJDT05TVU1FUiJ9LCJpYXQiOjE2NDI1NzkyNzQsImV4cCI6MTY0MjYwMDg3NCwiYXVkIjoicmV0YWlsZXJzIiwiaXNzIjoicmV0YWlsby5jbyAifQ.n1S_cyJH-db4if4bIYFTC1qMzYc4Ax4oszzNp5yvc_g2tIh2B4Zz8HsbduqBSySKEwl496o_DzuiKbaPPpYZY1cNMZWOYPzyuVJYBCeDNTLe34N0goAC2EgS43R-1VWysKRUnl37nFp--e__jYU6IYLky6UlfQMqEbzes9S5ECQ",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "localhost:8090/order/getOrdersByStatus?search=&page=1&per_page=20&sortCriteria=placed_at desc&status_id=5",
+              "host": ["localhost"],
+              "port": "8090",
+              "path": ["order", "getOrdersByStatus"],
+              "query": [
+                {
+                  "key": "search",
+                  "value": ""
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "per_page",
+                  "value": "20"
+                },
+                {
+                  "key": "sortCriteria",
+                  "value": "placed_at desc"
+                },
+                {
+                  "key": "status_id",
+                  "value": "5"
+                },
+                {
+                  "key": "company_code",
+                  "value": "RET",
+                  "disabled": true
+                },
+                {
+                  "key": "delivery_boy_id",
+                  "value": "211",
+                  "disabled": true
+                },
+                {
+                  "key": "delivered_time",
+                  "value": "2020-11-11 00:00:00",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET CART DATA",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjcmVhdGVkX2F0IjoiMjAyMS0wNi0xNFQxMToyODoxOC4wMDBaIiwidXBkYXRlZF9hdCI6IjIwMjEtMDYtMTRUMTE6Mjg6MTguMDAwWiIsImRlbGV0ZWRfYXQiOm51bGwsImlkIjoxMDMzMCwibmFtZSI6ImtoYW4gbWFuIiwiYWRkcmVzcyI6bnVsbCwicGhvbmUiOiI5MjEyNTcxMDAzMyIsImVtYWlsIjpudWxsLCJjbmljIjoiMzc0MDUwMjE4NjUzMSIsIkRPQiI6bnVsbCwidmVyaWZpY2F0aW9uX2NvZGUiOjU2ODUyLCJ2ZXJpZmllZF9hdCI6IjIwMjEtMDYtMTRUMTE6Mjg6MTguMDAwWiIsImNuaWNfcGljdHVyZSI6IiIsImN1c3RvbWVyX2xvY2F0aW9uIjpudWxsLCJ0ZXJtc19hY2NlcHRlZCI6dHJ1ZSwiY3VzdG9tZXJfc3RyaXBlX2lkIjpudWxsLCJoYXNfc21hcnRfcGhvbmUiOnRydWUsInNlY29uZGFyeV9waG9uZSI6IiIsImRpc2FibGVkIjpmYWxzZSwiYXBwX25hbWUiOm51bGwsImFwcF92ZXJzaW9uIjpudWxsLCJkZXZpY2VfbmFtZSI6bnVsbCwic3RvcmVfY2FyZF9pbmZvIjp0cnVlLCJzdXBlcnZpc29yX2lkIjpudWxsLCJvcmRlcl9tb2RlIjoxLCJjb21wYW55X2lkIjo0LCJidXNpbmVzc191bml0X2lkIjpudWxsLCJyb2xlIjp7ImNyZWF0ZWRfYXQiOm51bGwsInVwZGF0ZWRfYXQiOm51bGwsImRlbGV0ZWRfYXQiOm51bGwsImlkIjo4LCJuYW1lIjoiQ09OU1VNRVIifSwic2Vzc2lvbl91dWlkIjoiZmU3YzhjZjktNmU3MC00MzFiLWFjNTAtNWI2YzM1OTMwYzY4IiwiaWF0IjoxNjIzODMwNTExLCJhdWQiOiJoeXByLnBrIiwiaXNzIjoiaHlwci5wayJ9.BTI89NQGwCeaTyMXUkluyLxVx9tcKmoW_274t_DGo3E"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Aut",
+                "value": "",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "url": {
+              "raw": "{{api_url}}/order/getCartData?id=4528bf5a-32e6-46e1-8013-0afa9e6b9ad7",
+              "host": ["{{api_url}}"],
+              "path": ["order", "getCartData"],
+              "query": [
+                {
+                  "key": "id",
+                  "value": "4528bf5a-32e6-46e1-8013-0afa9e6b9ad7"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET END STATE ORDERS",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{user_auth_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{api_url}}/order/getEndStateOrders?page=1&per_page=20&location_id=13",
+              "host": ["{{api_url}}"],
+              "path": ["order", "getEndStateOrders"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "per_page",
+                  "value": "20"
+                },
+                {
+                  "key": "location_id",
+                  "value": "13"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get orders by customer reference",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjcmVhdGVkX2F0IjoiMjAyMS0wNi0xNFQxMToyODoxOC4wMDBaIiwidXBkYXRlZF9hdCI6IjIwMjEtMDYtMTRUMTE6Mjg6MTguMDAwWiIsImRlbGV0ZWRfYXQiOm51bGwsImlkIjoxMDMzMCwibmFtZSI6ImtoYW4gbWFuIiwiYWRkcmVzcyI6bnVsbCwicGhvbmUiOiI5MjEyNTcxMDAzMyIsImVtYWlsIjpudWxsLCJjbmljIjoiMzc0MDUwMjE4NjUzMSIsIkRPQiI6bnVsbCwidmVyaWZpY2F0aW9uX2NvZGUiOjU2ODUyLCJ2ZXJpZmllZF9hdCI6IjIwMjEtMDYtMTRUMTE6Mjg6MTguMDAwWiIsImNuaWNfcGljdHVyZSI6IiIsImN1c3RvbWVyX2xvY2F0aW9uIjpudWxsLCJ0ZXJtc19hY2NlcHRlZCI6dHJ1ZSwiY3VzdG9tZXJfc3RyaXBlX2lkIjpudWxsLCJoYXNfc21hcnRfcGhvbmUiOnRydWUsInNlY29uZGFyeV9waG9uZSI6IiIsImRpc2FibGVkIjpmYWxzZSwiYXBwX25hbWUiOm51bGwsImFwcF92ZXJzaW9uIjpudWxsLCJkZXZpY2VfbmFtZSI6bnVsbCwic3RvcmVfY2FyZF9pbmZvIjp0cnVlLCJzdXBlcnZpc29yX2lkIjpudWxsLCJvcmRlcl9tb2RlIjoxLCJjb21wYW55X2lkIjo0LCJidXNpbmVzc191bml0X2lkIjpudWxsLCJyb2xlIjp7ImNyZWF0ZWRfYXQiOm51bGwsInVwZGF0ZWRfYXQiOm51bGwsImRlbGV0ZWRfYXQiOm51bGwsImlkIjo4LCJuYW1lIjoiQ09OU1VNRVIifSwic2Vzc2lvbl91dWlkIjoiZmU3YzhjZjktNmU3MC00MzFiLWFjNTAtNWI2YzM1OTMwYzY4IiwiaWF0IjoxNjIzODMwNTExLCJhdWQiOiJoeXByLnBrIiwiaXNzIjoiaHlwci5wayJ9.BTI89NQGwCeaTyMXUkluyLxVx9tcKmoW_274t_DGo3E",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{api_url}}/order/getOrdersByCustomerReference?customer_reference=92125710033",
+              "host": ["{{api_url}}"],
+              "path": ["order", "getOrdersByCustomerReference"],
+              "query": [
+                {
+                  "key": "customer_reference",
+                  "value": "92125710033"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get orders by sales agent",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjcmVhdGVkX2F0IjoiMjAyMC0wOC0zMVQwNzowMDo1Ny4wMDBaIiwidXBkYXRlZF9hdCI6IjIwMjAtMDgtMzFUMDc6MDA6NTcuMDAwWiIsImRlbGV0ZWRfYXQiOm51bGwsImlkIjoxNjAsIm5hbWUiOiJoYXNoX2EiLCJ1c2VybmFtZSI6Imhhc2hfYSIsImRpc2FibGVkIjpmYWxzZSwicGhvbmUiOiIwOTAwNzg2MDEiLCJjbmljX3BpY3R1cmUiOiIiLCJjbmljIjoiMTIzMTIzMTIzIiwiYWRkcmVzcyI6IjEyMzIzIiwiZW1haWwiOiIiLCJkZWxldGVkX2J5IjpudWxsLCJyb2xlIjp7ImNyZWF0ZWRfYXQiOm51bGwsInVwZGF0ZWRfYXQiOm51bGwsImRlbGV0ZWRfYXQiOm51bGwsImlkIjo5LCJuYW1lIjoiQ09NUEFOWSBPV05FUiJ9LCJhY2Nlc3NIaWVyYXJjaHkiOnsiY29tcGFuaWVzIjpbNF0sImJ1c2luZXNzX3VuaXRzIjpbNCwyNl0sImxvY2F0aW9ucyI6WzcsOCw5LDEwLDEzLDc4LDgxLDkzXX0sImlhdCI6MTYwNTY5MDA5MSwiYXVkIjoiaHlwci5wayIsImlzcyI6Imh5cHIucGsifQ.grecunQZaBNp1XS57-CC5TFyouId2Nkyg007TUA_ZNQ",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{dev_url}}/order/getOrdersBySalesAgent?sales_agent_id=158&page=1&per_page=20",
+              "host": ["{{dev_url}}"],
+              "path": ["order", "getOrdersBySalesAgent"],
+              "query": [
+                {
+                  "key": "sales_agent_id",
+                  "value": "158"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "per_page",
+                  "value": "20"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get orders by status by delivery boy",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{user_auth_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{api_url}}/order/getOrdersByStatus?status_id=2&customer_id=11812",
+              "host": ["{{api_url}}"],
+              "path": ["order", "getOrdersByStatus"],
+              "query": [
+                {
+                  "key": "delivery_boy_id",
+                  "value": "426",
+                  "disabled": true
+                },
+                {
+                  "key": "search",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "status_id",
+                  "value": "2"
+                },
+                {
+                  "key": "fetchForMap",
+                  "value": "true",
+                  "disabled": true
+                },
+                {
+                  "key": "customer_id",
+                  "value": "11812"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get all orders",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYwLCJuYW1lIjoiaGFzaF9hIiwiYWRkcmVzcyI6IjEyMzIzIiwicGhvbmUiOiIwOTAwNzg2MDEiLCJlbWFpbCI6IiIsImNuaWMiOiIxMjMxMjMxMjMiLCJjbmljX3BpY3R1cmUiOiIiLCJ1c2VybmFtZSI6Imhhc2hfYSIsImRpc2FibGVkIjowLCJyb2xlIjp7ImNyZWF0ZWRfYXQiOm51bGwsInVwZGF0ZWRfYXQiOm51bGwsImRlbGV0ZWRfYXQiOm51bGwsImlkIjo5LCJuYW1lIjoiQ09NUEFOWSBPV05FUiIsImRpc2FibGVkIjpmYWxzZX0sImFjY2Vzc0hpZXJhcmNoeSI6eyJjb21wYW5pZXMiOls0XSwiYnVzaW5lc3NfdW5pdHMiOls0LDI2LDI3LDIyMiwyMjMsMjI1LDIyNiwyMjcsMjI4XSwibG9jYXRpb25zIjpbNyw4LDksMTAsMTMsNzgsODEsMTQ4LDE5NCwxOTYsMTk4LDkzLDEwMSwyMDAsMjAxLDIwMiwxOTEsMTk1LDE5OSwyMDNdfSwic2Vzc2lvbl91dWlkIjoiNjcxYzI3N2MtOTE2Zi00OTMyLTg4YWItN2I4MmRiZGVlNTE1IiwiaWF0IjoxNjQ2MzE0MTEzLCJhdWQiOiJoeXByLnBrIiwiaXNzIjoiaHlwci5wayJ9.vIA1L1nUYkOgQTosUXit9B94BwvbOMEf9XcmwuaSXLc",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{api_url}}/order/getAllOrders?page=1&startDate=&endDate=&orderStatusId=10&orderStatusId=9&orderStatusId=5&orderStatusId=99&orderStatusId=4&orderStatusId=3&orderStatusId=6&orderStatusId=8&orderStatusId=11&orderStatusId=2&orderStatusId=7&orderStatusId=12&per_page=12&search=112",
+              "host": ["{{api_url}}"],
+              "path": ["order", "getAllOrders"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "startDate",
+                  "value": ""
+                },
+                {
+                  "key": "endDate",
+                  "value": ""
+                },
+                {
+                  "key": "sortCriteria",
+                  "value": "placed_at%20desc",
+                  "disabled": true
+                },
+                {
+                  "key": "orderStatusId",
+                  "value": "10"
+                },
+                {
+                  "key": "orderStatusId",
+                  "value": "9"
+                },
+                {
+                  "key": "orderStatusId",
+                  "value": "5"
+                },
+                {
+                  "key": "orderStatusId",
+                  "value": "99"
+                },
+                {
+                  "key": "orderStatusId",
+                  "value": "4"
+                },
+                {
+                  "key": "orderStatusId",
+                  "value": "3"
+                },
+                {
+                  "key": "orderStatusId",
+                  "value": "6"
+                },
+                {
+                  "key": "orderStatusId",
+                  "value": "8"
+                },
+                {
+                  "key": "orderStatusId",
+                  "value": "11"
+                },
+                {
+                  "key": "orderStatusId",
+                  "value": "2"
+                },
+                {
+                  "key": "orderStatusId",
+                  "value": "7"
+                },
+                {
+                  "key": "orderStatusId",
+                  "value": "12"
+                },
+                {
+                  "key": "",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "per_page",
+                  "value": "12"
+                },
+                {
+                  "key": "search",
+                  "value": "112"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update order payment type",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTA4MTUsInBob25lIjoiOTIzMzE0MDIzMjAxIiwiY25pYyI6Inh4eHh4LXh4eHh4eHgteCIsInJvbGUiOnsiaWQiOjgsIm5hbWUiOiJDT05TVU1FUiJ9LCJpYXQiOjE2NDU2MDEzOTQsImV4cCI6MTY0NTYyMjk5NCwiYXVkIjoicmV0YWlsZXJzIiwiaXNzIjoicmV0YWlsby5jbyAifQ.PIKmOU2ien4rNmawfEqx4cZw3ERHvZGloJ9pHks2CUl21XOk9gzk-kwRaZgXsS5D8g8MsvS4_KFJa0JYyIKH2McKdDBdKIar-5QocNwRM2k15WaoiuNEdS8fNoz_5NAx4MnNy7jJnx0skWLS_n-Tz8ymb9WRfPJKHvG8MiNwH5k",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"orderId\": 238598,\n    \"orderItems\": [\n        {\n            \"id\": 66994,\n            \"removed\": false,\n            \"quantity\": 3\n        }\n    ],\n    \"paymentType\": \"CREDIT\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{api_url}}/api/v1/order/updateOrderPaymentType",
+              "host": ["{{api_url}}"],
+              "path": ["api", "v1", "order", "updateOrderPaymentType"],
+              "query": [
+                {
+                  "key": "status_id",
+                  "value": "5",
+                  "disabled": true
+                },
+                {
+                  "key": "order_id",
+                  "value": "222509",
+                  "disabled": true
+                },
+                {
+                  "key": "delivery_boy_id",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "clientTimeOffset",
+                  "value": "",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Reserved Quantity By Cart",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{consumer_auth_token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"cartId\":\"8197ba8f-78f9-41f8-80b9-af4a7ca3321d\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{api_url}}/order/reservedQuantityByCart",
+              "host": ["{{api_url}}"],
+              "path": ["order", "reservedQuantityByCart"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Place Order From Cart",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [""],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{consumer_auth_token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"customerData\": {\n        \"customer_reference\": 923415099061,\n        \"customer_reference_type\": \"phone\",\n        \"address_line_1\": \"retailo\",\n        \"city\": \"\",\n        \"name\": \"\",\n        \"location_cordinates\": {\n            \"longitude\": 67.047153,\n            \"latitude\": 24.95999\n        },\n        \"phone\": \"923415099061\"\n    },\n    \"location_id\": 13,\n    \"cart_id\": \"{{cart_id}}\",\n    \"payment_type\": \"COD\",\n    \"deliveryTime\": \"2021-09-25T09:28:33.712Z\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{api_url}}/order/placeOrderFromCart",
+              "host": ["{{api_url}}"],
+              "path": ["order", "placeOrderFromCart"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Product [v1]",
+      "item": [
+        {
+          "name": "Get products by category",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{consumer_auth_token}}",
+                "disabled": true
+              },
+              {
+                "key": "Authorization",
+                "value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAzOTUsInBob25lIjoiOTIzMDg0NTY3MzIxIiwiY25pYyI6IjM1MjAyMDk4NjM2NzkiLCJyb2xlIjp7ImlkIjo4LCJuYW1lIjoiQ09OU1VNRVIifSwiaWF0IjoxNjUyNjk0NTYzLCJleHAiOjE2NTI3MTYxNjMsImF1ZCI6InJldGFpbGVycyIsImlzcyI6InJldGFpbG8uY28gIn0.GVuEF2l5ktWC60xtdqC5yhXwBx42BaIzxCYzypqccn2OmEWXLBSiw9QG3_MhaRdsoeISTu-GWN0m4ao7k47_5lGQwcR7-0DE5bp4VQQdxNyDVE0S4QdL8cSkK4iZemea6po-EgcCvsppDFTyqC57RsZm2HJPOZy5-yFCxSsc1ho",
+                "type": "text"
+              },
+              {
+                "key": "region",
+                "value": "pak",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{api_url}}/api/v1/product?categoryId=2126&customerId=10395&perPage=20&page=1",
+              "host": ["{{api_url}}"],
+              "path": ["api", "v1", "product"],
+              "query": [
+                {
+                  "key": "categoryId",
+                  "value": "2126"
+                },
+                {
+                  "key": "brandId",
+                  "value": "1",
+                  "disabled": true
+                },
+                {
+                  "key": "customerId",
+                  "value": "10395"
+                },
+                {
+                  "key": "perPage",
+                  "value": "20"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Search products from Elastic Search (ES)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAzOTUsInBob25lIjoiOTIzMDg0NTY3MzIxIiwiY25pYyI6IjM1MjAyMDk4NjM2NzkiLCJyb2xlIjp7ImlkIjo4LCJuYW1lIjoiQ09OU1VNRVIifSwiaWF0IjoxNjUxODIwNzM3LCJleHAiOjE2NTE4NDIzMzcsImF1ZCI6InJldGFpbGVycyIsImlzcyI6InJldGFpbG8uY28gIn0.X8LQ0r5yL3FlyWczlbL7aacG0s98dew6knfq-APFyHS0KL_OVm7LxQpLZ7RYQgcUDg5DUHPGFSJs9DQsYcDH7xMI7OLSVexVs5GpX7_y-SB4MMwU2jbGuNuD-I01CCyP_NWJWKD3axNMtxx_uJqV2z3GVLYnzJ0IVA4pAwu9RXE",
+                "type": "text"
+              },
+              {
+                "key": "language",
+                "value": "ur",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{api_url}}/api/v1/product/searchFromEs?page=1&perPage=20&locationId=13&search=cake",
+              "host": ["{{api_url}}"],
+              "path": ["api", "v1", "product", "searchFromEs"],
+              "query": [
+                {
+                  "key": "id",
+                  "value": "2",
+                  "disabled": true
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "perPage",
+                  "value": "20"
+                },
+                {
+                  "key": "locationId",
+                  "value": "13"
+                },
+                {
+                  "key": "search",
+                  "value": "cake"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Like/Unlike products",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{consumer_auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"customerId\": 10547,\n    \"productId\": 59872,\n    \"isLiked\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{api_url}}/api/v1/product/liked",
+              "host": ["{{api_url}}"],
+              "path": ["api", "v1", "product", "liked"],
+              "query": [
+                {
+                  "key": "brandId",
+                  "value": "1",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET LikeProducts",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjcmVhdGVkX2F0IjoiMjAyMS0wMy0xMFQwNzo0OToyNC4wMDBaIiwidXBkYXRlZF9hdCI6IjIwMjEtMDMtMTBUMDc6NDk6MjQuMDAwWiIsImRlbGV0ZWRfYXQiOm51bGwsImlkIjoxMDM0OCwibmFtZSI6Ikhhc2hhbTQiLCJhZGRyZXNzIjpudWxsLCJwaG9uZSI6IjkyMzExMTEyMjMwNCIsImVtYWlsIjpudWxsLCJjbmljIjoiMzMyMDExMTIyMjM0NiIsIkRPQiI6bnVsbCwidmVyaWZpY2F0aW9uX2NvZGUiOjc3MDE4LCJ2ZXJpZmllZF9hdCI6IjIwMjEtMDMtMTBUMDc6NDk6MjQuMDAwWiIsImNuaWNfcGljdHVyZSI6IiIsImN1c3RvbWVyX2xvY2F0aW9uIjpudWxsLCJ0ZXJtc19hY2NlcHRlZCI6dHJ1ZSwiY3VzdG9tZXJfc3RyaXBlX2lkIjpudWxsLCJoYXNfc21hcnRfcGhvbmUiOmZhbHNlLCJzZWNvbmRhcnlfcGhvbmUiOiI5MjM0MTg2NjU1ODQiLCJkaXNhYmxlZCI6ZmFsc2UsImFwcF9uYW1lIjpudWxsLCJhcHBfdmVyc2lvbiI6bnVsbCwiZGV2aWNlX25hbWUiOm51bGwsInN0b3JlX2NhcmRfaW5mbyI6dHJ1ZSwibGFuZ3VhZ2UiOm51bGwsImJ1aWxkX3ZlcnNpb24iOm51bGwsInRheF9pZCI6bnVsbCwiaXNfdG9vbF90aXAiOnRydWUsInN1cGVydmlzb3JfaWQiOjMyMywib3JkZXJfbW9kZSI6MSwiY29tcGFueV9pZCI6NCwiYnVzaW5lc3NfdW5pdF9pZCI6NCwicm9sZSI6eyJpZCI6OCwibmFtZSI6IkNPTlNVTUVSIn0sInNlc3Npb25fdXVpZCI6ImZlYmYyNTdkLTYwMjYtNDlhZS1hZjUyLTgwOTAyNWQ5OTY5NCIsImlhdCI6MTYzOTczMzcyMiwiYXVkIjoiaHlwci5wayIsImlzcyI6Imh5cHIucGsifQ.TEhRhk-4fZm7CHU75BPr_qhp_NCuAhz4EnRk7ZbPPEM"
+              },
+              {
+                "key": "language",
+                "value": "UR",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{api_url}}/api/v1/product/liked?customerId=10377&perPage=10&page=1&locationId=13",
+              "host": ["{{api_url}}"],
+              "path": ["api", "v1", "product", "liked"],
+              "query": [
+                {
+                  "key": "customerId",
+                  "value": "10377"
+                },
+                {
+                  "key": "perPage",
+                  "value": "10"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "locationId",
+                  "value": "13"
+                },
+                {
+                  "key": "brandId",
+                  "value": "1",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Previous Ordered Items",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{consumer_auth_token}}"
+              },
+              {
+                "key": "language",
+                "value": "UR",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{api_url}}/api/v1/product/previousOrderedItems?customerId=10664&perPage=50&page=1",
+              "host": ["{{api_url}}"],
+              "path": ["api", "v1", "product", "previousOrderedItems"],
+              "query": [
+                {
+                  "key": "brandId",
+                  "value": "1",
+                  "disabled": true
+                },
+                {
+                  "key": "customerId",
+                  "value": "10664"
+                },
+                {
+                  "key": "perPage",
+                  "value": "50"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Recommended Products",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{consumer_auth_token}}"
+              },
+              {
+                "key": "language",
+                "value": "UR",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{api_url}}/api/v1/product/recommendedProducts?perPage=3&page=1&customerId=9670&locationId=13",
+              "host": ["{{api_url}}"],
+              "path": ["api", "v1", "product", "recommendedProducts"],
+              "query": [
+                {
+                  "key": "perPage",
+                  "value": "3"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "brandId",
+                  "value": "1",
+                  "disabled": true
+                },
+                {
+                  "key": "customerId",
+                  "value": "9670"
+                },
+                {
+                  "key": "locationId",
+                  "value": "13"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "UpsertRecommendedProduct",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjcmVhdGVkX2F0IjoiMjAyMS0xMS0xNVQwNjo1NDoxOS4wMDBaIiwidXBkYXRlZF9hdCI6IjIwMjEtMTEtMjlUMTM6MjI6MDAuMDAwWiIsImRlbGV0ZWRfYXQiOm51bGwsImlkIjoxMDY1NiwibmFtZSI6Im1vZWVkLTAyIiwiYWRkcmVzcyI6ImFkZHJlc3NzIGxpbmUgMSBhZGRyZXNzcyBsaW5lIDIiLCJwaG9uZSI6IjkyMzMzNjQxNjEwNiIsImVtYWlsIjoibW9lZWQuc2hhaGlkLjAyQHJldGFpbG8uY28iLCJjbmljIjoiODA4MjEtODAyNTI2Ni0xIiwiRE9CIjoiMTk3MC0wMS0wMVQwMDowMDowMC4wMDBaIiwidmVyaWZpY2F0aW9uX2NvZGUiOjczNzUyLCJ2ZXJpZmllZF9hdCI6IjIwMjEtMTEtMTVUMDY6NTQ6MTkuMDAwWiIsImNuaWNfcGljdHVyZSI6bnVsbCwiY3VzdG9tZXJfbG9jYXRpb24iOiIxMyIsInRlcm1zX2FjY2VwdGVkIjp0cnVlLCJjdXN0b21lcl9zdHJpcGVfaWQiOm51bGwsImhhc19zbWFydF9waG9uZSI6ZmFsc2UsInNlY29uZGFyeV9waG9uZSI6bnVsbCwiZGlzYWJsZWQiOmZhbHNlLCJhcHBfbmFtZSI6IkNPTlNVTUVSIiwiYXBwX3ZlcnNpb24iOiIyLjEuNCIsImRldmljZV9uYW1lIjoidGVzdCB1c2VyIC0gMDIiLCJzdG9yZV9jYXJkX2luZm8iOnRydWUsImxhbmd1YWdlIjo0LCJidWlsZF92ZXJzaW9uIjoiNDI3NTIyNjYiLCJ0YXhfaWQiOm51bGwsImlzX3Rvb2xfdGlwIjp0cnVlLCJzdXBlcnZpc29yX2lkIjpudWxsLCJvcmRlcl9tb2RlIjo0LCJjb21wYW55X2lkIjo0LCJidXNpbmVzc191bml0X2lkIjo0LCJyb2xlIjp7ImlkIjo4LCJuYW1lIjoiQ09OU1VNRVIifSwic2Vzc2lvbl91dWlkIjoiZTYxMDgwOWYtMjc3Yi00NTI1LWFiOTMtNDRlODE5MmI5YzgxIiwiaWF0IjoxNjM4MTkyMjA4LCJhdWQiOiJoeXByLnBrIiwiaXNzIjoiaHlwci5wayJ9.AtWI628I52wZV2jNwhJFK17FZJfsdldzMyC7Rs-0p1w"
+              },
+              {
+                "key": "language",
+                "value": "UR",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{api_url}}/api/v1/product/recommendedProducts?perPage=3&page=1&customerId=10656&locationId=13",
+              "host": ["{{api_url}}"],
+              "path": ["api", "v1", "product", "recommendedProducts"],
+              "query": [
+                {
+                  "key": "perPage",
+                  "value": "3"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "brandId",
+                  "value": "1",
+                  "disabled": true
+                },
+                {
+                  "key": "customerId",
+                  "value": "10656"
+                },
+                {
+                  "key": "locationId",
+                  "value": "13"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get products for portal",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{user_auth_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{api_url}}/api/v1/product/portal?sku=[\"JIT194sku188-015-4950814\", \"JIT194sku188-015-4950813\"]&locationId=13&select=[\"id\", \"name\"]",
+              "host": ["{{api_url}}"],
+              "path": ["api", "v1", "product", "portal"],
+              "query": [
+                {
+                  "key": "sku",
+                  "value": "[\"JIT194sku188-015-4950814\", \"JIT194sku188-015-4950813\"]"
+                },
+                {
+                  "key": "locationId",
+                  "value": "13"
+                },
+                {
+                  "key": "select",
+                  "value": "[\"id\", \"name\"]"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Product [Legacy]",
+      "item": [
+        {
+          "name": "ResetProductsPriorityByLocation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{consumer_auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"categoryLevel\" : 2,\n    \"locationId\" : 78\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/product/resetAllCategoryProductsPriorityByLocation",
+              "host": ["{{api_url}}"],
+              "path": ["product", "resetAllCategoryProductsPriorityByLocation"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "[Portal] Create Product",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "authority",
+                "value": "kubestageapi.hypr.pk"
+              },
+              {
+                "key": "sec-ch-ua",
+                "value": "\"Google Chrome\";v=\"87\", \"\"Not;A\\Brand\";v=\"99\", \"Chromium\";v=\"87\""
+              },
+              {
+                "key": "accept",
+                "value": "application/json, text/plain, */*"
+              },
+              {
+                "key": "authorization",
+                "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYwLCJuYW1lIjoiaGFzaF9hIiwiYWRkcmVzcyI6IjEyMzIzIiwicGhvbmUiOiIwOTAwNzg2MDEiLCJlbWFpbCI6IiIsImNuaWMiOiIxMjMxMjMxMjMiLCJjbmljX3BpY3R1cmUiOiIiLCJ1c2VybmFtZSI6Imhhc2hfYSIsImRpc2FibGVkIjowLCJyb2xlIjp7ImNyZWF0ZWRfYXQiOm51bGwsInVwZGF0ZWRfYXQiOm51bGwsImRlbGV0ZWRfYXQiOm51bGwsImlkIjo5LCJuYW1lIjoiQ09NUEFOWSBPV05FUiIsImRpc2FibGVkIjpmYWxzZX0sImFjY2Vzc0hpZXJhcmNoeSI6eyJjb21wYW5pZXMiOls0XSwiYnVzaW5lc3NfdW5pdHMiOls0LDI2LDI3LDIyMiwyMjMsMjI1LDIyNiwyMjcsMjI4LDIyOSwyMzEsMjMyLDIzNCwyMzUsMjM2LDIzNywyMzgsMjM5XSwibG9jYXRpb25zIjpbNyw4LDksMTAsMTMsNzgsODEsOTMsMTAxLDE0OCwxOTEsMTk0LDE5NSwxOTYsMTk4LDE5OSwyMDAsMjAxLDIwMiwyMDMsMjA0LDIwNSwyMDYsMjA3LDIwOCwyMDksMjEwLDIxMSwyMTIsMjEzLDIxNCwyMTUsMjE2XX0sInNlc3Npb25fdXVpZCI6ImRmNmQ0ZjJmLWJmNzQtNDQ2Ni05NTkzLWM0NjA4NTVhOWFkYyIsImlhdCI6MTY1Mjg1NjcyOSwiYXVkIjoiaHlwci5wayIsImlzcyI6Imh5cHIucGsifQ.MHMSr017D1dzdWH1pIrXer0YVHBd6O7oeMEhWk63FaI"
+              },
+              {
+                "key": "sec-ch-ua-mobile",
+                "value": "?0"
+              },
+              {
+                "key": "user-agent",
+                "value": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.66 Safari/537.36"
+              },
+              {
+                "key": "content-type",
+                "value": "application/json"
+              },
+              {
+                "key": "origin",
+                "value": "https://stageadmin.hypr.pk"
+              },
+              {
+                "key": "sec-fetch-site",
+                "value": "same-site"
+              },
+              {
+                "key": "sec-fetch-mode",
+                "value": "cors"
+              },
+              {
+                "key": "sec-fetch-dest",
+                "value": "empty"
+              },
+              {
+                "key": "referer",
+                "value": "https://stageadmin.hypr.pk/"
+              },
+              {
+                "key": "accept-language",
+                "value": "en-US,en;q=0.9"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{user_auth_token}}",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"barcode\": \"HYPR642002515\",\n    \"brand\": \"coffee\",\n    \"categories\": [\n        {\n            \"id\": 2851,\n            \"product_priority\": null\n        },\n        {\n            \"id\": 2852,\n            \"product_priority\": \"maxPriority\"\n        }\n    ],\n    \"consent_required\": false,\n    \"cost_price\": 10,\n    \"delivery_time\": 168,\n    \"description\": \"\",\n    \"disabled\": 0,\n    \"location_id\": \"196\",\n    \"mrp\": \"120\",\n    \"multilingual\": [],\n    \"name\": \"co coffee\",\n    \"price\": 100,\n    \"quantity_limit\": null,\n    \"size\": \"100\",\n    \"sku\": \"retailo-7-63398200\",\n    \"tax_category\": \"3\",\n    \"tax_inclusive\": false,\n    \"tax_percent\": 6,\n    \"trade_price\": 90,\n    \"unit\": \"100\",\n    \"updated_by\": 160,\n    \"urdu_brand\": \"\",\n    \"urdu_name\": \"\",\n    \"urdu_size\": \"\",\n    \"urdu_unit\": \"\",\n    \"isVolumeBasedPriceEnabled\": true,\n    \"volume_based_prices\": [\n        {\n            \"quantityTo\": 1,\n            \"quantityFrom\": 100,\n            \"price\": 90,\n            \"disabled\": false\n        },\n        {\n            \"quantityTo\": 101,\n            \"quantityFrom\": 200,\n            \"price\": 80,\n            \"disabled\": false\n        }\n    ]\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/product/createProduct?clientTimeOffset=-300",
+              "host": ["{{api_url}}"],
+              "path": ["product", "createProduct"],
+              "query": [
+                {
+                  "key": "clientTimeOffset",
+                  "value": "-300"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "[Portal] Update Product",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYwLCJuYW1lIjoiaGFzaF9hIiwiYWRkcmVzcyI6IjEyMzIzIiwicGhvbmUiOiIwOTAwNzg2MDEiLCJlbWFpbCI6IiIsImNuaWMiOiIxMjMxMjMxMjMiLCJjbmljX3BpY3R1cmUiOiIiLCJ1c2VybmFtZSI6Imhhc2hfYSIsImRpc2FibGVkIjowLCJyb2xlIjp7ImNyZWF0ZWRfYXQiOm51bGwsInVwZGF0ZWRfYXQiOm51bGwsImRlbGV0ZWRfYXQiOm51bGwsImlkIjo5LCJuYW1lIjoiQ09NUEFOWSBPV05FUiIsImRpc2FibGVkIjpmYWxzZX0sImFjY2Vzc0hpZXJhcmNoeSI6eyJjb21wYW5pZXMiOls0XSwiYnVzaW5lc3NfdW5pdHMiOls0LDUsMjYsMjcsMjIyLDIyMywyMjUsMjI2LDIyNywyMjgsMjI5LDIzMSwyMzIsMjM0LDIzNSwyMzYsMjM3LDIzOCwyMzldLCJsb2NhdGlvbnMiOls3LDgsOSwxMCwxMyw3OCw4MSw5MywxMDEsMTQ4LDE5MSwxOTQsMTk1LDE5NiwxOTgsMTk5LDIwMCwyMDEsMjAyLDIwMywyMDQsMjA1LDIwNiwyMDcsMjA4LDIwOSwyMTAsMjExLDIxMiwyMTMsMjE0LDIxNSwyMTYsMjE3XX0sInNlc3Npb25fdXVpZCI6ImZlY2M2NjJjLWMxYjYtNDVlZS04MjAwLWM0MzU0MjFmZGU2ZSIsImlhdCI6MTY1MzM4NTI1OCwiYXVkIjoiaHlwci5wayIsImlzcyI6Imh5cHIucGsifQ.Ct3J8eRGVy4HbvnFvEAjyNSH0nQH8ovVCoVBhOsj4iw",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"id\": 70913,\n    \"name\": \"Pelin\",\n    \"sku\": \"sku-alpha3pelin\",\n    \"image_url\": null,\n    \"description\": \"\",\n    \"location_id\": 198,\n    \"price\": 800,\n    \"cost_price\": 810,\n    \"mrp\": 812,\n    \"size\": \"\",\n    \"unit\": \"\",\n    \"brand\": \"\",\n    \"urdu_name\": \"\",\n    \"urdu_unit\": \"\",\n    \"urdu_size\": \"\",\n    \"urdu_brand\": \"\",\n    \"disabled\": 0,\n    \"deleted_by\": null,\n    \"updated_by\": 160,\n    \"barcode\": \"HYPR818444735\",\n    \"consent_required\": false,\n    \"created_at\": \"2022-06-01T05:55:45.000Z\",\n    \"updated_at\": \"2022-06-01T13:15:44.000Z\",\n    \"deleted_at\": null,\n    \"tax_percent\": 10,\n    \"tax_inclusive\": 0,\n    \"catalogue_product_id\": null,\n    \"published\": 0,\n    \"priority\": null,\n    \"weight\": null,\n    \"height\": null,\n    \"length\": null,\n    \"width\": null,\n    \"tax_category\": 2,\n    \"trade_price\": 810,\n    \"delivery_time\": null,\n    \"quantity_limit\": null,\n    \"is_volume_based_price_enabled\": true,\n    \"active_categories\": [\n        {\n            \"id\": 70913,\n            \"category_id\": {\n                \"id\": 2891,\n                \"parent_id\": null,\n                \"name\": \"Household Items\",\n                \"image_url\": \"https://dev-retailo-images.s3.me-south-1.amazonaws.com/Main.jpg\",\n                \"priority\": 4,\n                \"start_date\": \"2021-08-11T09:43:45.000Z\",\n                \"end_date\": \"2021-08-11T09:43:45.000Z\",\n                \"disabled_at\": null,\n                \"disabled_by\": null,\n                \"location_id\": 198,\n                \"created_at\": \"2021-08-11T09:43:45.000Z\",\n                \"updated_at\": \"2021-08-11T09:43:45.000Z\",\n                \"deleted_at\": null,\n                \"type\": 0\n            },\n            \"product_id\": 70913,\n            \"product_priority\": 77,\n            \"product_max_priority\": 77\n        },\n        {\n            \"id\": 70913,\n            \"category_id\": {\n                \"id\": 2892,\n                \"parent_id\": 2891,\n                \"name\": \"Polish\",\n                \"image_url\": \"https://dev-retailo-images.s3.me-south-1.amazonaws.com/polish.jpg\",\n                \"priority\": 1,\n                \"start_date\": \"2021-08-11T09:43:45.000Z\",\n                \"end_date\": \"2021-08-11T09:43:45.000Z\",\n                \"disabled_at\": null,\n                \"disabled_by\": null,\n                \"location_id\": 198,\n                \"created_at\": \"2021-08-11T09:43:45.000Z\",\n                \"updated_at\": \"2021-08-11T09:43:45.000Z\",\n                \"deleted_at\": null,\n                \"type\": 0\n            },\n            \"product_id\": 70913,\n            \"product_priority\": 3,\n            \"product_max_priority\": 3\n        },\n        {\n            \"id\": 70913,\n            \"category_id\": {\n                \"id\": 3004,\n                \"parent_id\": 2891,\n                \"name\": \"All Products\",\n                \"image_url\": null,\n                \"priority\": 6,\n                \"start_date\": \"2021-08-11T09:46:33.000Z\",\n                \"end_date\": \"2021-08-11T09:46:33.000Z\",\n                \"disabled_at\": null,\n                \"disabled_by\": null,\n                \"location_id\": 198,\n                \"created_at\": \"2021-08-11T09:46:33.000Z\",\n                \"updated_at\": \"2021-08-11T09:46:33.000Z\",\n                \"deleted_at\": null,\n                \"type\": 0\n            },\n            \"product_id\": 70913,\n            \"product_priority\": 61,\n            \"product_max_priority\": 61\n        }\n    ],\n    \"multilingual\": [],\n    \"volume_based_prices\": [\n        {\n            \"id\": 178,\n            \"price\": 790,\n            \"quantityFrom\": 1,\n            \"quantityTo\": 51,\n            \"disabled\": false,\n            \"productId\": 70913\n        },\n        {\n            \"id\": 179,\n            \"price\": 770,\n            \"quantityFrom\": 52,\n            \"quantityTo\": 100,\n            \"disabled\": false,\n            \"productId\": 70913\n        },\n        {\n            \"id\": 180,\n            \"price\": 760,\n            \"quantityFrom\": 101,\n            \"quantityTo\": null,\n            \"disabled\": false,\n            \"productId\": 70913\n        }\n    ],\n    \"index\": 0,\n    \"hasBarcode\": true,\n    \"rowCount\": 1,\n    \"tags\": [],\n    \"removed_tags\": [],\n    \"categoriesToEdit\": [\n        {\n            \"category_id\": 2891,\n            \"priority\": 77\n        },\n        {\n            \"category_id\": 2892,\n            \"priority\": 3\n        },\n        {\n            \"category_id\": 3004,\n            \"priority\": 61\n        }\n    ],\n    \"isCategoryEdit\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{api_url}}/product/updateProduct?location_id=198",
+              "host": ["{{api_url}}"],
+              "path": ["product", "updateProduct"],
+              "query": [
+                {
+                  "key": "location_id",
+                  "value": "198"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "ResetProductsPriorityByCategory",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{consumer_auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"category_id\" : 3479\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/product/resetCategoryProductsPriorityByCategory",
+              "host": ["{{api_url}}"],
+              "path": ["product", "resetCategoryProductsPriorityByCategory"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "ADD PRODUCT TO ES",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{user_auth_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{api_url}}/utils/addproductsToEs",
+              "host": ["{{api_url}}"],
+              "path": ["utils", "addproductsToEs"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get products by category",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{user_auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{api_url}}/product/getProductByCategory?per_page=3&page=2&location_id=78&category_id=1444",
+              "host": ["{{api_url}}"],
+              "path": ["product", "getProductByCategory"],
+              "query": [
+                {
+                  "key": "per_page",
+                  "value": "3"
+                },
+                {
+                  "key": "page",
+                  "value": "2"
+                },
+                {
+                  "key": "dontPaginate",
+                  "value": "true",
+                  "disabled": true
+                },
+                {
+                  "key": "showDisabled",
+                  "value": "true",
+                  "disabled": true
+                },
+                {
+                  "key": "location_id",
+                  "value": "78"
+                },
+                {
+                  "key": "search",
+                  "value": "Juice",
+                  "description": "not working",
+                  "disabled": true
+                },
+                {
+                  "key": "sku",
+                  "value": "retailo-8-64484",
+                  "disabled": true
+                },
+                {
+                  "key": "id",
+                  "value": "20310",
+                  "description": "not working",
+                  "disabled": true
+                },
+                {
+                  "key": "category_id",
+                  "value": "1444"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get all products",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYwLCJuYW1lIjoiaGFzaF9hIiwiYWRkcmVzcyI6IjEyMzIzIiwicGhvbmUiOiIwOTAwNzg2MDEiLCJlbWFpbCI6IiIsImNuaWMiOiIxMjMxMjMxMjMiLCJjbmljX3BpY3R1cmUiOiIiLCJ1c2VybmFtZSI6Imhhc2hfYSIsImRpc2FibGVkIjowLCJyb2xlIjp7ImNyZWF0ZWRfYXQiOm51bGwsInVwZGF0ZWRfYXQiOm51bGwsImRlbGV0ZWRfYXQiOm51bGwsImlkIjo5LCJuYW1lIjoiQ09NUEFOWSBPV05FUiIsImRpc2FibGVkIjpmYWxzZX0sImFjY2Vzc0hpZXJhcmNoeSI6eyJjb21wYW5pZXMiOls0XSwiYnVzaW5lc3NfdW5pdHMiOls0LDI2LDI3LDIyMiwyMjMsMjI1LDIyNiwyMjcsMjI4LDIyOSwyMzEsMjMyLDIzNCwyMzUsMjM2LDIzNywyMzhdLCJsb2NhdGlvbnMiOls3LDgsOSwxMCwxMyw3OCw4MSw5MywxMDEsMTQ4LDE5MSwxOTQsMTk1LDE5NiwxOTgsMTk5LDIwMCwyMDEsMjAyLDIwMywyMDQsMjA1LDIwNiwyMDcsMjA4LDIwOSwyMTAsMjExLDIxMiwyMTMsMjE0LDIxNSwyMTZdfSwic2Vzc2lvbl91dWlkIjoiNWQ1OGVhMjAtYjcwOS00ODliLWJiNDktM2JmNDRhZTYzYjkyIiwiaWF0IjoxNjUyNjgxMzA2LCJhdWQiOiJoeXByLnBrIiwiaXNzIjoiaHlwci5wayJ9.s4ArxLrsmfOdd89tUxf3uq9SearUvf1ILrnOxhzYWEE",
+                "type": "text"
+              },
+              {
+                "key": "Content",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{api_url}}/product/getAllProducts?search=&page=2&per_page=20&isAdmin=1&company_id=4",
+              "host": ["{{api_url}}"],
+              "path": ["product", "getAllProducts"],
+              "query": [
+                {
+                  "key": "search",
+                  "value": ""
+                },
+                {
+                  "key": "page",
+                  "value": "2"
+                },
+                {
+                  "key": "per_page",
+                  "value": "20"
+                },
+                {
+                  "key": "isAdmin",
+                  "value": "1"
+                },
+                {
+                  "key": "company_id",
+                  "value": "4"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Profile lock and product update",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{user_auth_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{api_url}}/utils/profileLock",
+              "host": ["{{api_url}}"],
+              "path": ["utils", "profileLock"],
+              "query": [
+                {
+                  "key": "",
+                  "value": "",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Product from ES",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/product/searchFromEs?query=sauce&location=185",
+              "host": ["{{api_url}}"],
+              "path": ["product", "searchFromEs"],
+              "query": [
+                {
+                  "key": "query",
+                  "value": "sauce"
+                },
+                {
+                  "key": "location",
+                  "value": "185"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get product dump",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data",
+                "disabled": true
+              },
+              {
+                "key": "Authorization",
+                "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcl9sb2NhdGlvbl9pZCI6bnVsbCwicm9sZSI6eyJpZCI6OCwicm9sZV9uYW1lIjoiQ09OU1VNRVIifSwiaWQiOjE2MTMsIm5hbWUiOiJBYmR1bGxhaCIsImFkZHJlc3MiOiIiLCJwaG9uZSI6IjkyMzIxNTc0MjQ1MiIsImVtYWlsIjpudWxsLCJjaXR5IjoiTGFob3JlIiwiY291bnRyeSI6bnVsbCwicG9zdF9jb2RlIjpudWxsLCJjbmljIjpudWxsLCJ2ZXJpZmllZF9hdCI6IjIwMjAtMDYtMDRUMTc6NDE6NDYuMDAwWiIsImNuaWNfcGljdHVyZSI6bnVsbCwicGxheWVyX2lkIjpudWxsLCJibG9jayI6ZmFsc2UsInRlcm1zX2FjY2VwdGVkIjp0cnVlLCJibG9ja0RhdGUiOm51bGwsImlhdCI6MTU5MTM2Njc3MSwiYXVkIjoiaHlwci5wayIsImlzcyI6Imh5cHIucGsifQ.cXfF6gGCzgC1h7VQZkxcuHU841V-JAJDzdpD0lP-7cc"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8090/product/getProductDump?location_id=6",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8090",
+              "path": ["product", "getProductDump"],
+              "query": [
+                {
+                  "key": "location_id",
+                  "value": "6"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "[Deprecated] CREATE PRODUCT",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"sku\": \"gala\",\n    \"name\": \"gala\",\n    \"size\": \"small\",\n    \"unit\": \"pack\",\n    \"stock_quantity\": 100,\n    \"category_id\": [1,3],\n    \"brand\": \"LU\",\n    \"urdu_name\": \"test\",\n    \"urdu_unit\": \"kg\",\n    \"urdu_size\": \"small\",\n    \"urdu_brand\": \"test\",\n    \"disabled\": false,\n    \"barcode\": \"test\",\n    \"description\": \"egg biscuits\",\n    \"consent_required\": false,\n    \"location_id\": 1,\n    \"price\": 20,\n    \"tax_percent\": 0.5,\n    \"tax_inclusive\": false\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8090/product/createProduct",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8090",
+              "path": ["product", "createProduct"]
+            },
+            "description": "create single product"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Waiver [Legacy]",
+      "item": [
+        {
+          "name": "CREATE WAIVER",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{user_auth_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{api_url}}/waiver/create?orderId=220770&waiverAmount=500&waiverReason=DAMAGED ITEM",
+              "host": ["{{api_url}}"],
+              "path": ["waiver", "create"],
+              "query": [
+                {
+                  "key": "orderId",
+                  "value": "220770"
+                },
+                {
+                  "key": "waiverAmount",
+                  "value": "500"
+                },
+                {
+                  "key": "waiverReason",
+                  "value": "DAMAGED ITEM"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "UPDATE WAIVER",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{user_auth_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{api_url}}/waiver/update?orderId=222388&waiverAmount=300&waiverReason=DAMAGED ITEM",
+              "host": ["{{api_url}}"],
+              "path": ["waiver", "update"],
+              "query": [
+                {
+                  "key": "orderId",
+                  "value": "222388"
+                },
+                {
+                  "key": "waiverAmount",
+                  "value": "300"
+                },
+                {
+                  "key": "waiverReason",
+                  "value": "DAMAGED ITEM"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "REMOVE WAIVER",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{user_auth_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{api_url}}/waiver/remove?orderId=222388",
+              "host": ["{{api_url}}"],
+              "path": ["waiver", "remove"],
+              "query": [
+                {
+                  "key": "orderId",
+                  "value": "222388"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

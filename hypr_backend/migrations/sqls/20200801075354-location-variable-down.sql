@@ -1,0 +1,17 @@
+/* Replace with your SQL commands */
+ALTER TABLE `locations`
+DROP COLUMN `owner_name`,
+DROP COLUMN `owner_cnic`,
+DROP COLUMN `pos_required`,
+DROP COLUMN `owner_cnic_picture`,
+DROP COLUMN `subscription_fee`,
+DROP COLUMN `account_type`,
+DROP COLUMN `account_number`,
+DROP COLUMN `chillers_count`,
+DROP COLUMN `checkout_counters_count`,
+DROP COLUMN `sims_count` ,
+DROP COLUMN `shop_size`,
+DROP COLUMN `shop_pictures` ,
+DROP COLUMN `shop_facia_size` ,
+DROP COLUMN `shop_facia_pictures`,
+DROP COLUMN `advertising_spaces`,

@@ -1,0 +1,122 @@
+<div class="row">
+    <div class="col-12"><h5>Store Timings</h5></div>
+    <div class="col-12">
+        <div class="row chipsContainer">
+            <div
+                class="label label-default chips"
+                *ngFor="let option of location.operating_days; let i = index"
+            >
+            <span class="col-1">{{ option.day_name }}</span>
+                <span class="col-2 pointer">
+                    <ui-switch
+                        class="switchHolder"
+                        [(ngModel)]="option.disabled"
+                        color="#e65400"
+                        size="small"
+                        checkedLabel="on"
+                        reverse
+                        data-toggle="tooltip" data-placement="top" title="{{option.disabled?'Enable Day':'Disable Day'}}"
+                    >
+                    </ui-switch>
+                </span>
+            </div>
+        </div>
+    </div>
+    <!--Selected days section ends-->
+    <div class="form-check col-12">
+        <input
+            type="checkbox"
+            [(ngModel)]="location.is_day_wise_time"
+            (change)="timeOptionChanged()"
+            name="is_day_wise_time"
+            id="is_day_wise_time"
+        />
+        <label class="form-check-label" for="is_day_wise_time"
+            >Select specific time for each operating day</label
+        >
+    </div>
+    <!--Select Specific Time for each working day section start-->
+    <div class="col-12" *ngIf="location.is_day_wise_time">
+        <div class="row" *ngFor="let day of location.operating_days">
+            <div class="row" *ngIf="!day.disabled">
+                <div class="col-4">
+                    <label>Day</label>
+                    <input
+                        type="text"
+                        placeholder="day"
+                        [disabled]="true"
+                        value="{{ day.day_name }}"
+                        class="form-control"
+                    />
+                </div>
+                <div class="col-4">
+                    <label>Start Time</label>
+                    <ngb-timepicker
+                        [(ngModel)]="day.start_time"
+                        [meridian]="true"
+                    ></ngb-timepicker>
+                </div>
+                <div class="col-4">
+                    <label>End Time</label>
+                    <ngb-timepicker
+                        [(ngModel)]="day.end_time"
+                        [meridian]="true"
+                    ></ngb-timepicker>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Select Specific Time for each working day section start-->
+    <div class="col-12" *ngIf="!location.is_day_wise_time">
+        <div class="row">
+            <div class="col-4">
+                <label>Start Time</label>
+                <ngb-timepicker
+                    [(ngModel)]="location.start_time"
+                    [meridian]="true"
+                ></ngb-timepicker>
+            </div>
+            <div class="col-4">
+                <label>End Time</label>
+                <ngb-timepicker
+                    [(ngModel)]="location.end_time"
+                    [meridian]="true"
+                ></ngb-timepicker>
+            </div>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="row">
+            <div class="col-4">
+                <label>Select Minimum Delivery Time</label>
+                <div class="row">
+                    <div class="col-4">
+                        <label>Hours</label>
+                        <input
+                            type="number"
+                            class="form-control"
+                            (keypress)="isNumberKey($event)"
+                            [(ngModel)]="location.delivery_time.hour"
+                            placeholder="Hours"
+                            min = 0
+                            (keypress)="isNumberKey($event)"
+                            (change)="hourChanged()"
+                        />
+                    </div>
+                    <div class="col-4">
+                        <label>Minutes</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            [(ngModel)]="location.delivery_time.minute"
+                            placeholder="Minutes"
+                            (keypress)="isNumberKey($event)"
+                            (input)="minuteChanged()"
+                            (change)="minuteChanged()"
+                        />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

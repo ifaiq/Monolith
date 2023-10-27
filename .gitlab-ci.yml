@@ -1,0 +1,9 @@
+stages:
+  - init
+  - lint
+  - unit_test
+  - e2e_test
+  - load_test
+
+include: 
+  - local: '/hypr_backend/backend.gitlab-ci.yml'

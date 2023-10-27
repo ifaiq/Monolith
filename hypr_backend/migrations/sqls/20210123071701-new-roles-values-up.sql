@@ -1,0 +1,199 @@
+-- INSERT INTO
+--     role_permissions (id, role_id, permission_id, created_at, updated_at)
+-- VALUES
+--     /* start of logistics role permissions */
+
+--     /* orders tab permissions */
+--     (542, 18, 53, now(), now()),
+--     (543, 18, 55, now(), now()),
+--     (544, 18, 77, now(), now()),
+--     (545, 18, 76, now(), now()), 
+--     (546, 18, 57, now(), now()), 
+--     (547, 18, 109, now(), now()), 
+--     (548, 18, 60, now(), now()), 
+--     (549, 18, 61, now(), now()),
+--     /* dashboard permissions */
+--     (550, 18, 37, now(), now()),
+--     /* inventory permissions */
+--     (551, 18, 41, now(), now()),
+--     (552, 18, 87, now(), now()),
+--     (553, 18, 39, now(), now()),
+--     (554, 18, 40, now(), now()),
+--     /* general permissions */
+--     (555, 18, 13, now(), now()),
+--     (556, 18, 119, now(), now()),
+--     /* users permissions */
+--     (557, 18, 110, now(), now()),
+--     (558, 18, 4, now(), now()),
+--     (559, 18, 106, now(), now()),
+--     (560, 18, 114, now(), now()),
+--     (561, 18, 115, now(), now()),
+
+--     /* end of logisitcs role permissions */
+
+--     /* start of care role permissions */
+
+--     /* orders tab permissions */
+--     (562, 19, 53, now(), now()),
+--     (563, 19, 55, now(), now()),
+--     (564, 19, 77, now(), now()),
+--     (565, 19, 76, now(), now()), 
+--     (566, 19, 57, now(), now()), 
+--     (567, 19, 109, now(), now()), 
+--     (568, 19, 60, now(), now()), 
+--     (569, 19, 61, now(), now()),
+--     /* dashboard permissions */
+--     (570, 19, 37, now(), now()),
+--     /* coupon permissions */
+--     (571, 19, 125, now(), now()),
+--     (572, 19, 126, now(), now()),
+--     (573, 19, 127, now(), now()),
+--     /* general permissions */
+--     (575, 19, 13, now(), now()),
+--     (576, 19, 119, now(), now()),
+--     /* users permissions */
+--     (577, 19, 110, now(), now()),
+--     (578, 19, 4, now(), now()),
+--     (579, 19, 106, now(), now()),
+--     (580, 19, 114, now(), now()),
+--     (581, 19, 115, now(), now()),
+--     /* customers permissions */
+--     (582, 19, 32, now(), now()),
+--     (583, 19, 34, now(), now()),
+--     (584, 19, 37, now(), now()),
+--     /* notification permissions */
+--     (585, 19, 131, now(), now()),
+--     (586, 19, 133, now(), now()),
+--     (587, 19, 128, now(), now()),
+--     (588, 19, 130, now(), now()),
+--     (589, 19, 129, now(), now()),
+
+--     /* end of care role permissions */
+
+--     /* start of commercial role permissions */
+
+--     /* orders tab permissions */
+--     (590, 20, 53, now(), now()),
+--     (591, 20, 55, now(), now()),
+--     (592, 20, 77, now(), now()),
+--     (593, 20, 76, now(), now()), 
+--     (594, 20, 57, now(), now()), 
+--     (595, 20, 109, now(), now()), 
+--     (596, 20, 60, now(), now()), 
+--     (597, 20, 61, now(), now()),
+--     /* dashboard permissions */
+--     (598, 20, 37, now(), now()),
+--     /* inventory permissions */
+--     (599, 20, 41, now(), now()),
+--     (600, 20, 87, now(), now()),
+--     (601, 20, 39, now(), now()),
+--     (602, 20, 40, now(), now()),
+--     /* general permissions */
+--     (603, 20, 13, now(), now()),
+--     (604, 20, 119, now(), now()),
+--     /* categories/products permissions */
+--     (605, 20, 19, now(), now()),
+--     (607, 20, 81, now(), now()),
+--     (608, 20, 82, now(), now()),
+--     (609, 20, 83, now(), now()),
+--     (610, 20, 84, now(), now()),
+--     (611, 20, 105, now(), now()),
+--     (612, 20, 80, now(), now()),
+--     (613, 20, 20, now(), now()),
+--     (614, 20, 106, now(), now()),
+--     (615, 20, 22, now(), now()),
+--     (616, 20, 21, now(), now()),
+--     (617, 20, 88, now(), now()),
+
+--     /* end of commercial role permissions */
+    
+--     /* start of growth/sales role permissions */
+
+--     /* orders tab permissions */
+--     (618, 21, 53, now(), now()),
+--     (619, 21, 55, now(), now()),
+--     (620, 21, 77, now(), now()),
+--     (621, 21, 76, now(), now()), 
+--     (622, 21, 57, now(), now()), 
+--     (623, 21, 109, now(), now()), 
+--     (624, 21, 60, now(), now()), 
+--     (625, 21, 61, now(), now()),
+--     /* dashboard permissions */
+--     (626, 21, 37, now(), now()),
+--     /* general permissions */
+--     (630, 21, 13, now(), now()),
+--     (631, 21, 119, now(), now()),
+--     /* users permissions */
+--     (632, 21, 110, now(), now()),
+--     (633, 21, 4, now(), now()),
+--     (634, 21, 106, now(), now()),
+--     (635, 21, 114, now(), now()),
+--     (636, 21, 115, now(), now()),
+--     /* customers permissions */
+--     (637, 21, 32, now(), now()),
+--     (638, 21, 34, now(), now()),
+--     (639, 21, 37, now(), now()),
+
+--     /* end of growth/sales role permissions */
+
+    
+--     /* start of leads role permissions */
+
+--     /* orders tab permissions */
+--     (640, 22, 53, now(), now()),
+--     (641, 22, 55, now(), now()),
+--     (642, 22, 77, now(), now()),
+--     (643, 22, 76, now(), now()), 
+--     (644, 22, 57, now(), now()), 
+--     (645, 22, 109, now(), now()), 
+--     (646, 22, 60, now(), now()), 
+--     (647, 22, 61, now(), now()),
+--     /* dashboard permissions */
+--     (648, 22, 37, now(), now()),
+--     /* inventory permissions */
+--     (649, 22, 41, now(), now()),
+--     (650, 22, 87, now(), now()),
+--     (651, 22, 39, now(), now()),
+--     (652, 22, 40, now(), now()),
+--     /* general permissions */
+--     (653, 22, 13, now(), now()),
+--     (654, 22, 119, now(), now()),
+--     /* categories/products permissions */
+--     (655, 22, 19, now(), now()),
+--     (656, 22, 81, now(), now()),
+--     (657, 22, 82, now(), now()),
+--     (658, 22, 83, now(), now()),
+--     (659, 22, 84, now(), now()),
+--     (660, 22, 105, now(), now()),
+--     (661, 22, 80, now(), now()),
+--     (662, 22, 22, now(), now()),
+--     (663, 22, 106, now(), now()),
+--     (664, 22, 22, now(), now()),
+--     (665, 22, 21, now(), now()),
+--     (666, 22, 88, now(), now()),
+--     /* users permissions */
+--     (667, 22, 110, now(), now()),
+--     (668, 22, 4, now(), now()),
+--     (669, 22, 106, now(), now()),
+--     (670, 22, 114, now(), now()),
+--     (671, 22, 115, now(), now()),
+--     /* customers permissions */
+--     (672, 22, 32, now(), now()),
+--     (673, 22, 34, now(), now()),
+--     (674, 22, 37, now(), now()),
+--     /* notification permissions */
+--     (675, 22, 131, now(), now()),
+--     (676, 22, 133, now(), now()),
+--     (677, 22, 128, now(), now()),
+--     (678, 22, 130, now(), now()),
+--     (679, 22, 129, now(), now()),
+--     /* coupon permissions */
+--     (680, 22, 125, now(), now()),
+--     (681, 22, 126, now(), now()),
+--     (682, 22, 127, now(), now()),
+--     /* hierarchy permissions */
+--     (683, 22, 14, now(), now()),
+--     (684, 22, 43, now(), now()),
+--     (685, 22, 23, now(), now());
+
+--     /* end of leads role permissions */

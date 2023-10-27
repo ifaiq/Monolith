@@ -1,0 +1,1 @@
+DELETE FROM permissions WHERE code = 'P_CREATE_SPOT_ORDER';

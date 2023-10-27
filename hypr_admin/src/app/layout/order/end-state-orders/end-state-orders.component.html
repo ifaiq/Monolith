@@ -1,0 +1,284 @@
+<div *ngxPermissionsOnly="['*', 'L_END_STATE_ORDERS']">
+    <div>
+        <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title">
+                <span class="h1">End State Orders</span>
+                <button class="btn btn-icon btn-refresh ml-20" (click)="refresh()"><span></span></button>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-20 mb-20">
+        <div class="col-sm search-cross-box">
+            <input
+                type="text"
+                placeholder="Search"
+                [(ngModel)]="search"
+                (keyup.enter)="searchOrders()"
+                class="form-control"
+            />
+            <button
+                class="create"
+                aria-hidden="true"
+                (click)="undoSearch()"
+                class="btn btn-link fa fa-times crossbtn"
+            ></button>
+        </div>
+        <div class="col-sm"></div>
+        <div class="col-sm"></div>
+    </div>
+    <div class="row">
+        <div class="col-6 col-lg-2" *ngxPermissionsOnly="['*', 'L_BU']">
+            <div class="form-group">
+                <label for="">Select Business Unit</label>
+                <select [(ngModel)]="selectedBusinessUnitId" class="form-control" (change)="getlocations()">
+                    <option class='option' [value]="''">All</option>
+                    <option *ngFor='let bu of businessUnits' [value]="bu.id">
+                        {{bu.name}}
+                    </option>
+                </select>
+            </div>
+        </div>
+        <div class="col-6 col-lg-2" *ngxPermissionsOnly="['*', 'L_ALL_LOC']">
+            <div class="form-group">
+                <label for="exampleInputPassword1">Select Cell :</label>
+                <select [(ngModel)]="selectedLocationId" class="form-control">
+                    <option class="option" [value]="''">All</option>
+                    <option *ngFor="let location of locations" [value]="location.id">
+                        {{ location.name }}
+                    </option>
+                </select>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="form-group" style="height: 70px;">
+                <label for="">From</label>
+                <input type="date" [(ngModel)]="startDate" class="form-control" />
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="form-group" style="height: 70px;">
+                <label for="">To</label>
+                <input type="date" [(ngModel)]="endDate" class="form-control" />
+            </div>
+        </div>
+        <div class="col-6 col-lg-2">
+            <button class="skewbtn-primary mt-10" (click)="searchOrders(true)">
+                GO
+            </button>
+        </div>
+    </div>
+    <div class="row" [hidden]="loading" *ngxPermissionsOnly="['*', 'L_ORDER_BY_STATUS']">
+        <div class="col-12">
+            <div class="table-responsive">
+                <div class="custom-table">
+                    <ul class="row thead">
+                        <li class="col-1"><span>#</span></li>
+                        <li class="col-1"><span>ID</span></li>
+                        <li class="col-1"><span>Customer Name</span></li>
+                        <li class="col-1"><span>Customer Address</span></li>
+                        <li class="col-1"><span>Telephone</span></li>
+                        <li class="col-1"><span>Total Amount</span></li>
+                        <li class="col-2"><span>Order Date</span></li>
+                        <li class="col-1"><span>Status</span></li>
+                        <li class="col-2"><span>Cell Name</span></li>
+                        <li class="col-1"><span>Action</span></li>
+                    </ul>
+                    <ul class="table-body">
+                        <li class="row table-row align-items-center" *ngFor="let order of orders
+                        | paginate: { 
+                            id:paginationId, 
+                            itemsPerPage: itemsPerPage, 
+                            currentPage: currentPage,
+                            totalItems: totalItems
+                        }; 
+                        index as i ">
+                            <div class="col-1 tcell">{{ i+1 }}</div>
+                            <div class="col-1 tcell">{{ order.id }}</div>
+                            <div class="col-1 tcell">{{ order.customer_id.name }}</div>
+                            <div class="col-1 tcell">{{ order.customer_address_id
+                                ? order.customer_address_id.address_line1
+                                : "NONE"
+                                }}</div>
+                            <div class="col-1 tcell">{{ sharedFunctions.getFormattedPhoneNumber(
+                                order.customer_id.phone
+                                ) }}</div>
+                            <div class="col-1 tcell">{{ order.currency }}{{ order.grand_total }}</div>
+                            <div class="col-2 tcell">{{ sharedFunctions.getFormattedDate(
+                                order.placed_at,
+                                1
+                                ) }}</div>
+                            <div class="col-1 tcell">{{ order.status_id.name }}</div>
+                            <div class="col-2 tcell">{{ order.location_id
+                                ? order.location_id.name
+                                : "No Location" }}</div>
+                            <div class="col-1 tcell"><button class="btn btn-icon btn-edit"
+                                    (click)="setActiveIndex('activeIndex', i)"></button></div>
+                            <div class="col-12 table-row-details bundle-details-wrapper orderEditArea"
+                                [hidden]="!(activeIndex == i)">
+                                <div class="row mb-20">
+                                    <div class="table-expand-box col-12">
+                                        <div class="col-lg-2 orderdetail">
+                                            <h5 class="h5Margin">
+                                                Order Details
+                                            </h5>
+                                            <table class="table user-table">
+                                                <tr>
+                                                    <td class="tdFont">ID</td>
+                                                    <td class="tdFont">
+                                                        {{ order.id }}
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td class="tdFont">
+                                                        Customer Name
+                                                    </td>
+                                                    <td class="tdFont">
+                                                        {{ order.customer_id.name }}
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td class="tdFont">
+                                                        Telephone
+                                                    </td>
+                                                    <td class="tdFont">
+                                                        {{ sharedFunctions.getFormattedPhoneNumber(
+                                                        order.customer_id.phone
+                                                        ) }}
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td class="tdFont">
+                                                        Order Date
+                                                    </td>
+                                                    <td class="tdFont">
+                                                        {{ sharedFunctions.getFormattedDate(
+                                                        order.placed_at,
+                                                        1
+                                                        ) }}
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td class="tdFont">
+                                                        Status
+                                                    </td>
+                                                    <td class="tdFont">
+                                                        {{ order.status_id.name }}
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td class="tdFont">
+                                                        Store Name
+                                                    </td>
+                                                    <td class="tdFont">
+                                                        {{ order.location_id
+                                                        ? order.location_id.name
+                                                        : "No Location" }}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="tdFont">
+                                                        Coupon Discount
+                                                    </td>
+                                                    <td class="tdFont">
+                                                        {{ order.coupon_discount}}
+                                                        <br />
+                                                        {{order.location_id.business_unit_id.currency}}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="tdFont">
+                                                        Volume Based Discount
+                                                    </td>
+                                                    <td class="tdFont">
+                                                        {{ order.volume_based_discount}}
+                                                        <br />
+                                                        {{order.location_id.business_unit_id.currency}}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="tdFont">
+                                                        CreditBuy Fee
+                                                    </td>
+                                                    <td class="tdFont">
+                                                        {{order.credit_buy_fee}}
+                                                        <br />
+                                                        {{order.location_id.business_unit_id.currency}}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="tdFont">
+                                                        Grand Total
+                                                    </td>
+                                                    <td class="tdFont">
+                                                        {{ order.grand_total}}
+                                                        <br />
+                                                        {{order.location_id.business_unit_id.currency}}
+                                                    </td>
+                                                </tr>
+
+                                                <tr *ngIf="order.status_reason_id">
+                                                    <td class="tdFont">
+                                                        Cancellation Reason
+                                                    </td>
+                                                    <td class="tdFont">
+                                                        {{ order.status_reason_id.reason }}
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <strong>Order Items</strong>
+                                        <table style="width: 100%" class="table table user-table table-striped">
+                                            <thead class="thead-dark">
+                                                <th>Sku</th>
+                                                <th>Name</th>
+                                                <th>Brand</th>
+                                                <th>Size</th>
+                                                <th>Quantity</th>
+                                                <th>Item Total</th>
+                                            </thead>
+                                            <tr *ngFor="
+                                                    let item of order.items
+                                                ">
+                                                <td>
+                                                    {{ item.product_id.sku }}
+                                                </td>
+                                                <td>
+                                                    {{ item.product_id.name }}
+                                                </td>
+                                                <td>
+                                                    {{ item.product_id.brand }}
+                                                </td>
+                                                <td>
+                                                    {{ item.product_id.size }}
+                                                </td>
+                                                <td>{{ item.quantity }}</td>
+                                                <td>
+                                                    {{ order.currency }}
+                                                    {{ getAmount(item) }}
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <button *ngIf="order.batch_id.length" (click)="askForPermission(order)" class="skewbtn-primary ml-5">
+                                        Put In-transit
+                                    </button>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <pagination-controls class="mt-30" (pageChange)="pagination($event)" id="{{paginationId}}"
+                        autoHide="{{totalItems<itemsPerPage}">
+                    </pagination-controls>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

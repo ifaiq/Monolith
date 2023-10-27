@@ -1,0 +1,62 @@
+version: "2"
+services:
+  redis-server:
+    image: "redis:alpine"
+    hostname: redis-server
+    command: ["redis-server", "--notify-keyspace-events", "Egx"]
+    ports:
+      - "1234:6379"
+    volumes:
+      - $PWD/redis-data:/var/lib/redis
+      - $PWD/redis.conf:/usr/local/etc/redis/redis.conf
+    environment:
+      - REDIS_REPLICATION_MODE=master
+    networks:
+      - hypr-network
+
+  hypr_backend:
+    build:
+      context: .
+      args:
+        GL_NPM_TOKEN: ${GL_NPM_TOKEN}
+    restart: always
+    command:
+      [
+        "bash",
+        "-c",
+        "db-migrate up --config config/database.json && npm ci && nodemon app.js",
+      ]
+    environment:
+      - NODE_ENV=local
+    container_name: hypr_backend
+    ports:
+      - "8090:8090"
+    volumes:
+      - .:/sails/
+      - /sails/node_modules
+    networks:
+      - hypr-network
+    links:
+      - redis-server
+    depends_on:
+      - redis-server
+      - mongo
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      - MONGO_INITDB_DATABASE=testdb
+    networks:
+      - hypr-network
+    volumes:
+      - dbdata:/data/db
+    ports:
+      - 27017:27017
+    expose:
+      - "27017"
+networks:
+  hypr-network:
+    driver: bridge
+volumes:
+  hypr-db: {}
+  dbdata: {}

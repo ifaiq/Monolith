@@ -1,0 +1,9 @@
+const DELIVERY_SLOTS_DISPLAY_COUNT = 7;
+const DATE_FORMAT = "YYYY-MM-DD";
+const DATE_TIME_24H = "YYYY-MM-DD HH:mm:ss";
+
+module.exports = {
+  DELIVERY_SLOTS_DISPLAY_COUNT,
+  DATE_FORMAT,
+  DATE_TIME_24H,
+};

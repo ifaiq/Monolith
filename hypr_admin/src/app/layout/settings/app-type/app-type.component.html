@@ -1,0 +1,18 @@
+<div class="row">
+  <div class="col">
+    <table class="table">
+      <thead>
+        <tr class="colored-thead">
+          <th>Name</th>
+          <th class="text-right">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let type of appTypes; let i = index">
+          <td>{{type.name}}</td>
+          <td><button class="skewbtn-primary pull-right" (click)="updateAppType(type)"> Update </button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

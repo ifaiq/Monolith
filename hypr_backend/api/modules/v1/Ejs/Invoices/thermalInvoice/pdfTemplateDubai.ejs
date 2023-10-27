@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pos Invoice</title>
+  <style>
+    @font-face {
+      font-family: 'Dubai';
+      src: url("https://dev-retailo-images.s3.me-south-1.amazonaws.com/Dubai-Bold.ttf");
+    }
+
+    html,
+    body {
+      font-family: 'Dubai', Arial, Helvetica, sans-serif;
+      margin: 0;
+      padding: 0;
+      height: auto;
+      -webkit-print-color-adjust: exact;
+      box-sizing: border-box;
+    }
+
+    .container {
+      width: 60mm;
+    }
+
+    table {
+      width: 100%;
+      font-size: 8px;
+    }
+
+    .header,
+    .footer {
+      display: flex;
+    }
+
+    .header-img,
+    .footer-img {
+      width: 100%;
+      display: block
+    }
+
+    .title {
+      text-align: center;
+      font-size: 10px;
+      font-weight: 600;
+      margin: 0;
+      margin: 5px 0;
+    }
+
+    .sub-title {
+      text-align: center;
+      font-size: 8px;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    p {
+      font-size: 7px;
+      font-weight: 600;
+      margin-top: 0;
+      margin-bottom: 5px;
+      font-family: 'Dubai';
+      line-height: 1;
+    }
+
+    .rtl {
+      text-align: right;
+    }
+
+    .ltr {
+      direction: ltr;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 10px;
+      font-weight: 600;
+      margin: 0;
+      padding: 4px 0;
+      border-top: solid 1px black;
+      border-bottom: solid 1px black;
+    }
+
+    .contents {
+      padding: 8px 5px;
+    }
+
+    .contents-ordersummary {
+      padding: 0px 5px;
+    }
+
+    table {
+      font-weight: normal;
+    }
+
+    thead td {
+      font-size: 8px;
+    }
+
+    .sub-text {
+      font-family: 'Dubai';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 8px;
+      line-height: 11px;
+      color: #000;
+    }
+
+    .items-table tbody tr {
+      border-bottom: dashed 1px gray;
+    }
+
+    .items-table tbody tr:last-child {
+      border-bottom: none;
+    }
+
+    tbody td {
+      font-size: 8px;
+    }
+
+    .invoice-total {
+      border-top: 1px solid #000;
+      margin-top: 10px;
+    }
+
+    .invoice-total td {
+      padding-left: 3px;
+      padding-right: 3px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+      <img src="https://prod-retailo-images.s3.me-south-1.amazonaws.com/dubaiThermalHeader.jpg"
+        class="header-img" alt="" />
+    </div>
+    <!-- Title -->
+    <h1 class="title">Tax Invoice</h1>
+    <% if (invoice.isCreditNoteInvoice) { %>
+      <h3 class="sub-title">Credit Note</h3>
+    <% } %>
+    <!-- section 1 -->
+    <table width="100%" border="0" cellpadding="5" cellspacing="0"
+      style="table-layout: fixed; border-collapse: collapse;">
+      <tr>
+        <td width="60%" valign="top">
+          <p class="ltr">
+            Invoice ID: <%= invoice.invoiceNumber %> 
+          </p>
+          <p class="ltr">
+            Order ID: <%= invoice.orderId %>
+          </p>
+          <p>&nbsp;</p>
+          <p class="ltr">
+            Invoice Date: <%= invoice.issueDate %>
+          </p>
+          <p class="ltr">
+            Date of Delivery: <%= invoice.supplyDate %>
+          </p>
+        </td>
+        <td width="40%" height="50" valign="top">
+          <%- invoice.qr %>
+        </td>
+      </tr>
+    </table>
+
+    <!-- section 2 - Buyer -->
+    <div class="section">
+      <h1 class="section-title">Buyer</h1>
+      <div class="contents ltr">
+        <table width="100%" cellpadding="0" cellspacing="0" style="table-layout: fixed; border-collapse: collapse;">
+          <tr>
+            <td align="left">
+              <table cellpadding="1" cellspacing="0" border="0" width="auto" style="border-collapse: collapse;">
+                <tr>
+                  <td align="left" valign="top" style="white-space: nowrap;" width="5%">Name: </td>
+                  <td align="left" class="sub-text">
+                    <%= invoice.buyer.name %>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td align="left">
+              <table cellpadding="1" cellspacing="0" style="border-collapse: collapse;">
+                <tr>
+                  <td align="left" valign="top" style="white-space: nowrap;" width="5%">Business Name: </td>
+                  <td align="left" class="sub-text">
+                    <%= invoice.buyer.businessName %>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td align="left">
+              <table cellpadding="1" cellspacing="0" style="border-collapse: collapse;">
+                <tr>
+                  <td align="left" valign="top" style="white-space: nowrap;" width="5%">Address: </td>
+                  <td align="left" class="sub-text">
+                    <%= invoice.buyer.address %>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td align="left">
+              <table cellpadding="1" cellspacing="0" style="border-collapse: collapse;">
+                <tr>
+                  <td align="left" valign="top" style="white-space: nowrap;" width="5%">Contact: </td>
+                  <td align="left" class="sub-text">
+                    <%= invoice.buyer.phone %>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td align="left">
+              <table cellpadding="1" cellspacing="0" style="border-collapse: collapse;">
+                <tr>
+                  <td align="left" valign="top" style="white-space: nowrap;" width="5%">VAT Number: </td>
+                  <td align="left" class="sub-text">
+                    <%= invoice.buyer.vat %>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </div>
+
+    </div>
+
+    <!-- section 2 - Seller -->
+    <div class="section">
+      <h1 class="section-title">Seller</h1>
+      <div class="contents ltr">
+        <table width="100%" cellpadding="0" cellspacing="0" style="table-layout: fixed; border-collapse: collapse;">
+          <tr>
+            <td align="left">
+              <table cellpadding="1" cellspacing="0" border="0" width="auto" style="border-collapse: collapse;">
+                <tr>
+                  <td align="left" valign="top" style="white-space: nowrap;" width="5%">Name: </td>
+                  <td align="left" class="sub-text">
+                    <%= invoice.seller.name %>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td align="left">
+              <table cellpadding="1" cellspacing="0" style="border-collapse: collapse;">
+                <tr>
+                  <td align="left" valign="top" style="white-space: nowrap;" width="5%">Business Name: </td>
+                  <td align="left" class="sub-text">
+                    <%= invoice.seller.businessName %>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td align="left">
+              <table cellpadding="1" cellspacing="0" style="border-collapse: collapse;">
+                <tr>
+                  <td align="left" valign="top" style="white-space: nowrap;" width="5%">Address: </td>
+                  <td align="left" class="sub-text">
+                    <%= invoice.seller.address %>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td align="left">
+              <table cellpadding="1" cellspacing="0" style="border-collapse: collapse;">
+                <tr>
+                  <td align="left" valign="top" style="white-space: nowrap;" width="5%">Contact: </td>
+                  <td align="left" class="sub-text">
+                    <%= invoice.seller.phone %>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td align="left">
+              <table cellpadding="1" cellspacing="0" style="border-collapse: collapse;">
+                <tr>
+                  <td align="left" valign="top" style="white-space: nowrap;" width="5%">VAT Number: </td>
+                  <td align="left" class="sub-text">
+                    <%= invoice.seller.vat %>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+
+    <div class="section">
+      <h1 class="section-title">Items</h1>
+      <div style="padding: 0px 5px 5px 5px;">
+        <table dir="ltr" class="items-table" width="100%" border="0" cellpadding="3" cellspacing="0"
+          style="table-layout: fixed; border-collapse: collapse;">
+          <thead>
+            <tr style="border-bottom: dashed 1px gray; padding-bottom: 10px;">
+              <td width="19%">Item Name </td>
+              <td align="center" width="10%">Price</td>
+              <td align="center"  width="7%">Qty</td>
+              <td align="center" width="19%">Total Price<br>(Excl. VAT)</td>
+              <td align="center" width="10%">VAT Rate<br> %</td>
+              <td align="center" width="17%">VAT Amount</td>
+              <td align="center" width="18%">
+                Total Price <br> (Incl. VAT)
+              </td>
+            </tr>
+          </thead>
+          <tbody>
+            <% invoice.lineItems.forEach(function(item){ %>
+              <tr>
+                <td width="19%">
+                  <%= item.name %>
+                </td>
+                <td align="center">
+                  <%= item.basePrice %>
+                </td>
+                <td align="center">
+                  <%= item.quantity %>
+                </td>
+                <td align="center">
+                  <%= item.totalPrice.toFixed(2) %>
+                </td>
+                <td align="center">
+                  <%= item.taxRate %>
+                </td>
+                <td align="center">
+                  <%= item.taxAmount.toFixed(2) %>
+                </td>
+                <td align="center">
+                  <%= item.totalPriceWithTax.toFixed(2) %>
+                </td>
+              </tr>
+              <% }); %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- section 5 -->
+    <div class="section">
+      <h1 class="section-title">Order Summary</h1>
+      <div class="contents-ordersummary">
+        <table dir="ltr" width="100%" border="0" cellpadding="3" cellspacing="0"
+          style="table-layout: fixed; border-collapse: collapse;">
+          <tr style="border-bottom: dashed 1px gray; height:20px;">
+            <td width="70%" align="left" dir=ltr>Total Price (Exlcuding VAT):</td>
+            <td width="30%" align="right">
+             <%= invoice.totalPriceTaxExcl.toFixed(2) %> AED
+            </td>
+          </tr>
+          <tr style="border-bottom: dashed 1px gray; height:20px;">
+            <td width="70%" align="left" dir=ltr>Discount (-):</td>
+            <td width="30%" align="right">
+              <%= invoice.totalDiscount.toFixed(2) %> AED
+            </td>
+          </tr>
+          <tr style="border-bottom: dashed 1px gray; height:20px;">
+            <td width="70%" align="left" dir=ltr>Tax Adjustment After Discount (+):</td>
+            <td width="30%" align="right">
+              <%= invoice.taxAdjustment.toFixed(2) %> AED
+            </td>
+          </tr>
+          <tr style="border-bottom: dashed 1px gray; height:20px;">
+            <td width="70%" align="left" dir=ltr>Net Discount:</td>
+            <td width="30%" align="right">
+              <%= invoice.netDiscount.toFixed(2) %> AED
+            </td>
+          </tr>
+          <tr style="border-bottom: dashed 1px gray; height:20px;">
+            <td width="70%" align="left" dir=ltr>Creditbuy fee:</td>
+            <td width="30%" align="right">
+              <%= invoice.ajilHandlingFee.toFixed(2) %> AED
+            </td>
+          </tr>
+          <tr style="border-bottom: dashed 1px gray; height:20px;">
+            <td width="70%" align="left" dir=ltr>Total taxable amount (excluding VAT):</td>
+            <td width="30%" align="right">
+              <%= invoice.taxableAmount.toFixed(2) %> AED
+            </td>
+          </tr>
+          <tr>
+            <td width="70%" align="left" dir=ltr>VAT Total:</td>
+            <td width="30%" align="right">
+              <%= invoice.totalTax.toFixed(2) %> AED
+            </td>
+          </tr>
+        </table>
+        <table class="invoice-total" dir="ltr" width="100%" border="0" cellpadding="5" cellspacing="0"
+          style="table-layout: fixed; border-collapse: collapse;">
+          <tr>
+            <td width="70%" align="left" dir=ltr>Invoice Gross Total (Including VAT):</td>
+            <td width="30%" align="right">
+              <%= invoice.totalAmount.toFixed(2) %> AED
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <div class="footer">
+      <img src="https://prod-retailo-images.s3.me-south-1.amazonaws.com/dubaiThermalFooter.jpg"
+        class="footer-img" alt="" />
+    </div>
+  </div>
+</body>
+
+</html>

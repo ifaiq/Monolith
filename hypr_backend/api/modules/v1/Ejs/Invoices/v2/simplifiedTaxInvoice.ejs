@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retailo</title>
+    <style>
+      @font-face {
+        font-family: arabicFont;
+        src: url("https://prod-retailo-images.s3.me-south-1.amazonaws.com/Dubai-Regular.ttf");
+      }
+
+      table {
+        width: 100%;
+        font-size: 12px;
+      }
+
+      table td {
+        border-color: #92979c;
+      }
+
+      h3 {
+        padding: 0;
+        margin: 0;
+      }
+
+      .px-0 {
+        padding-left: 0;
+        padding-right: 0;
+      }
+
+      .table-header {
+        background: #92979c;
+        color: #fff;
+        font-weight: 600;
+      }
+
+      .sub-header {
+        background: #7b7d82;
+        color: #fff;
+      }
+
+      .long-table {
+        display: block;
+        page-break-inside: auto;
+      }
+
+      .long-table tr {
+        page-break-inside: avoid;
+        page-break-after: auto;
+      }
+
+      .long-table td {
+        page-break-inside: avoid;
+        page-break-after: auto;
+      }
+
+      td {
+        font-family: arabicFont;
+      }
+
+      html {
+        zoom: 0.7;
+      }
+      
+      page {
+        position: relative;
+        display: block;
+        margin: 0 auto;
+        width: 21cm;
+        height: 31.5cm;
+      }
+
+      footer {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+      }
+
+    </style>
+  </head>
+
+  <body>
+    <div><img src='https://prod-retailo-images.s3.me-south-1.amazonaws.com/invoice-header.png' style="width: 100%;"/></div>
+    <table border="0" cellpadding="0" cellspacing="0" class="border-none"style="width: 100%; table-layout: fixed; border-collapse: collapse;">
+      <tr>
+        <td align="center">
+          <h2 style="margin: 0px">الفاتورة المبسطة<br>Simplified Invoice</h2>
+          <% if (invoice.isCreditNoteInvoice) { %>
+            <h3 style="margin: 0px">Credit Note |  اشعار دائن</h3>
+          <% } %>
+        </td>
+      </tr>
+    </table>
+          <table border="0" cellpadding="13" cellspacing="0" class="border-none" style="width: 100%; table-layout: fixed; border-collapse: collapse;">
+            <tr>
+              <td class="px-0">
+                <table border="0" cellpadding="5" cellspacing="0" style="width: 100%; table-layout: fixed; border-collapse: collapse;">
+                  <td width="30%"><%- invoice.qr %></td>
+                  <td width="40%">&nbsp;</td>
+                  <td width="30%">
+                    <table border="1" cellpadding="5" cellspacing="0" style="width: 100%; table-layout: fixed; border-collapse: collapse;">
+                      <tr>
+                        <td align="center"><%= invoice.invoiceNumber %></td>
+                        <td align="center">:رقم الفاتورة<br>Invoice ID:</td>
+                      </tr>
+                      <tr>
+                        <td align="center"><%= invoice.orderId %></td>
+                        <td align="center">:رقم الطلب<br>Order ID:</td>
+                      </tr>
+                    </table>
+                  </td>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td class="px-0">
+                <table border="0" cellpadding="5" cellspacing="0" style="width: 100%; table-layout: fixed; border-collapse: collapse;">
+                  <td width="60%">&nbsp;</td>
+                  <td width="40%">
+                    <table border="1" cellpadding="3" cellspacing="0" style="width: 100%; table-layout: fixed; border-collapse: collapse;">
+                      <tr>
+                        <td align="center"><%= invoice.issueDate %></td>
+                        <td align="center">:تاريخ إصدار الفاتورة<br>Invoice Issue Date:</td>
+                      </tr>
+                      <tr>
+                        <td align="center"><%= invoice.supplyDate %></td>
+                        <td align="center">:تاريخ التوريد<br>Date of Supply:</td>
+                      </tr>
+                    </table>
+                  </td>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td class="px-0">
+                <table border="0" cellpadding="5" cellspacing="0" style="width: 100%; table-layout: fixed; border-collapse: collapse;">
+                  <td width="40%">&nbsp;</td>
+                  <td width="60%">
+                    <table border="1" cellpadding="5" cellspacing="0" style="width: 100%; table-layout: fixed; border-collapse: collapse; word-wrap:break-word;">
+                      <tr class="sub-header">
+                        <td align="center" colspan="2">:بائع<br>Seller:</td>
+                      </tr>
+                      <tr>
+                        <td align="center"><%= invoice.seller.name %></td>
+                        <td align="center">:الاسم الكامل<br>Full Name:</td>
+                      </tr>
+                      <tr>
+                        <td align="center"><%= invoice.seller.businessName %></td>
+                        <td align="center">:اسم الشركة<br>Business Name:</td>
+                      </tr>
+                      <tr>
+                        <td align="center"><%= invoice.seller.address %></td>
+                        <td align="center">:العنوان الكامل<br>Full Address:</td>
+                      </tr>
+                      <tr>
+                        <td align="center"><%= invoice.seller.phone %></td>
+                        <td align="center">:رقم الاتصال<br>Contact Number:</td>
+                      </tr>
+                      <tr>
+                        <td align="center"><%= invoice.seller.vat %></td>
+                        <td align="center">:رقم ضريبة القيمة المضافة<br>VAT Number:</td>
+                      </tr>
+                    </table>
+                  </td>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td class="px-0">
+                <table border="0" cellpadding="5" cellspacing="0" style="width: 100%; table-layout: fixed; border-collapse: collapse;">
+                  <td width="100%">
+                    <table border="0" cellpadding="0" cellspacing="0" style="width: 100%; table-layout: fixed; border-collapse: collapse; word-wrap:break-word; border: solid 1px;">
+                      <tr class="table-header">
+                        <td>
+                          <table border="0" cellpadding="5" cellspacing="0" style="width: 100%; table-layout: fixed; border-collapse: collapse;">
+                            <tr>
+                              <td align="center">:توصيف المنتجات<br>Line Items:</td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                      <tr class="sub-header">
+                        <td>
+                          <table border="1" cellpadding="5" cellspacing="0" style="width: 100%; table-layout: fixed; border-collapse: collapse; border: 0;">
+                            <tr>
+                              <td align="center" style="width: 17%; border-bottom: 0; border-left: 0;">السعر الإجمالي (شامل لضريبة<br>:(القيمة المضافة<br>Total Price (Including VAT):</td>
+                              <td align="center" style="width: 13%; border-bottom: 0;">:ضريبة القيمة المضافة<br>VAT Amount:</td>
+                              <td align="center" style="width: 13%; border-bottom: 0;">:ضريبة القيمة<br>VAT Rate:</td>
+                              <td align="center" style="width: 18%; border-bottom: 0;">السعر الإجمالي (غير شامل ضريبة<br>:(القيمة المضافة<br>Total Price (Excluding VAT):</td>
+                              <td align="center" style="width: 8%; border-bottom: 0;">:الكمية<br>Quantity:</td>
+                              <td align="center" style="width: 15%; border-bottom: 0;">:سعر الوحدة<br>Unit price:</td>
+                              <td align="center" style="width: 29%; border-bottom: 0; border-right: 0;">:تفاصيل السلع أو الخدمات<br>Nature of goods & services:</td>
+                          </table>
+                        </td>
+                      </tr>
+                      <tr>
+                        <% invoice.lineItems.forEach(function(item){ %>
+                          <tr>
+                            <td>
+                              <table border="1" cellpadding="5" cellspacing="0" style="width: 100%; table-layout: fixed; border-collapse: collapse; border: 0;">
+                                <tr>
+                                  <td align="center" style="width: 17%; border-bottom: 0; border-left: 0;"><%= item.totalPriceWithTax.toFixed(2) %> SAR</td>
+                                  <td align="center" style="width: 13%; border-bottom: 0;"><%= item.taxAmount.toFixed(2) %> SAR</td>
+                                  <td align="center" style="width: 13%; border-bottom: 0;"><%= item.taxRate %> %</td>
+                                  <td align="center" style="width: 18%; border-bottom: 0;"><%= item.totalPrice.toFixed(2) %> SAR</td>
+                                  <td align="center" style="width: 8%; border-bottom: 0;"><%= item.quantity %></td>
+                                  <td align="center" style="width: 15%; border-bottom: 0;"><%= item.basePrice.toFixed(2) %> SAR</td>
+                                  <td align="center" style="width: 29%; border-bottom: 0; border-right: 0;"><%= item.name %></td>
+                                </tr>
+                              </table>
+                            </td>
+                          </tr>
+                        <% }); %>
+                      </tr>
+                    </table>
+                  </td>
+                </table>
+              </td>
+            </tr>
+          </table>
+              <page>
+                <div style="page-break-inside: avoid;">
+                  <table border="0" cellpadding="5" cellspacing="0" style="width: 100%; table-layout: fixed; border-collapse: collapse;">
+                    <td width="55%">&nbsp;</td>
+                    <td width="45%">
+                      <table border="0" cellpadding="0" cellspacing="0" style="width: 100%; table-layout: fixed; border-collapse: collapse; word-wrap:break-word; border: solid 1px;">
+                        <tr class="table-header">
+                          <td>
+                            <table border="1" cellpadding="5" cellspacing="0" style="width: 100%; table-layout: fixed; border-collapse: collapse; border: 0;">
+                              <tr>
+                                <td align="center">:إجمالي المبالغ<br>Order Summary:</td>
+                              </tr>
+                            </table>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <table border="1" cellpadding="5" cellspacing="0" style="width: 100%; table-layout: fixed; border-collapse: collapse; border: 0;">
+                              <tr>
+                                <td align="center" style="width: 30%; border-bottom: 0; border-left: 0;"><%= invoice.totalPriceTaxExcl.toFixed(2) %> SAR</td>
+                                <td align="center" style="width: 70%; border-bottom: 0; border-right: 0;">(السعر الإجمالي (غير شامل ضريبة القيمة المضافة<br>Total Price (Excluding VAT):</td>
+                              </tr>
+                            </table>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <table border="1" cellpadding="5" cellspacing="0" style="width: 100%; table-layout: fixed; border-collapse: collapse; border: 0;">
+                              <tr>
+                                <td align="center" style="width: 30%; border-bottom: 0; border-left: 0;"><%= invoice.totalDiscount.toFixed(2) %> SAR</td>
+                                <td align="center" style="width: 70%; border-bottom: 0; border-right: 0;">الخصم<br>Discount (-):</td>
+                              </tr>
+                            </table>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <table border="1" cellpadding="5" cellspacing="0" style="width: 100%; table-layout: fixed; border-collapse: collapse; border: 0;">
+                              <tr>
+                                <td align="center" style="width: 30%; border-bottom: 0; border-left: 0;"><%= invoice.taxAdjustment.toFixed(2) %> SAR</td>
+                                <td align="center" style="width: 70%; border-bottom: 0; border-right: 0;">مبلغ الضريبة بعد الخصم<br>Tax Adjustment After Discount (+):</td>
+                              </tr>
+                            </table>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <table border="1" cellpadding="5" cellspacing="0" style="width: 100%; table-layout: fixed; border-collapse: collapse; border: 0;">
+                              <tr>
+                                <td align="center" style="width: 30%; border-bottom: 0; border-left: 0;"><%= invoice.netDiscount.toFixed(2) %> SAR</td>
+                                <td align="center" style="width: 70%; border-bottom: 0; border-right: 0;">صافي الخصم<br>Net Discount:</td>
+                              </tr>
+                            </table>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <table border="1" cellpadding="5" cellspacing="0" style="width: 100%; table-layout: fixed; border-collapse: collapse; border: 0;">
+                              <tr>
+                                <td align="center" style="width: 30%; border-bottom: 0; border-left: 0;"><%= invoice.ajilHandlingFee.toFixed(2) %> SAR</td>
+                                <td align="center" style="width: 70%; border-bottom: 0; border-right: 0;">:رسوم الدفع الآجل<br>Ajil Handling Fee:</td>
+                              </tr>
+                            </table>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <table border="1" cellpadding="5" cellspacing="0" style="width: 100%; table-layout: fixed; border-collapse: collapse; border: 0;">
+                              <tr>
+                                <td align="center" style="width: 30%; border-bottom: 0; border-left: 0;"><%= invoice.taxableAmount.toFixed(2) %> SAR</td>
+                                <td align="center" style="width: 70%; border-bottom: 0; border-right: 0;">مجموع المبلغ الخاضع للضريبة غير شامل ضريبة القيمة المضافة<br>Total taxable amount (excluding VAT):</td>
+                              </tr>
+                            </table>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <table border="1" cellpadding="5" cellspacing="0" style="width: 100%; table-layout: fixed; border-collapse: collapse; border: 0;">
+                              <tr>
+                                <td align="center" style="width: 30%; border-bottom: 0; border-left: 0;"><%= invoice.totalTax.toFixed(2) %> SAR</td>
+                                <td align="center" style="width: 70%; border-bottom: 0; border-right: 0;">إجمالي ضريبة القيمة المضافة<br>VAT Total:</td>
+                              </tr>
+                            </table>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <table border="1" cellpadding="5" cellspacing="0" style="width: 100%; table-layout: fixed; border-collapse: collapse; border: 0;">
+                              <tr>
+                                <td align="center" style="width: 30%; border-bottom: 0; border-left: 0;"><%= invoice.totalAmount.toFixed(2) %> SAR</td>
+                                <td align="center" style="width: 70%; border-bottom: 0; border-right: 0;  ">المجموع الكلي للفاتورة شامل ضريبة القيمة المضافة<br>Invoice Gross Total (Including VAT):</td>
+                              </tr>
+                            </table>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </table>
+                </div>
+                <div style="page-break-inside: avoid;">
+                  <table border="0" cellpadding="0" cellspacing="0" style="width: 100%; table-layout: fixed; border-collapse: collapse;">
+                    <td width="45%">
+                      <table border="1" cellpadding="5" cellspacing="0" style="width: 100%; table-layout: fixed; border-collapse: collapse;">
+                        <tr class="table-header">
+                          <td align="center" colspan="3">:معالجة الضريبة<br>Special Tax Treatment:</td>
+                        </tr>
+                        <tr class="sub-header">
+                          <td align="center">:معدل الضريبة<br>Tax Rate:</td>
+                          <td align="center" colspan="2">:اسم المنتج<br>Item Name:</td>
+                        </tr>
+                        <% invoice.specialLineItems.forEach(function(item){ %>
+                          <tr>
+                            <td align="center"><%= item.taxRate %>%</td>
+                            <td align="center" colspan="2"><%= item.name %></td>
+                          </tr>
+                        <% }); %>
+                      </table>
+                    </td>
+                    <td width="5%">&nbsp;</td>
+                    <td width="50%" style="vertical-align: top">
+                      <table border="1" cellpadding="5" cellspacing="0" style="width: 100%; table-layout: fixed; border-collapse: collapse;">
+                        <tr class="table-header">
+                          <td align="center" colspan="3">:اشعار دائن/مدين<br>Credit/Debit Notes:</td>
+                        </tr>
+                        <tr class="sub-header">
+                          <td align="center">:ملاحضات إضافية<br>Additional Notes:</td>
+                          <td align="center">:حالة الطلب<br>Order Status:</td>
+                          <td align="center">:رقم الفاتورة <br>Invoice ID:</td>
+                        </tr>
+                        <% invoice.referencesArr && invoice.referencesArr.forEach(function(item){ %>
+                          <tr>
+                            <td align="center"><%= item.issueDate %></td>
+                            <td align="center"><%= item.orderStatus %></td>
+                            <td align="center"><%= item.invoiceNumber %></td>
+                          </tr>
+                        <% }); %>
+                      </table>
+                    </td>
+                  </table>
+                </div>
+    <footer>
+      <div>
+      <img src='https://prod-retailo-images.s3.me-south-1.amazonaws.com/invoice-footer-ar.png' style="width: 100%;"/>
+      </div>
+    </footer>
+  </page>
+  </body>
+</html>

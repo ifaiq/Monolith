@@ -1,0 +1,9 @@
+DELETE FROM role_permissions WHERE id = 474;
+DELETE FROM role_permissions WHERE id = 475;
+DELETE FROM role_permissions WHERE id = 476;
+DELETE FROM role_permissions WHERE id = 477;
+DELETE FROM role_permissions WHERE id = 478;
+DELETE FROM role_permissions WHERE id = 479;
+DELETE FROM role_permissions WHERE id = 480;
+DELETE FROM role_permissions WHERE id = 481;
+DELETE FROM role_permissions WHERE id = 482;

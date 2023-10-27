@@ -1,0 +1,49 @@
+@media screen and (max-width: 992px) {
+  .push-right {
+    .sidebar {
+      left: 235px !important;
+    }
+  }
+  //   .sidebar {
+  //     .logo-holder {
+  //       padding: 0;
+  //       margin: 10px 0 15px 40px;
+  //     }
+  //   }
+}
+
+@media screen and (max-width: 768px) {
+  .skewbtn-primary {
+    &.skewbtn-secondary {
+      padding: 0 15px !important;
+    }
+  }
+  .form-group {
+    height: 55px !important;
+    padding: 0 0.75rem !important;
+  }
+  .sidebar {
+    .logo-holder {
+      padding: 0;
+      margin: 10px 0 15px 40px !important;
+    }
+  }
+  .cont-list,
+  .cont-list-white {
+    width: 100% !important;
+  }
+  .cont-list-white button {
+    width: auto !important;
+    padding: 0 15px;
+  }
+  .sm-mb-10 {
+    margin-bottom: 10px;
+  }
+
+  .responsiveTable {
+    width: 900px;
+    overflow: auto !important;
+  }
+
+  
+}

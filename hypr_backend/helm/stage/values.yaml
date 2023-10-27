@@ -1,0 +1,87 @@
+# Default values for chart.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 4
+
+image:
+  repository: 833896303910.dkr.ecr.me-south-1.amazonaws.com/monolith-backend
+  pullPolicy: Always
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "05.09.22.12.58.06"
+  container_port: 8080
+
+nameOverride: "hyper-backend-app"
+fullnameOverride: "hyper-backend"
+environment: "Stage"
+
+command: ["/bin/bash"]
+args:
+  - "-c"
+  - "db-migrate up --config config/database.json -e stage; node app.js"
+healthCheckPath: "/"
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::718230964299:role/ecsTaskExecutionRole
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: "sa-voyager"
+
+podAnnotations: {}
+
+
+service:
+  type: ClusterIP
+  port: 8080
+
+ingress:
+  enabled: true
+  className: "alb"
+  annotations: 
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/group.name: retailo-stage
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:me-south-1:833896303910:certificate/f1cade01-cc7a-4465-8d04-0898ade03742
+    alb.ingress.kubernetes.io/healthcheck-path: /
+    alb.ingress.kubernetes.io/group.order: '1000'
+  hosts:
+    - host: 
+      paths:
+        - path: /
+          pathType: Prefix
+
+initalDelaySeconds: 180
+timeoutSeconds: 30
+failureThreshold: 3
+
+resources:
+  limits:
+    cpu: 4000m
+    memory: 10240Mi
+  requests:
+    cpu: 2500m
+    memory: 6144Mi
+
+autoscaling:
+  enabled: true
+  minReplicas: 4
+  maxReplicas: 8
+  targetCPUUtilizationPercentage: 70
+  targetMemoryUtilizationPercentage: 70
+
+
+AppName: "monolith-backend"
+
+tolerations: 
+    - effect: "NoSchedule"
+      key: "app"
+      operator: "Equal"
+      value: "monolith-backend" 
+
+nodeSelector: {}
+
+affinity: {}

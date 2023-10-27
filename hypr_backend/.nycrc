@@ -1,0 +1,14 @@
+{
+  "reporter": ["lcov", "text-summary", "html"],
+  "sourceMap": true,
+  "instrument": true,
+  "temp-dir": ".nyc_output",
+  "report-dir": "coverage",
+  "all": true,
+  "exclude": ["**/test", "**/node_modules", "**/api-docs/", "**/swagger/"],
+  "check-coverage": true,
+  "statements": 32.5,
+  "branches": 10.0,
+  "functions": 30.5,
+  "lines": 35.5
+}

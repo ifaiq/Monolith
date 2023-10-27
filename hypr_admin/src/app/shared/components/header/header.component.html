@@ -1,0 +1,26 @@
+<div class="pos-f-t fixed-top header">
+  <nav class="navbar navbar-inverse bg-inverse navbar-toggleable-md">
+    <button class="navbar-toggler navbar-toggler-right " id="navBtn" (click)="toggleMenubar()" (click)="toggleSidebar()">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <a class="navbar-brand logo-holder" href="javascript:void(0)">
+      <img alt="" src="assets/images/retailo-logo-110x45.svg" width="120px">
+    </a>
+    <div class="collapse navbar-collapse">
+      <ul class="navbar-nav ml-auto mt-2 mt-md-0"> &nbsp;
+       
+        <li class="nav-item dropdown user-circle" ngbDropdown>
+          <a href="javascript:void(0)" class="nav-link" ngbDropdownToggle>
+            <span style="display: block;text-align: center;">{{username}}</span> <b class="caret"></b>
+          </a>
+          <div class="dropdown-menu dropdown-menu-right">
+           <a class="dropdown-item" [routerLink]="['/login']" (click)="onLoggedout()"><i class="fa fa-fw fa-power-off"></i>
+              {{ 'Log Out' | translate }} </a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</div>

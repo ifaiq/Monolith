@@ -1,0 +1,76 @@
+# Default values for chart.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: 833896303910.dkr.ecr.me-south-1.amazonaws.com/admin-portal
+  pullPolicy: Always
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "02.09.22.16.44.39"
+  container_port: 8084
+
+nameOverride: "admin-portal-app"
+fullnameOverride: "admin-portal"
+environment: "Stage"
+
+command: ["/bin/bash"]
+args:
+  - "-c"
+  - "ng build --env=stage; node server.js"
+healthCheckPath: "/"
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: false
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+
+service:
+  type: ClusterIP
+  port: 8084
+
+ingress:
+  enabled: true
+  className: "alb"
+  annotations: 
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/group.name: retailo-stage
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:me-south-1:833896303910:certificate/f1cade01-cc7a-4465-8d04-0898ade03742
+    alb.ingress.kubernetes.io/healthcheck-path: /
+  hosts:
+    - host: 
+      paths:
+        - path: /adminportal
+          pathType: Prefix
+
+initalDelaySeconds: 75
+
+resources: 
+  limits:
+    cpu: 1000m
+    memory: 2048Mi
+  requests:
+    cpu: 500m
+    memory: 1024Mi
+
+autoscaling:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

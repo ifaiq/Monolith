@@ -1,0 +1,35 @@
+table td,
+table thead th {
+    border: none;
+    border-bottom: 1px solid #eae9e9;
+}
+.order-table-heading {
+    border-bottom: 1px solid #e65400;
+    padding: 10px 0px;
+    position: relative;
+    margin-bottom: 10px;
+    &:after {
+        content: "";
+        width: 15%;
+        display: block;
+        height: 3px;
+        background-color: #e65400;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+    }
+}
+.tdFont {
+    font-size: 10px;
+}
+.h5Margin {
+    margin-left: 2px;
+}
+.skewbtn-secondary {
+    color: #e65400;
+    border: 1px solid #e65400;
+}
+.error-message {
+    padding: 10px;
+    color: #e65400;
+}

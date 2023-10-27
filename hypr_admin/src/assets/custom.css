@@ -1,0 +1,87 @@
+html,
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+img {
+    margin: 0;
+} /* margin reset*/
+h1 {
+    font-size: 18pt;
+    font-weight: 500;
+    margin-bottom: 0.5cm;
+}
+h2 {
+    font-size: 16pt;
+    font-weight: 500;
+}
+p {
+    font-size: 12pt;
+}
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+h5 {
+    font-size: 18pt;
+    padding: 8px;
+    text-align: center;
+}
+#alignmentHeader {
+    text-align: center;
+}
+#alignmentCase {
+    text-align: left;
+}
+#alignmentName {
+    text-align: left;
+    padding-block-start: 03px;
+}
+#alignmentValue {
+    text-align: center;
+}
+th {
+    background-color: gray;
+    text-align: center;
+    padding: 5px;
+    border-collapse: collapse;
+}
+td {
+    border: 1px solid black;
+    text-align: center;
+}
+#progressBarHeader {
+    font-size: 18pt;
+    text-align: center;
+    padding: 1px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+
+.items-group {
+    border-style: solid;
+    border-color: black;
+    border-width: 1pt 1pt 1pt 1pt;
+    border-radius: 5pt;
+    padding: 3pt 3pt 3pt 3pt;
+    margin: 9pt 0 9pt 0;
+}
+
+.label {
+    font-weight: 500;
+}
+
+.disclaimer,
+.address p {
+    font-size: 10pt;
+}
+
+.signature-field {
+    padding-bottom: 24pt;
+    border-bottom: solid black 1pt;
+}

@@ -1,0 +1,1 @@
+ALTER TABLE non_cash_collected RENAME COLUMN transaction_id TO transaction_id;

@@ -1,0 +1,297 @@
+<div>
+    <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+  </div>
+  <div class="col" *ngxPermissionsOnly="['*', 'L_ALL_LOC']">
+    <div class="form-group">
+      <label>Location</label>
+      <select [(ngModel)]="selectedLocationId" (change)="addLocation()" class="form-control">
+        <option class='option' [value]="''">All</option>
+        <option *ngFor='let location of locations' [value]="location.id">
+          {{location.name}}
+        </option>
+      </select>
+    </div>
+  </div>
+  
+  <div class="row mb-20">
+    <div class="col">
+      <h4 class="d-inline">Create Brand</h4>
+      <span class="refresh" *ngxPermissionsOnly="['*', 'C_CAT']">
+        <img (click)="refresh()" src="assets/images/refresh-icon.png" />
+      </span>
+    </div>
+  </div>
+  <div class="cont-list" *ngxPermissionsOnly="['*', 'C_CAT']">
+    <div class="row mb-20">
+      <div class="col-12 col-lg-4 mb-10">
+        <div class="form-group borderView">
+          <label>Name (L1)</label>
+          <input type="text" [(ngModel)]="cat.name" name="name" class="form-control">
+        </div>
+      </div>
+  
+      <div class="col-12 col-lg-4 mb-10">
+        <div class="form-group borderView">
+          <label>Priority</label>
+          <input type="number" disabled='disabled' [(ngModel)]="cat.priority" class="form-control">
+        </div>
+      </div>
+  
+      <div class="col-12 col-lg-4 mb-10">
+        <div class="form-group calenderView">
+          <label>Start Time</label>
+          <angular2-date-picker [(ngModel)]="cat.start_date" [settings]="settings"></angular2-date-picker>
+        </div>
+      </div>
+      <div class="col-12 col-lg-4 mb-10">
+        <div class="form-group calenderView">
+          <label>End Time</label>
+          <angular2-date-picker [(ngModel)]="cat.end_date" [settings]="settings"></angular2-date-picker>
+        </div>
+      </div>
+  
+      <div class="col-12 col-lg-4 mb-10 mt-15" *ngxPermissionsOnly="['*', 'C_IMG_S3']">
+        <div class="uploadedImage">
+          <img src={{cat.image_url}} class="mb-10">
+          <div class="upload-file-wrapper">
+            <input *ngIf="!cat.imageFileName" type="file" class="mb-10" (change)="onFileChange($event,cat)" #fileInput
+              placeholder="Upload file..." class="uploadFileshere" />
+            <div *ngIf="cat.imageFileName">
+              <label>
+                <div>{{cat.imageFileName}} <i class="removeFile fa fa-close" (click)="removeFile(cat)"
+                    style="font-size:20px;color:red"></i></div>
+              </label>
+            </div>
+            <button type="button" class="btn btn-secondary btn-text"
+              (click)="uploadFile(1, 0, cat,cat)"><span>Upload</span></button>
+          </div>
+        </div>
+      </div>
+  
+    </div>
+  
+    <div class="row" *ngFor="let sub_cat of cat.sub_categories; let i = index" class="sub_categoriesHolder">
+      <div class="col-12 col-lg-12 mb-20">
+        <div class="row">
+          <div class="col-lg-4">
+            <div class="form-group borderView">
+              <label>Name (L2)</label>
+              <input type="text" [(ngModel)]="sub_cat.name" name="name" class="form-control">
+            </div>
+          </div>
+  
+          <div class="col-lg-4">
+            <div class="form-group borderView">
+              <label>Priority</label>
+              <input type="number" disabled='disabled' [(ngModel)]="sub_cat.priority" class="form-control">
+            </div>
+          </div>
+  
+          <div class="col-lg-8">
+            <button aria-hidden="true" (click)="removeSubCat(cat,i)"
+              class="btn btn-link fa fa-times crossbtn pull-right"></button>
+          </div>
+        </div>
+  
+        <div class="row mt-15" *ngxPermissionsOnly="['*', 'C_IMG_S3']">
+          <div class="col-lg-4">
+            <div class="uploadedImage mb-20">
+              <img src={{sub_cat.image_url}} class="mb-15">
+              <input *ngIf="!sub_cat.imageFileName" type="file" class="mb-10" (change)="onFileChange($event,sub_cat)"
+                #fileInput placeholder="Upload file..." class="uploadFileshere" />
+              <div *ngIf="sub_cat.imageFileName">
+                <label>
+                  <div>{{sub_cat.imageFileName}} <i class="removeFile fa fa-close" (click)="removeFile(sub_cat)"
+                      style="font-size:20px;color:red"></i></div>
+                </label>
+              </div>
+              <button type="button" class="btn btn-secondary btn-text"
+                (click)="uploadFile(2, i, undefined,sub_cat)"><span>Upload</span></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <button class="btn btn-primary skewbtn-primary mb-15" type="button" (click)="addSubCat(cat)">+ Add more</button>
+  
+  
+  </div>
+  
+  <div class="cont-list-white" *ngxPermissionsOnly="['*', 'C_CAT']">
+    <div class="row mb-20">
+      <div class="col">
+        <button class="skewbtn-secondary" (click)="createCategory()">Create</button>
+      </div>
+    </div>
+  </div>
+  <div *ngxPermissionsOnly="['*', 'L_ADMIN_CAT']">
+    <div class="row mb-20">
+      <div class="col">
+        <h4>Search Brand</h4>
+      </div>
+    </div>
+    <div class="cont-list">
+      <div class="row">
+        <div class="col-sm search-cross-box">
+          <input type="text" [(ngModel)]="searchCategory" (keyup.enter)="getAllCategories()"
+            placeholder="Write Brand Name...." class="form-control" />
+          <button aria-hidden="true" (click)="emptySearch()" class="btn btn-link fa fa-times crossbtn "></button>
+        </div>
+        <div class="col-sm">
+          <button (click)="getAllCategories()" class="skewbtn-secondary">Search</button>
+        </div>
+      </div>
+    </div>
+  
+    <div class="row mb-20 mt-20">
+      <div class="col">
+        <h4>Brand Listing</h4>
+      </div>
+    </div>
+    <div [sortablejs]="categories">
+      <div
+        *ngFor="let category of categories | paginate: { id:paginationId , itemsPerPage: itemsPerPage, currentPage: currentPage,totalItems: totalItems}; let i = index">
+        <div class="cont-list">
+          <div class="row mb-10">
+            <div class="col">
+              <h4> {{(itemsPerPage*(currentPage-1))+1+i}} - Brand ID {{category.id}}</h4>
+            </div>
+          </div>
+          <div class="row mb-20">
+            <div class="col-12 col-lg-4 mb-10">
+              <div class="form-group borderView">
+                <label>Name (L1)</label>
+                <input type="text" [(ngModel)]="category.name" name="name" class="form-control">
+              </div>
+  
+            </div>
+  
+            <div class="col-12 col-lg-4 mb-10">
+              <div class="form-group borderView">
+                <label>Priority</label>
+                <input type="number" [(ngModel)]="category.priority" class="form-control">
+              </div>
+            </div>
+  
+  
+            <div class="col-12 col-lg-4 mb-10">
+              <div class="form-group calenderView">
+                <label>Start Time</label>
+                <angular2-date-picker [(ngModel)]="category.start_date" [settings]="settings"></angular2-date-picker>
+              </div>
+            </div>
+            <div class="col-12 col-lg-4 mb-10">
+              <div class="form-group calenderView">
+                <label>End Time</label>
+                <angular2-date-picker [(ngModel)]="category.end_date" [settings]="settings"></angular2-date-picker>
+              </div>
+            </div>
+  
+            <div class="col-12 col-lg-4 mb-10">
+              <div class="uploadedImage mb-20">
+                <img src={{category.image_url}} class="mb-10">
+                <div class="upload-file-wrapper" *ngxPermissionsOnly="['*', 'C_IMG_S3']">
+                  <input *ngIf="!category.imageFileName" type="file" class="mb-10"
+                    (change)="onFileChange($event,category)" #fileInput placeholder="Upload file..."
+                    class="uploadFileshere" />
+                  <div *ngIf="category.imageFileName">
+                    <label>
+                      <div>{{category.imageFileName}} <i class="removeFile fa fa-close" (click)="removeFile(category)"
+                          style="font-size:20px;color:red"></i></div>
+                    </label>
+                  </div>
+                  <button type="button" class="btn btn-secondary btn-text"
+                    (click)="uploadFile(1, 0, category,category)"><span>Upload</span></button>
+                </div>
+              </div>
+            </div>
+  
+            <div class="col-lg-12 mb-30">
+              <div class="form-check ">
+                <input type="checkbox" (click)="disableCategory(category, true)" [(ngModel)]="category.disabled"
+                  name="disabled" id="exampleCheck1">
+                <label class="form-check-label" for="Promotion">Disable</label>
+              </div>
+            </div>
+            <div class="col-lg-12 mb-10" *ngFor="let sub_cat of category.sub_categories; let i = index">
+              <div class="row">
+  
+                <div class="col-12 col-lg-4 mb-10">
+                  <h6> {{i+1}} - Sub Brand ID {{sub_cat.id}}</h6>
+                  <div class="form-group borderView">
+                    <label>Name (L2)</label>
+                    <input type="text" [(ngModel)]="sub_cat.name" name="name" class="form-control">
+                  </div>
+  
+                </div>
+  
+  
+                <div class="col-12 col-lg-4 mb-10">
+                  <div class="form-group borderView">
+                    <label>Priority</label>
+                    <input type="number" [disabled]="subcatPriorityUpdateOptions[i]?.buttonStatus"
+                      [(ngModel)]="sub_cat.priority" class="form-control">
+                    <span *ngxPermissionsOnly="['*', 'U_SUBCAT_P']">
+                      <button class="btn btn-primary" *ngIf="sub_cat.id > 0"
+                        (click)="updateSubCategoryPriority(sub_cat,i)">{{subcatPriorityUpdateOptions[i].buttonText}}</button>
+                    </span>
+  
+                  </div>
+  
+                </div>
+                <button *ngIf="!sub_cat.id" aria-hidden="true" (click)="removeSubCat(category,i)"
+                  class="btn btn-link fa fa-times crossbtn pull-right"></button>
+  
+                <div class="col-12 col-lg-3 mb-10"></div>
+                <div class="col-12 col-lg-5 mb-10">
+                  <div class="categoryDisable_area mt-30">
+                    <div class="form-check ">
+                      <input type="checkbox" [disabled]="category.disabled" (click)="disableCategory(sub_cat, false)"
+                        [(ngModel)]="sub_cat.disabled" name="disabled" id="exampleCheck1">
+                      <label class="form-check-label" for="Promotion">Disable</label>
+                    </div>
+  
+                    <button class="skewbtn-primary" *ngxPermissionsOnly="['*', 'L_PROD_CAT']" (click)="goToCategory(sub_cat.id)">Go To Brand</button>
+  
+                  </div>
+                </div>
+  
+                <div class="col-lg-4">
+                  <div class="uploadedImage mb-20">
+                    <img src={{sub_cat.image_url}} class="mb-10">
+                    <div class="upload-file-wrapper" *ngxPermissionsOnly="['*', 'C_IMG_S3']">
+                      <input *ngIf="!sub_cat.imageFileName" type="file" class="mb-10"
+                        (change)="onFileChange($event,sub_cat)" #fileInput placeholder="Upload file..."
+                        class="uploadFileshere" />
+                      <div *ngIf="sub_cat.imageFileName">
+                        <label>
+                          <div>{{sub_cat.imageFileName}} <i class="removeFile fa fa-close" (click)="removeFile(sub_cat)"
+                              style="font-size:20px;color:red"></i></div>
+                        </label>
+                      </div>
+                      <button type="button" class="btn btn-secondary btn-text"
+                        (click)="uploadFile(2, i, sub_cat,sub_cat)"><span>Upload</span></button>
+                    </div>
+                  </div>
+                </div>
+  
+              </div>
+            </div>
+          </div>
+        </div>
+        <button class="btn btn-primary skewbtn-primary mb-15" type="button" (click)="addSubCat(category)">+ Add
+          more</button>
+  
+        <div class="cont-list-white" *ngxPermissionsOnly="['*', 'U_CAT']">
+          <div class="row mb-10 mt-10">
+            <div class="col">
+              <button class="skewbtn-secondary" (click)="updateCategory(category)">Update</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <pagination-controls class="mt-30" (pageChange)="pagination($event)" id="{{paginationId}}" autoHide="{{totalItems<itemsPerPage}">
+    </pagination-controls>
+  </div>

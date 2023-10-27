@@ -1,0 +1,89 @@
+.inventory-header{
+    width: 100%;
+    float: left;
+    padding-left: 0px;
+    margin-bottom:0px;
+}
+.inventory-header:last-child li{
+    border-bottom: 1px solid #ccc;
+}
+.inventory-header li{
+    float: left;
+    height: 35px;
+    border-top: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+    list-style:none;
+    width:auto;
+
+}
+.inventory-header li:last-child{
+    border-right:1px solid #ccc;
+}
+.inventory-header li span{
+    display: block;
+    padding:2px;
+    font-size: 12px;
+}
+
+.inventory-header li.six{
+    text-align: center;
+} 
+.inventory-header li.six span{
+    display:inline-block;
+    padding:0px 10px;
+    font-size: 12px;
+}
+.inventory-header li.six span span{
+    display:inline-block;
+    padding:0px;
+    width: 14px;
+    line-height: 14px;
+    height: 14px;
+    color: #fff;
+    background:#e55402;
+    text-align: center;
+    border-radius: 50%;
+    font-size: 12px;
+}
+
+.inventory-header li.first{
+    width:20%;
+    padding: 5px;
+}
+.inventory-header li.sec{
+    width:20%;
+    padding: 5px;
+}
+.inventory-header li.three{
+    width:15%;
+    padding: 5px;
+}
+.inventory-header li.four{
+    width:11%;
+    padding: 5px;
+}
+.inventory-header li.five{
+    width:11%;
+    padding: 5px;
+}
+.inventory-header li.six{
+    width:11%;
+    padding: 5px;
+}
+
+.inventory-header li.seven{
+    width:12%;
+    padding: 5px;
+}
+button.btn-new{
+    background: #e55402;
+    color: #fff;
+    float: left;
+    width:100px;
+    height: 40px;
+    line-height: 40px;
+    padding: 5px 30x;
+    border: 0px solid #000;
+    border-radius: 8px;
+    margin-top: 20px;
+}

@@ -1,0 +1,1 @@
+DELETE FROM permissions WHERE code = 'G_ACTIVE_BATCH_RBAC';

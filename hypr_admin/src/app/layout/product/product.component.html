@@ -1,0 +1,1426 @@
+<div class="row" *ngxPermissionsOnly="['*', 'L_PROD']">
+    <div class="col-12">
+        <div class="page-title">
+            <span class="h1">Products</span>
+            <button class="btn btn-icon btn-refresh ml-20" (click)="reload()">
+                <span></span>
+            </button>
+            <button class="skewbtn-secondary ml-20" *ngxPermissionsOnly="[
+                    '*',
+                    'ONBOARD_PROD',
+                    'BULK_U_PROD',
+                    'U_MULTI_LOC_PRICE',
+                    'U_PROD_IMG',
+                    'C_PROD'
+                ]"
+                (click)="openModalProductOnboarding(content)">
+                Product Onboarding
+            </button>
+            <button
+                class="skewbtn-secondary ml-20"
+                (click)="openModalProductExport(content4)">
+                Product Export
+            </button>
+        </div>
+    </div>
+</div>
+
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+
+<div class="row mb-20" *ngxPermissionsOnly="['*', 'L_PROD']">
+    <div class="col-sm search-cross-box">
+        <input type="text" placeholder="SKU or Brand or Product"
+            [(ngModel)]="search" (keyup.enter)="findProduct('')"
+            class="form-control" />
+        <button aria-hidden="true" (click)="findProduct('removeSearch')"
+            class="btn btn-link fa fa-times crossbtn"></button>
+    </div>
+    <div class="col"></div>
+    <div class="col"></div>
+</div>
+
+<div class="row all-orders" *ngxPermissionsOnly="['*', 'L_PROD']">
+    <div class="col-6 col-lg-2" *ngxPermissionsOnly="['*', 'L_ALL_COMP']">
+        <div class="form-group">
+            <label>Select Company: </label>
+            <select [(ngModel)]="companyId" class="form-control"
+                (change)="getbusinessUnits();">
+                <option class="option" [value]="''">All</option>
+                <option *ngFor="let company of companies" [value]="company.id">
+                    {{ company.name }}
+                </option>
+            </select>
+        </div>
+    </div>
+    <div class="col-6 col-lg-2" *ngxPermissionsOnly="['*', 'L_BU']">
+        <div class="form-group">
+            <label>Business Unit</label>
+            <select [(ngModel)]="selectedBusinessUnitId" (change)="getlocations()"
+                class="form-control">
+                <option class="option" [value]="''">All</option>
+                <option *ngFor="let bu of businessUnits" [value]="bu.id">
+                    {{ bu.name }}
+                </option>
+            </select>
+        </div>
+    </div>
+    <div class="col-6 col-lg-2" *ngxPermissionsOnly="['*', 'L_ALL_LOC']">
+        <div class="form-group">
+            <label>Location</label>
+            <select [(ngModel)]="selectedLocationId" (change)="refresh()" class="form-control">
+                <option class="option" [value]="''">All</option>
+                <option *ngFor="let location of locations" [value]="location.id">
+                    {{ location.name }}
+                </option>
+            </select>
+        </div>
+    </div>
+    <div class="col-6 col-lg-2">
+        <div class="form-group">
+            <label>Enabled/Disabled</label>
+            <select class="select-option" required [(ngModel)]="disabled" class="form-control">
+                <option class="option" [value]="''">All</option>
+                <option class="option" [value]="0">Enabled</option>
+                <option class="option" [value]="1">Disabled</option>
+            </select>
+        </div>
+    </div>
+    <div class="col-6 col-lg-2" *ngxPermissionsOnly="['*', 'L_ADMIN_CAT']">
+        <div class="form-group">
+            <label>Select Category</label>
+            <select [(ngModel)]="selectedCategory" class="form-control"
+                (change)="categoryChanged($event)">
+                <option [value]="''">All</option>
+                <option *ngFor="let category of categories" class="option"
+                    [value]="category.id">
+                    {{ category.name }}
+                </option>
+            </select>
+        </div>
+    </div>
+    <div class="col-6 col-lg-2" *ngIf="subCategories.length">
+        <div class="form-group">
+            <label>Select Sub-Category</label>
+            <select [(ngModel)]="selectedSubCategory" class="form-control">
+                <option [value]="''">All</option>
+                <option *ngFor="let category of subCategories" class="option" [value]="category.id">
+                    {{ category.name }}
+                </option>
+            </select>
+        </div>
+    </div>
+    <div class="col-6 col-lg-2">
+        <div class="form-group">
+            <label>Sort By</label>
+            <select class="form-control" [(ngModel)]="selectedSortIndex">
+                <option *ngFor="let sortOption of sortOptions; let i = index"
+                    class="option" [value]="i">
+                    {{ sortOption.sort }}
+                </option>
+            </select>
+        </div>
+    </div>
+    <div class="col" *ngxPermissionsOnly="['*', 'L_PROD']">
+        <button (click)="findProduct('')" class="skewbtn-primary mt-20">
+            GO
+        </button>
+    </div>
+</div>
+
+<p *ngIf="totalItems > 0">
+    {{ itemsPerPage * (currentPage - 1) + 1 }} -
+    {{ itemsPerPage * currentPage > totalItems
+    ? totalItems
+    : itemsPerPage * currentPage}}
+    of {{ totalItems }}
+</p>
+
+<div class="row" *ngxPermissionsOnly="['*', 'L_PROD']">
+    <div class="col-12">
+        <div class="table-responsive">
+            <div class="custom-table fixed-header">
+                <ul class="row thead">
+                    <li class="col-1"><span>#</span></li>
+                    <li class="col-1"><span>ID</span></li>
+                    <li class="col-2"><span>Name</span></li>
+                    <li class="col-2"><span>SKU</span></li>
+                    <li class="col-1"><span>Brand</span></li>
+                    <li class="col-1"><span>Size</span></li>
+                    <li class="col-1"><span>Price</span></li>
+                    <li class="col-1"><span>Stock</span></li>
+                    <li class="col-1"><span>Physical Stock</span></li>
+                    <li class="col-1"><span>Details/Edit</span></li>
+                </ul>
+                <ul class="table-body">
+                    <li class="row table-row align-items-center"
+                        *ngFor="let product of products
+                                | paginate
+                                    : {
+                                          id: paginationId,
+                                          itemsPerPage: itemsPerPage,
+                                          currentPage: currentPage,
+                                          totalItems: totalItems
+                                      };
+                            let i = index">
+                        <div class="col-1 tcell">{{ product.rowCount }}</div>
+                        <div class="col-1 tcell">
+                            <span>{{ product.id }}</span>
+                        </div>
+                        <div class="col-2 tcell">
+                            <span>{{ product.name }}</span>
+                        </div>
+                        <div class="col-2 tcell">
+                            <span>{{ product.sku }}</span>
+                        </div>
+                        <div class="col-1 tcell">
+                            <span>{{ product.brand }}</span>
+                        </div>
+                        <div class="col-1 tcell">
+                            <span>{{ product.size }}</span>
+                        </div>
+                        <div class="col-1 tcell">
+                            <span>{{ product.price }}</span>
+                        </div>
+                        <div class="col-1 tcell">
+                            <span>{{ product.stock_quantity }}</span>
+                        </div>
+                        <div class="col-1 tcell">
+                            <span>{{ product.physical_stock }}</span>
+                        </div>
+                        <div class="col-1 tcell">
+                            <button class="btn btn-icon btn-edit" (click)="this.rowClick(i)"></button>
+                        </div>
+                        <div class="col-12 table-row-details bundle-details-wrapper"
+                            *ngxPermissionsOnly="['*', 'U_PROD']" [hidden]="!(activeIndex == i)">
+                            <div class="col-lg-12">
+                                <h5>Edit Product Information</h5>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-3">
+                                    <div class="uploadedImage mb-30">
+                                        <img src="{{ product.image_url }}" class="mb-10" />
+
+                                        <div class="upload-file-wrapper" *ngxPermissionsOnly="[
+                                                '*',
+                                                'C_IMG_S3'
+                                            ]">
+                                            <input type="file" class="mb-10"
+                                                (change)="onFileChange($event, 1)"
+                                                #fileInput placeholder="Upload file..."
+                                                class="uploadFileshere" />
+                                            <button
+                                                class="skewbtn-secondary"
+                                                (click)="uploadFile()">
+                                                Upload
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="selectedCategories">
+                                        <h6>
+                                            Active Categories
+                                            <span *ngxPermissionsOnly="[
+                                                    '*',
+                                                    'L_ADMIN_CAT'
+                                                ]">
+                                                <button *ngIf="!editCategoryOption.isEdit"
+                                                    class="btn btn-icon btn-edit"
+                                                    (click)="editCategoryOption.isEdit = true"></button>
+                                                <button class="btn btn-primary"
+                                                    (click)="openCategorySelection(categorySelection, i)">
+                                                    Add More
+                                                </button>
+                                            </span>
+                                        </h6>
+                                        <div class="categories">
+                                            <div class="holder" *ngFor="let category of product.active_categories;
+                                                    let catIndex = index">
+                                                <div class="row">
+                                                    <div class="col-lg-8 categorytitle">
+                                                        <span class="cateName">
+                                                            {{ category.category_id.parent_id
+                                                            ? "L2"
+                                                            : "L1"}} -
+                                                            {{ category.category_id.name}}
+                                                        </span>
+                                                        <br />
+                                                        <br />
+                                                        <div class="priority">
+                                                            <label for="priority">Priority</label>
+                                                            <input type="number" class="input-control" id="priority"
+                                                                [(ngModel)]="category.product_priority"
+                                                                (input)="priorityCheck(category)" />
+                                                        </div>
+                                                        <div class="priority-error" *ngIf="category.max_priority">
+                                                            <p>
+                                                                Max priority allowed: {{category.product_max_priority}}
+                                                            </p>
+                                                        </div>
+                                                        <div class="priority-error" *ngIf=" category.invalid_priority">
+                                                            <p>
+                                                                Priority can't be negative, zero or empty
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-1">
+                                                        <i (click)="removeCategory(product, catIndex)"
+                                                            *ngIf="editCategoryOption.isEdit" class="fa fa-close"
+                                                            title="Remove Category"
+                                                            style="font-size: 20px; color: red;">
+                                                        </i>
+                                                    </div>
+                                                    <div class="col-lg-3" *ngxPermissionsOnly="[
+                                                            '*',
+                                                            'L_ADMIN_CAT'
+                                                        ]">
+                                                        <i (click)="openSubCategorySelection(
+                                                                subCategorySelection,
+                                                                category,
+                                                                product,
+                                                                catIndex
+                                                            )"
+                                                            *ngIf="editCategoryOption.isEdit &&
+                                                                category.addmore"
+                                                            class="fa fa-plus"
+                                                            title="Add more Subcategories"
+                                                            style="font-size: 20px; color: green;">
+                                                        </i>
+                                                    </div>
+                                                </div>
+                                                <div class="subCategories"
+                                                    *ngFor="let sub of category.sub_categories">
+                                                    <span class="cateName">
+                                                        {{sub}}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="product.category_id" class="mt-30 mb-10">
+                                        <label>Base Category</label>
+                                        <strong>{{product.category_id.name}}</strong>
+                                    </div>
+                                </div>
+                                <div class="col-lg-9">
+                                    <div class="row">
+                                        <div class="col-lg-4">
+                                            <div class="row">
+                                                <div class="col paddingr0">
+                                                    <div class="form-group fg1">
+                                                        <label>Name *</label>
+                                                        <input type="text" class="form-control"
+                                                            [(ngModel)]="product.name" />
+                                                    </div>
+                                                </div>
+                                                <div class="col paddingl0">
+                                                    <div class="form-group fg2">
+                                                        <label>Brand</label>
+                                                        <input type="text" class="form-control"
+                                                            [(ngModel)]="product.brand" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col paddingr0">
+                                                    <div class="form-group fg1">
+                                                        <label>Size</label>
+                                                        <input type="text" class="form-control"
+                                                            [(ngModel)]="product.size" />
+                                                    </div>
+                                                </div>
+                                                <div class="col paddingl0">
+                                                    <div class="form-group fg2">
+                                                        <label>Unit</label>
+                                                        <input type="text" class="form-control"
+                                                            [(ngModel)]="product.unit" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col">
+                                                    <div class="form-group">
+                                                        <label>Languages</label>
+                                                        <select class="form-control option"
+                                                            [(ngModel)]="product.selectedLanguageCode"
+                                                            (change)="updateSelectedLanguage(product)">
+                                                            <option *ngFor="let language of languages"
+                                                                [value]="language.code">
+                                                                {{language.name}}
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row" *ngIf="product.selectedLanguage">
+                                                <div class="col paddingr0">
+                                                    <div class="form-group fg1">
+                                                        <label>{{product.selectedLanguage.name}} Name</label>
+                                                        <div *ngFor="let language of product.multilingual">
+                                                            <input type="text" [(ngModel)]="language.value" class="form-control"
+                                                                *ngIf="language.language == product.selectedLanguageCode && language.attributeName == attributes.name">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col paddingl0">
+                                                    <div class="form-group fg2">
+                                                        <label>{{product.selectedLanguage.name}} Description</label>
+                                                        <div *ngFor="let language of product.multilingual">
+                                                            <input type="text" [(ngModel)]="language.value" class="form-control"
+                                                                *ngIf="language.language == product.selectedLanguageCode && language.attributeName == attributes.description">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row" *ngIf="!product.selectedLanguage">
+                                                <div class="col">
+                                                    <div class="form-group">
+                                                        <label>Language Attributes</label>
+                                                        <input class="form-control" readonly [value]="languageNotSelected">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col">
+                                                    <div class="form-group">
+                                                        <label>Total delivery time</label>
+                                                        <input type="number"
+                                                               numberLimit minLength="6" maxLength="168"
+                                                               min="6" max="168"
+                                                               [(ngModel)]="product.delivery_time" name="delivery_time" class="form-control"
+                                                               (updateValue)="product.delivery_time = $event">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="row">
+                                                <div class="col paddingr0">
+                                                    <div class="form-group fg1">
+                                                        <label>Price *</label>
+                                                        <input type="number" class="form-control"
+                                                            [(ngModel)]="product.price" />
+                                                    </div>
+                                                </div>
+                                                <div class="col paddingl0">
+                                                    <div class="form-group fg2">
+                                                        <label>MRP *</label>
+                                                        <input type="number" class="form-control"
+                                                            [(ngModel)]="product.mrp" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col paddingr0">
+                                                    <div class="form-group fg1">
+                                                        <label>Cost Price *</label>
+                                                        <input type="number" class="form-control"
+                                                            [(ngModel)]="product.cost_price" />
+                                                    </div>
+                                                </div>
+                                                <div class="col paddingl0">
+                                                    <div class="form-group fg2">
+                                                        <label>Trade Price</label>
+                                                        <input type="number" class="form-control"
+                                                            [(ngModel)]="product.trade_price" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col">
+                                                    <div class="form-group">
+                                                        <label>Tax Percentage *</label>
+                                                        <input type="number" class="form-control" 
+                                                            [(ngModel)]="product.tax_percent" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col">
+                                                    <div class="form-group">
+                                                        <label>Tax Category *</label>
+                                                        <select class="form-control option"
+                                                            [(ngModel)]="product.tax_category">
+                                                            <option class="option" selected="true"
+                                                                disabled="disabled" [value]="null">
+                                                                Select Tax Category
+                                                            </option>
+                                                            <option class="option" [value]="tax_on_price">
+                                                                Tax on Price
+                                                            </option>
+                                                            <option class="option" [value]="tax_on_mrp">
+                                                                Tax on MRP
+                                                            </option>
+                                                            <option class="option" [value]="no_tax">
+                                                                No Tax
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col">
+                                                    <div class="form-group">
+                                                        <label>Quantity Restriction Limit</label>
+                                                        <input (input)="onChangeQuantityRestriction($event.target.value)" oninput="validity.valid||(value='');" type="number" min="0" class="form-control" 
+                                                            [(ngModel)]="product.quantity_limit" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="row">
+                                                <div class="col paddingr0">
+                                                    <div class="form-group fg1">
+                                                        <label>Tax Inclusive *</label>
+                                                        <div class="cutom-switch">
+                                                            <label>No</label>
+                                                            <ui-switch class="switchHolder"
+                                                                color="#e65400" size="small" checkedLabel="on"
+                                                                [(ngModel)]="product.tax_inclusive">
+                                                            </ui-switch>
+                                                            <label>Yes</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col paddingl0">
+                                                    <div class="form-group fg2">
+                                                        <label>Consent Required*</label>
+                                                        <div class="cutom-switch">
+                                                            <label> No </label>
+                                                            <ui-switch class="switchHolder"
+                                                                [(ngModel)]="product.consent_required" color="#e65400"
+                                                                size="small" checkedLabel="on">
+                                                            </ui-switch>
+                                                            <label> Yes </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col paddingr0">
+                                                    <div class="form-group fg1">
+                                                        <label>Sku *</label>
+                                                        <input 
+                                                            type="text" 
+                                                            class="form-control"
+                                                            [(ngModel)]="product.sku"
+                                                            disabled 
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div class="col paddingl0">
+                                                    <div class="form-group fg2">
+                                                        <label>Description (use | as delimiter)</label>
+                                                        <input type="text" class="form-control"
+                                                            [(ngModel)]="product.description" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col paddingr0">
+                                                    <div class="form-group fg1">
+                                                        <label>Length</label>
+                                                        <input type="number" min="0"
+                                                            onkeydown="return (event.keyCode !== 8)?(/[0-9.]/g.test(event.key)):true"
+                                                            class="form-control" [(ngModel)]="product.length" />
+                                                    </div>
+                                                </div>
+                                                <div class="col paddingl0">
+                                                    <div class="form-group fg2">
+                                                        <label>Width</label>
+                                                        <input type="number" min="0"
+                                                            onkeydown="return (event.keyCode !== 8)?(/[0-9.]/g.test(event.key)):true"
+                                                            class="form-control" [(ngModel)]="product.width" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col paddingr0">
+                                                    <div class="form-group fg1">
+                                                        <label>Height</label>
+                                                        <input type="number" min="0"
+                                                            onkeydown="return (event.keyCode !== 8)?(/[0-9.]/g.test(event.key)):true"
+                                                            class="form-control" [(ngModel)]="product.height" />
+                                                    </div>
+                                                </div>
+                                                <div class="col paddingl0">
+                                                    <div class="form-group fg2">
+                                                        <label>Weight</label>
+                                                        <input type="number" min="0"
+                                                            onkeydown="return (event.keyCode !== 8)?(/[0-9.]/g.test(event.key)):true"
+                                                            class="form-control" [(ngModel)]="product.weight" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col">
+                                                    <div class="form-group">
+                                                        <label>Tax Group</label>
+                                                        <select [(ngModel)]="product.tax_group"
+                                                        (change)="onChangeTaxGroup($event.target.value)"
+                                                        class="form-control option">
+                                                            <option class="option" selected=""
+                                                                disabled="disabled" value="">
+                                                                Select Tax Group
+                                                            </option>
+                                                            <option *ngFor="let taxGroup of taxGroups"
+                                                                [value]="taxGroup.id">
+                                                                {{taxGroup.name}}
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col">
+                                                    <div class="form-group" *ngIf="!product.hasBarcode">
+                                                        <label>Add barcode</label>
+                                                        <input type="text" class="form-control" maxlength="13"
+                                                            [(ngModel)]="product.barcode" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-20 actionButtons">
+                                        <div class="col">
+                                            <div *ngIf="product.hasBarcode" class="barcodeHolder">
+                                                <div id="{{ product.index }}">
+                                                    <h6>
+                                                        {{ product.name }} -
+                                                        {{ product.sku }}
+                                                    </h6>
+                                                    <ngx-barcode [bc-element-type]="img" [bc-value]="product.barcode"
+                                                        [bc-background]="transparent" [bc-display-value]="true"
+                                                        [bc-text-position]="bottom" [bc-text-align]="center"
+                                                        [bc-text-align]="center" [bc-font-size]="10"
+                                                        [bc-width]="1.5" [bc-height]="50"
+                                                        [bc-margin-top]="10" [bc-margin-bottom]="10"
+                                                        [bc-margin-right]="10" [bc-margin-left]="10">
+                                                    </ngx-barcode>
+                                                </div>
+                                                <button (click)="captureBarocde(product)" style="transform: none"
+                                                    class="skewbtn-primary">
+                                                    Print Barcode
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <mat-form-field class="tags-chip-list">
+                                                <mat-label>Tags</mat-label>
+                                                <mat-chip-list #chipList aria-label="Tag selection">
+                                                    <mat-chip
+                                                        *ngFor="let tag of product.tags"
+                                                        [selectable]="selectable"
+                                                        [removable]="removable"
+                                                        (removed)="removeTag(tag, i)">
+                                                        {{tag.name}}
+                                                        <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                                                    </mat-chip>
+                                                    <input
+                                                        placeholder="Search Tags..."
+                                                        #tagInput
+                                                        [formControl]="tagCtrl"
+                                                        [matAutocomplete]="auto"
+                                                        [matChipInputFor]="chipList"
+                                                        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                                        (matChipInputTokenEnd)="addTag($event, i)"
+                                                        (ngModelChange)="searchFilter($event)">
+                                                </mat-chip-list>
+                                                <mat-autocomplete #auto="matAutocomplete"
+                                                    (optionSelected)="selectedTag($event, i)">
+                                                    <mat-option *ngFor="let tag of filteredTags" [value]="tag">
+                                                        {{tag.name}}
+                                                    </mat-option>
+                                                </mat-autocomplete>
+                                            </mat-form-field>
+                                            <div class="row">
+                                                <div class="col">
+                                                    <label class="d-block">SKU Purchase Status</label>
+                                                    <div class="cutom-switch">
+                                                        <label> Activate </label>
+                                                        <ui-switch [(ngModel)]="product.is_deactivated" (change)="getSkuDeactivationReasons($event)"
+                                                            [ngModelOptions]="{ standalone: true }" color="#e65400" size="small">
+                                                        </ui-switch>
+                                                        <label> Deactivate </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row" *ngIf="reasons.length > 0">
+                                                    <div class="col">
+                                                        <div class="form-group">
+                                                            <label>Reason * </label>
+                                                            <select class="form-control option" 
+                                                                [(ngModel)]="product.reason" >
+                                                                <option *ngFor="let reason of reasons" class="option" [value]="reason.reason">
+                                                                    {{ reason.reason }}
+                                                                </option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <label class="d-block">Product Status</label>
+                                            <div class="cutom-switch">
+                                                <label> Enable </label>
+                                                <ui-switch [(ngModel)]="product.disabled" color="#e65400" size="small"
+                                                    checkedLabel="on">
+                                                </ui-switch>
+                                                <label> Disable </label>
+                                            </div>
+                                        </div>
+                                    </div>                                 
+                                    <div class="row mt-20 mb-20">
+                                        <div class="col" style="display: flex;">
+                                            Add Volume Based Pricing
+                                            <div class="ml-20" style="flex-grow: 1;">
+                                                <ui-switch
+                                                    [(ngModel)]="product.is_volume_based_price_enabled"
+                                                    color="#e65400"
+                                                    size="small"
+                                                    checkedLabel="on">
+                                                </ui-switch>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="[1, true].includes(product.is_volume_based_price_enabled)">
+                                        <div *ngFor="let vbp of product.volume_based_prices; index as i">
+                                            <div class="row" style="width: 80%;">
+                                                <div class="col">
+                                                    <div class="form-group">
+                                                        <label>Price {{i+1}}</label>
+                                                        <input
+                                                            type="number"
+                                                            [(ngModel)]="vbp.price"
+                                                            class="form-control"
+                                                            onkeydown="return ![8, 37, 39].includes(event.keyCode)?(/[0-9.]/g.test(event.key)):true">
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="form-group">
+                                                        <label>Quantity From</label>
+                                                        <input
+                                                            type="number"
+                                                            [(ngModel)]="vbp.quantityFrom"
+                                                            class="form-control"
+                                                            onkeydown="return ![8, 37, 39].includes(event.keyCode)?(/[0-9]/g.test(event.key)):true">
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="form-group">
+                                                        <label>Quantity To</label>
+                                                        <input
+                                                            type="number"
+                                                            [(ngModel)]="vbp.quantityTo"
+                                                            class="form-control"
+                                                            onkeydown="return ![8, 37, 39].includes(event.keyCode)?(/[0-9]/g.test(event.key)):true">
+                                                    </div>
+                                                </div>
+                                                <div class="col" style="margin-top: 13px;">
+                                                    <mat-icon class="unselectable" color="warn" style="cursor: pointer;" (click)="removeVbpSegment(product, i)">close</mat-icon>
+                                                </div>
+                                            </div>      
+                                        </div>
+                                        <div *ngIf="product.volume_based_prices.length < 4" class="row" style="width: 70%;">
+                                            <div style="margin-left: auto; margin-right: 0;">
+                                                <button
+                                                    (click)="addVbpSegment(product)"
+                                                    class="skewbtn-primary">
+                                                    Add More
+                                                </button>
+                                            </div>
+                                        </div>     
+                                    </div>     
+                                </div>
+                                <div class="col-12 bundle-details-wrapper orderEditArea border-top-0 mt-2">
+                                    <div>
+                                        <div class="col-lg-12 itemDetails">
+                                            <table class="table user-table table-striped">
+                                                <thead class="thead-dark">
+                                                    <h5 class="ml-10 mb-3 font-weight-bold">Tax Information</h5>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <th>Tax Codes</th>
+                                                        <th>Tax Percentage</th>
+                                                    </tr>
+                                                    <tr *ngFor="let information of this.taxInformation;">
+                                                        <td>{{ information.taxCode }}</td>
+                                                        <td>{{ information.activePercentage ? information.activePercentage + '%' : '-' }}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 mt-20">
+                                    <div class="pull-right">
+                                        <button (click)="rowClick(i)" class="skewbtn-secondary">
+                                            Cancel
+                                        </button>
+                                        <button (click)="Update(product, i)" *ngxPermissionsOnly="[
+                                                '*',
+                                                'U_PROD'
+                                            ]" class="skewbtn-primary" [disabled]="loading">
+                                            Update
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <pagination-controls class="mt-30" (pageChange)="pagination($event)" id="{{ paginationId }}"
+                    autoHide="{{totalItems<itemsPerPage}">
+                </pagination-controls>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #content let-c="close" let-d="dismiss">
+    <div class="row filesuploadpopup">
+        <div class="col-lg-12">
+            <h2>Product Onboarding</h2>
+        </div>
+        <div class="col-lg-6" *ngxPermissionsOnly="['*', 'ONBOARD_PROD']">
+            <div class="blockholder">
+                <h6>NEW PRODUCTS (MULTIPLE)</h6>
+                <label
+                    class="uploadFileBtn"
+                    *ngIf="!(checkUploadType == 2 && selectedFileName)">Upload
+                    <input
+                        type="file"
+                        class="btn btn-primary"
+                        (change)="onFileChange($event, 2)"
+                        #fileInput
+                        placeholder="Upload file..."
+                        class="btn btn-primary" />
+                </label>
+                <div *ngIf="checkUploadType == 2 && selectedFileName">
+                    <label>
+                        <div>
+                            {{ selectedFileName }}
+                            <i class=" removeFile fa fa-close" (click)="removeFile()"
+                                style="font-size: 20px; color: red"></i>
+                        </div>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6" *ngxPermissionsOnly="['*', 'BULK_U_PROD']">
+            <div class="blockholder">
+                <h6>FOR BULK UPDATE</h6>
+                <label class="uploadFileBtn" *ngIf="!(checkUploadType == 3 && selectedFileName)">
+                    Upload
+                    <input type="file" class="btn btn-primary" (change)="onFileChange($event, 3)" #fileInput
+                        placeholder="Upload file..." class="btn btn-primary" />
+                </label>
+                <div *ngIf="checkUploadType == 3 && selectedFileName">
+                    <label>
+                        <div>
+                            {{ selectedFileName }}
+                            <i class="removeFile fa fa-close" (click)="removeFile()"
+                                style="font-size: 20px; color: red"></i>
+                        </div>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6" *ngxPermissionsOnly="['*', 'U_PROD_IMG']">
+            <div class="blockholder">
+                <h6>FOR BULK UPLOADING IMAGES</h6>
+                <label class="uploadFileBtn" *ngIf="!(checkUploadType == 4 && selectedFileName)">
+                    Upload
+                    <input type="file" class="btn btn-primary" (change)="onFileChange($event, 4)" #fileInput
+                        placeholder="Upload file..." class="btn btn-primary" />
+                </label>
+                <div *ngIf="checkUploadType == 4 && selectedFileName">
+                    <label>
+                        <div>
+                            {{ selectedFileName }}
+                            <i class="removeFile fa fa-close" (click)="removeFile()"
+                                style="font-size: 20px; color: red"></i>
+                        </div>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6" *ngxPermissionsOnly="['*', 'U_PROD_IMG']">
+            <div class="blockholder">
+                <h6>NEW PRODUCT (SINGLE)</h6>
+                <button type="button" (click)="openModalCreateProduct(content2)" class="btn btn-primary">
+                    Create
+                </button>
+            </div>
+        </div>
+
+        <div class="col-lg-6" *ngxPermissionsOnly="['*', 'U_PROD_IMG']">
+            <div class="blockholder">
+                <h6>UPDATE PRICE/AVAILABILITY/STOCK (BULK)</h6>
+                <label class="uploadFileBtn" *ngIf="!(checkUploadType == 5 && selectedFileName)">
+                    Upload
+                    <input type="file" class="btn btn-primary" (change)="onFileChange($event, 5)" #fileInput
+                        placeholder="Upload file..." class="btn btn-primary" />
+                </label>
+                <div *ngIf="checkUploadType == 5 && selectedFileName">
+                    <label>
+                        <div>
+                            {{ selectedFileName }}
+                            <i class="removeFile fa fa-close" (click)="removeFile()"
+                                style="font-size: 20px; color: red"></i>
+                        </div>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="blockholder">
+                <h6>UPDATE PRODUCT LANGUAGE (BULK)</h6>
+                <label class="uploadFileBtn" *ngIf="!(checkUploadType == 6 && selectedFileName)">
+                    Upload
+                    <input type="file" class="btn btn-primary" (change)="onFileChange($event, 6)" #fileInput
+                        placeholder="Upload file..." class="btn btn-primary" />
+                </label>
+                <div *ngIf="checkUploadType == 6 && selectedFileName">
+                    <label>
+                        <div>
+                            {{ selectedFileName }}
+                            <i class="removeFile fa fa-close" (click)="removeFile()"
+                                style="font-size: 20px; color: red"></i>
+                        </div>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="blockholder">
+                <h6>UPDATE DISPLAY PRIORITY (BULK)</h6>
+                <label class="uploadFileBtn" *ngIf="!(checkUploadType == 7 && selectedFileName)">
+                    Upload
+                    <input type="file" class="btn btn-primary" (change)="onFileChange($event, 7)" #fileInput
+                        placeholder="Upload file..." class="btn btn-primary" />
+                </label>
+                <div *ngIf="checkUploadType == 7 && selectedFileName">
+                    <label>
+                        <div>
+                            {{ selectedFileName }}
+                            <i class="removeFile fa fa-close" (click)="removeFile()"
+                                style="font-size: 20px; color: red"></i>
+                        </div>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6"></div>
+        <div class="col-lg-6 push-md-4">
+            <button class="skewbtn-secondary" (click)="closeModalProductOnboarding()">
+                Cancel
+            </button>
+            <button class="skewbtn-primary" (click)="uploadFile()">
+                Save
+            </button>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #content3 let-c="close" let-d="dismiss">
+    <div class="help-popup padding20">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col">
+                <div class="pull-right">
+                    <a class="crossSignPopup"><span aria-hidden="true"
+                            (click)="closeHelpModal(content)">&times;</span></a>
+                </div>
+            </div>
+        </div>
+        <h4 class="mb-10">Upload new products</h4>
+        <img alt="" src="assets/images/productUpdateCropped.png" class="mb-20" />
+        <div class="mb-40">
+            <p>
+                <b class="defaultcolor">Note:</b> The csv file should be in this
+                order, remeber to remove the headings above before you upload
+                the file.
+            </p>
+        </div>
+
+        <h4 class="mb-10">Modify existing product information</h4>
+        <p>
+            To update old products please upload a csv with the following
+            fields.
+        </p>
+        <img alt="" src="assets/images/productOnboardingHeadings.png" class="mb-20" />
+        <p>
+            <b class="defaultcolor">Note:</b> The csv file should be in this
+            order, remeber to remove the headings above before you upload the
+            file.
+        </p>
+    </div>
+</ng-template>
+
+<ng-template #content2 let-c="close" let-d="dismiss">
+    <div class="new-onboard-popup">
+        <div class="head">
+            <h3>Product Onboarding</h3>
+        </div>
+        <form role="form">
+            <div class="row" *ngxPermissionsOnly="['*', 'C_PROD']">
+                <div class="col-lg-6">
+                    <product-category-selection [isAddMore]="false"
+                        [mappedCategories]="addProductCategoryData.mappedCategories"
+                        [categoryList]="addProductCategoryData.categoryList"
+                        [activeCategories]="addProductCategoryData.activeCategories" [product]="productForm"
+                        (closeCategorySelection)="categoriesUpdated($event)"></product-category-selection>
+                </div>
+                <div class="col-lg-6">              
+                    <h6>Product Information</h6>
+                    <div class="row">
+                        <div class="col paddingr0">
+                            <div class="form-group fg1">
+                                <label>Name *</label>
+                                <input type="text" [(ngModel)]="productForm.name" name="name" class="form-control"
+                                    placeholder="Enter Name"/>
+                            </div>
+                        </div>
+                        <div class="col paddingl0">
+                            <div class="form-group fg2">
+                                <label>Brand</label>
+                                <input type="text" [(ngModel)]="productForm.brand" name="brand" class="form-control"
+                                    placeholder="Enter Brand"/>  
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col paddingr0">
+                            <div class="form-group fg1">
+                                <label>Size</label>
+                                <input type="text" [(ngModel)]="productForm.size" name="size" class="form-control"
+                                    placeholder="Enter Size"/>  
+                            </div>
+                        </div>
+                        <div class="col paddingl0">
+                            <div class="form-group fg2">
+                                <label>Unit</label>
+                                <input type="text" [(ngModel)]="productForm.unit" name="unit" class="form-control"
+                                      placeholder="Enter Unit" />  
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label>Languages</label>
+                                <select class="form-control option" [(ngModel)]="productForm.selectedLanguageCode"
+                                    (change)="updateSelectedLanguage(productForm)" name="select-language">
+                                    <option *ngFor="let language of languages" [value]="language.code">
+                                        {{language.name}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="productForm.selectedLanguage">
+                        <div class="col paddingr0">
+                            <div class="form-group fg1">
+                                <label>{{productForm.selectedLanguage.name}} Name</label>
+                                <div *ngFor="let language of productForm.multilingual">
+                                    <input type="text" [(ngModel)]="language.value" class="form-control" name="language-name"
+                                        *ngIf="language.language == productForm.selectedLanguageCode && language.attributeName == attributes.name">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col paddingl0">
+                            <div class="form-group fg2">
+                                <label>{{productForm.selectedLanguage.name}} Description</label>
+                                <div *ngFor="let language of productForm.multilingual">
+                                    <input type="text" [(ngModel)]="language.value" class="form-control" name="language-description"
+                                        *ngIf="language.language == productForm.selectedLanguageCode && language.attributeName == attributes.description">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="!productForm.selectedLanguage">
+                        <div class="col">
+                            <div class="form-group">
+                                <label>Language Attributes</label>
+                                <input class="form-control" readonly [value]="languageNotSelected">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label>Total delivery time</label>
+                                <input type="number"
+                                       numberLimit minLength="6" maxLength="168"
+                                       min="6" max="168"
+                                       [(ngModel)]="productForm.delivery_time" name="delivery_time" class="form-control"
+                                       (updateValue)="productForm.delivery_time = $event">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col paddingr0">
+                            <div class="form-group fg1">
+                                <label>Price *</label>
+                                <input type="number" [(ngModel)]="productForm.price" name="price" class="form-control"
+                                    placeholder="Enter Price" />
+                            </div>
+                        </div>
+                        <div class="col paddingl0">
+                            <div class="form-group fg2">
+                                <label>MRP *</label>
+                                <input type="text" [(ngModel)]="productForm.mrp" name="price"
+                                    class="form-control" placeholder="Enter MRP" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col paddingr0">
+                            <div class="form-group fg1">
+                                <label>Cost Price *</label>
+                                <input type="number" [(ngModel)]="productForm.cost_price" name="price"
+                                    class="form-control" placeholder="Enter Cost Price" />
+                            </div>
+                        </div>
+                        <div class="col paddingl0">
+                            <div class="form-group fg2">
+                                <label>Trade Price</label>
+                                <input type="number" [(ngModel)]="productForm.trade_price" name="trade_price"
+                                    class="form-control" placeholder="Enter Trade Price" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label>Tax Percentage *</label>
+                                <input type="number" [(ngModel)]="productForm.tax_percent" name="tax_percent"
+                                    class="form-control" placeholder="Enter Tax Percentage" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label>Tax Category *</label>
+                                <select type="text" [(ngModel)]="productForm.tax_category" name="tax_category"
+                                    class="form-control option" placeholder="Enter Tax Percentage">
+                                    <option class="option" selected="true"
+                                        disabled="disabled" value="">
+                                        Select Tax Category
+                                    </option>
+                                    <option class="option" [value]="tax_on_price">
+                                        Tax on Price
+                                    </option>
+                                    <option class="option" [value]="tax_on_mrp">
+                                        Tax on MRP
+                                    </option>
+                                    <option class="option" [value]="no_tax">
+                                        No Tax
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label>Tax Group</label>
+                                <select class="form-control option"
+                                (change)="onChangeTaxGroup($event.target.value)">
+                                    <option class="option" selected="true"
+                                        disabled="disabled" value="">
+                                        Select Tax Group
+                                    </option>
+                                    <option *ngFor="let taxGroup of taxGroups"
+                                        [value]="taxGroup.id">
+                                        {{taxGroup.name}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col paddingr0">
+                            <div class="form-group fg1">
+                                <label>Tax Inclusive</label>
+                                <div class="cutom-switch">
+                                    <label>No</label>
+                                    <ui-switch [(ngModel)]="productForm.tax_inclusive"
+                                        [ngModelOptions]="{ standalone: true }" color="#e65400" size="small">
+                                    </ui-switch>
+                                    <label>Yes</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col paddingl0">
+                            <div class="form-group fg2">
+                                <label>Consent Required*</label>
+                                <div class="cutom-switch">
+                                    <label>No</label>
+                                    <ui-switch [(ngModel)]="productForm.consent_required"
+                                        [ngModelOptions]="{ standalone: true }" color="#e65400" size="small">
+                                    </ui-switch>
+                                    <label>Yes</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div [ngClass]="{'form-group': true, 'form-group-error': validateSKU(productForm.sku) }">
+                                <label>Custom Sku *</label>
+                                <input type="text" [(ngModel)]="productForm.sku" name="sku" class="form-control"
+                                    placeholder="Enter Custom Sku" />
+                            </div>
+                            <p class="priority-error" *ngIf="validateSKU(productForm.sku)">
+                                Please remove spaces
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label>Description (use | as delimiter)</label>
+                                <input type="text" [(ngModel)]="productForm.description" name="description"
+                                    class="form-control" placeholder="| Bullet 1 | Bullet 2" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col paddingr0">
+                            <div class="form-group fg1">
+                                <label>Length</label>
+                                <input type="number" min="0"
+                                    onkeydown="return (event.keyCode !== 8)?(/[0-9.]/g.test(event.key)):true"
+                                    class="form-control" [(ngModel)]="productForm.length"
+                                    name="length" class="form-control"
+                                    placeholder="Enter Length" />
+                            </div>
+                        </div>
+                        <div class="col paddingl0">
+                            <div class="form-group fg2">
+                                <label>Width</label>
+                                <input type="number" min="0"
+                                    onkeydown="return (event.keyCode !== 8)?(/[0-9.]/g.test(event.key)):true"
+                                    class="form-control" [(ngModel)]="productForm.width"
+                                    name="width"
+                                    class="form-control" placeholder="Enter Width" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col paddingr0">
+                            <div class="form-group fg1">
+                                <label>Height</label>
+                                <input type="number" min="0"
+                                    onkeydown="return (event.keyCode !== 8)?(/[0-9.]/g.test(event.key)):true"
+                                    class="form-control" [(ngModel)]="productForm.height"
+                                    name="height" class="form-control"
+                                    placeholder="Enter Height" />
+                            </div>
+                        </div>
+                        <div class="col paddingl0">
+                            <div class="form-group fg2">
+                                <label>Weight</label>
+                                <input type="number" min="0"
+                                    onkeydown="return (event.keyCode !== 8)?(/[0-9.]/g.test(event.key)):true"
+                                    class="form-control" [(ngModel)]="productForm.weight"
+                                    name="weight" class="form-control"
+                                    placeholder="Enter Weight" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="padding-left: 15px;">
+                <div class="col" style="display: flex;">
+                    Add Volume Based Pricing
+                    <div class="ml-20 mb-20" style="flex-grow: 1;">
+                        <ui-switch
+                            [(ngModel)]="productForm.is_volume_based_price_enabled"
+                            name="vbp_enabled"
+                            color="#e65400"
+                            size="small"
+                            checkedLabel="on">
+                        </ui-switch>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="[1, true].includes(productForm.is_volume_based_price_enabled)">
+                <div *ngFor="let vbp of productForm.volume_based_prices; index as i">
+                    <div class="row" style="padding-left: 15px;">
+                        <div class="col">
+                            <div class="form-group">
+                                <label>Price {{i+1}}</label>
+                                <input
+                                    type="number"
+                                    name="vbp_price_{{i}}"
+                                    [(ngModel)]="vbp.price"
+                                    class="form-control"
+                                    onkeydown="return ![8, 37, 39].includes(event.keyCode)?(/[0-9.]/g.test(event.key)):true">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label>Quantity From</label>
+                                <input
+                                    type="number"
+                                    name="vbp_quantity_from_{{i}}"
+                                    [(ngModel)]="vbp.quantityFrom"
+                                    class="form-control"
+                                    onkeydown="return ![8, 37, 39].includes(event.keyCode)?(/[0-9]/g.test(event.key)):true">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label>Quantity To</label>
+                                <input
+                                    type="number"
+                                    name="vbp_quantity_to_{{i}}"
+                                    [(ngModel)]="vbp.quantityTo"
+                                    class="form-control"
+                                    onkeydown="return ![8, 37, 39].includes(event.keyCode)?(/[0-9]/g.test(event.key)):true">
+                            </div>
+                        </div>
+                        <div class="col" style="margin-top: 13px;">
+                            <mat-icon class="unselectable" color="warn" style="cursor: pointer;" (click)="removeVbpSegment(productForm, i)">close</mat-icon>
+                        </div>
+                    </div>      
+                </div>
+                <div *ngIf="productForm.volume_based_prices.length < 4" class="row" style="width: 85%;">
+                    <div style="margin-left: auto; margin-right: 0;">
+                        <button
+                            (click)="addVbpSegment(productForm)"
+                            class="skewbtn-primary">
+                            Add More
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 bundle-details-wrapper orderEditArea">
+                <div class="mt-2">
+                    <div class="col-lg-12 itemDetails">
+                        <table class="table user-table table-striped">
+                            <thead class="thead-dark">
+                                <h5 class="mb-3">Tax Information</h5>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th class="col-3">Tax Codes</th>
+                                    <th class="col-9">Tax Percentage</th>
+                                </tr>
+                                <tr *ngFor="let information of this.taxInformation;">
+                                    <td>{{ information.taxCode }}</td>
+                                    <td>{{ information.activePercentage ? information.activePercentage + '%' : '-' }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-20" style="float: right;">
+                <button
+                    class="skewbtn-secondary mr-10" type="button"
+                    (click)="closeModalCreateProduct()">
+                    Cancel
+                </button>
+                <button class="btn btn-primary skewbtn-primary" type="button"
+                    (click)="createProduct(productForm)">
+                    Create
+                </button>
+            </div>
+        </form>
+    </div>
+</ng-template>
+
+<ng-template #content4 let-c="close" let-d="dismiss">
+    <div class="row filesuploadpopup">
+        <div class="col-lg-12">
+            <h2>Product Export</h2>
+        </div>
+        <div class="col-lg-6">
+            <div class="blockholder">
+                <h6>Export Excel File</h6>
+                <button
+                    class="skewbtn-secondary ml-20"
+                    (click)="exportProduct('excel')">
+                    Export
+                </button>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="blockholder">
+                <h6>Export CSV File</h6>
+                <button
+                    class="skewbtn-secondary ml-20"
+                    (click)="exportProduct('csv')">
+                    Export
+                </button>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #subCategorySelection let-c="close" let-d="dismiss">
+    <div class="new-onboard-popup">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col">
+                <div class="pull-right">
+                    <a class="crossSignPopup">
+                        <span aria-hidden="true"
+                            (click)="closeSubCategorySelection()">&times;
+                        </span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <h4 class="mb-10">
+            Select Subcategories for L1 -
+            {{ subcategorySelectionData.mainCategory }}
+        </h4>
+        <div class="subCategoryArea" *ngIf="subcategorySelectionData.subCategoryListToShow.length">
+            <div class="categorySelection">
+                <div class="scrollable">
+                    <li *ngFor="let category of subcategorySelectionData.subCategoryListToShow"
+                        (click)="category.selected = !category.selected"
+                        [ngClass]="{ highlight: category.selected }">
+                        {{ category.name }}
+                    </li>
+                </div>
+            </div>
+        </div>
+        <button class="btn btn-primary skewbtn-primary" (click)="closeSubCategorySelection()">
+            Cancel
+        </button>
+        <button class="btn btn-primary skewbtn-primary" (click)="addSelectedSubCategories()">
+            Add
+        </button>
+    </div>
+</ng-template>
+
+<ng-template #categorySelection let-c="close" let-d="dismiss">
+    <div class="help-popup padding20">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col">
+                <div class="pull-right">
+                    <a class="crossSignPopup"><span aria-hidden="true"
+                            (click)="closeCategorySelection(0)">&times;
+                        </span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <product-category-selection [isAddMore]="true" [categoryList]="categorySelectionData.categoryList"
+            [activeCategories]="categorySelectionData.activeCategories"
+            [product]="products[categorySelectionData.productIndex]"
+            (closeCategorySelection)="closeCategorySelection($event)">
+        </product-category-selection>
+    </div>
+</ng-template>

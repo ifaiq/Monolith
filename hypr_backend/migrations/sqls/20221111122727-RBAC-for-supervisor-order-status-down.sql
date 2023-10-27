@@ -1,0 +1,1 @@
+DELETE FROM permissions WHERE code = 'P_ORDER_STATUS_RBAC_V2' and role_id = 16;

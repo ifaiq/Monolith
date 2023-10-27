@@ -1,0 +1,30 @@
+<div>
+    <fieldset><!--*ngIf="points.length > 0"-->
+        <legend>Polygon Coordinates:
+            <button class="btn btn-icon btn-add ml-20" (click)="addNewPoint(-1)"><span></span></button></legend>
+        <div *ngFor="let point of points;let i = index">
+            <div class="row mb-20">
+                <div class="col-12 col-sm-4">
+                    <div class="form-group">
+                        <label for="lat{{i+1}}">Latitude</label>
+                        <input id="lat{{i+1}}" type="text" class="form-control" [(ngModel)]="point.lat"
+                            (change)="pointUpdated(i)" >
+                    </div>
+                </div>
+                <div class="col-12 col-sm-4">
+                    <div class="form-group">
+                        <label for="lng{{i+1}}">Longitude</label>
+                        <input id="lng{{i+1}}" type="text" class="form-control" [(ngModel)]="point.lng"
+                        (change)="pointUpdated(i)">
+                    </div>
+                </div>
+                <div class="col-12 col-sm-1">
+                    <button class="btn btn-icon btn-add ml-20" (click)="addNewPoint(i)"><span></span></button>
+                </div>
+                <div class="col-12 col-sm-1">
+                    <button class="btn btn-icon row-delete ml-20" (click)="removePoint(i)"><span></span></button>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+</div>

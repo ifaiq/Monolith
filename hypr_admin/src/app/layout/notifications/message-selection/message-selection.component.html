@@ -1,0 +1,59 @@
+<div *ngxPermissionsOnly="['*','L_NOTI_MSG']">
+  <div>
+    <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <div class="page-title">
+        <span class="h1">Select Notifications</span>
+        <button class="btn ml-20" class="ml-20 skewbtn-secondary" (click)="push()"><span>PUSH</span></button>
+      </div>
+    </div>
+  </div>
+  <div class="row" [hidden]="loading">
+    <div class="col-12">
+      <div class="table-responsive">
+        <div class="custom-table">
+          <ul class="row thead">
+            <li class="col-2"><span>#</span></li>
+            <li class="col-2"><span><input type="checkbox" [(ngModel)]="allChecked"
+              (change)="toggleAllSelection()" id="select-all-option" /></span>
+            </li>
+            <li class="col-5"><span>Title</span></li>
+            <li class="col-3"><span>Company</span></li>
+          </ul>
+          <ul class="table-body">
+            <li class="row table-row bb align-items-center" *ngFor="let message of messages| paginate
+              : {
+                  id: paginationId,
+                  itemsPerPage: itemsPerPage,
+                  currentPage: currentPage,
+                  totalItems: totalItems
+                };
+              let i = index
+            ">
+              <div class="col-2 tcell">
+                <span>{{ message.rowCount }}</span>
+              </div>
+              <div class="col-2 tcell">
+                <span>
+                  <input type="checkbox" [(ngModel)]="message.checked" 
+                  (change)="selectionChanged(i)" 
+                  name="checkbox_{{message.rowCount}}" id="checkbox_{{message.rowCount}}" />
+                </span>
+              </div>
+              <div class="col-5 tcell">
+                <span>{{ message.title }}</span>
+              </div>
+              <div class="col-3 tcell">
+                <span>{{ message.companyName }}</span>
+              </div>
+            </li>
+            <pagination-controls class="mt-30" (pageChange)="pagination($event)" id="{{ paginationId }}" autoHide="{{totalItems<itemsPerPage}">
+            </pagination-controls>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

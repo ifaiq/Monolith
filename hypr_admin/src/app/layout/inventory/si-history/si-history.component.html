@@ -1,0 +1,77 @@
+<div class="row">
+  <h4>SI History</h4>
+</div>
+<div class="row all-orders">
+  <div class="col" *ngxPermissionsOnly="['*', 'L_BU']">
+    <div class="form-group" >
+      <label for="exampleInputPassword1">Select Business Unit :</label>
+      <select (change)="getAllLocations()" [(ngModel)]="selectedBusinessUnitId" class="form-control">
+        <option class='option' [value]="''">All</option>
+        <option *ngFor='let bu of businessUnits' [value]="bu.id">
+          {{bu.name}}
+        </option>
+      </select>
+    </div>
+  </div>
+
+  <div class="col">
+    <div class="form-group">
+      <label for="exampleInputPassword1">Select Cell :</label>
+      <select (change)="getAllProcs()" [(ngModel)]="selectedLocationId" class="form-control">
+        <option class='option' [value]="''">All</option>
+        <option *ngFor='let location of locations' [value]="location.id">
+          {{location.name}}
+        </option>
+      </select>
+    </div>
+  </div>
+
+  <div class="col">
+    <div class="form-group">
+      <label for="">From</label>
+      <input type="date" [(ngModel)]="startDate" class="form-control" />
+    </div>
+  </div>
+
+  <div class="col">
+    <div class="form-group">
+      <label for="">To</label>
+      <input type="date" [(ngModel)]="endDate" class="form-control" />
+    </div>
+  </div>
+  <div class="col mt-10">
+    <button class="create" (click)="getAllProcs()">GO</button>
+  </div>
+</div>
+<div class="table-responsive">
+  <table class="table">
+    <thead>
+      <tr class="colored-thead">
+        <th>SKU</th>
+        <th>NAME</th>
+        <th>BRAND</th>
+        <th>SIZE</th>
+        <th>SI Recomendation</th>
+        <th>Admin Recomendation</th>
+        <th>Bought</th>
+        <th>Type</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        *ngFor="let proc of allProcs| paginate: { id:paginationId , itemsPerPage: itemsPerPage, currentPage: currentPage,totalItems: totalItems}">
+        <td>{{proc.product_sku?proc.product_sku.sku:''}}</td>
+        <td>{{proc.product_sku?proc.product_sku.name:''}}</td>
+        <td>{{proc.product_sku?proc.product_sku.brand:''}}</td>
+        <td>{{proc.product_sku?proc.product_sku.size:''}}</td>
+        <td>{{proc.req_quantity}}</td>
+        <td>{{proc.procure_quantity}}</td>
+        <td>{{proc.procure_quantity}}</td>
+        <td>{{proc.proc_type}}</td>
+      </tr>
+
+    </tbody>
+  </table>
+</div>
+<pagination-controls class="mt-30" (pageChange)="pagination($event)" id="{{paginationId}}" autoHide="{{totalItems<itemsPerPage}">
+</pagination-controls>

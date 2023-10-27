@@ -1,0 +1,22 @@
+<div class="row">
+  <div class="col">
+    <table class="table">
+      <thead>
+        <tr class="colored-thead">
+          <th>Name</th>
+          <th>Code</th>
+          <th>API</th>
+          <th>Method</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let perm of perms; let i = index">
+          <td>{{perm.name}}</td>
+          <td>{{perm.code}}</td>
+          <td>{{perm.api}}</td>
+          <td>{{perm.method}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

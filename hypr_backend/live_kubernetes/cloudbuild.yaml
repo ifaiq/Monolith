@@ -1,0 +1,40 @@
+steps:
+# pull latest code and test
+# only lang-specic step
+- name: 'golang:latest'
+  id: Test
+  entrypoint: /bin/sh
+  args: ['-c','export GO111MODULE=on','go mod download','go test ./... -v']
+
+
+# build image
+- name: 'gcr.io/cloud-builders/docker'
+  env:
+  - 'BUILD=$BUILD_ID'
+  args: ['build', '--tag=gcr.io/${_PROJECT_ID}/${_APP_NAME}:$BUILD_ID', './hypr_backend']
+
+
+# push image to gcr
+- name: 'gcr.io/cloud-builders/docker'
+  args: ["push", "gcr.io/${_PROJECT_ID}/${_APP_NAME}:$BUILD_ID"]
+
+
+# update manifest with few env var (mainly release tag)
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: Manifest
+  entrypoint: /bin/sh
+  args:
+  - '-c'
+  - |
+      sed -e \
+      's/_HOST/${_HOST}/g; s/BUILD_ID/${BUILD_ID}/g; s/_PROJECT_ID/${_PROJECT_ID}/g; s/_APP_NAME/${_APP_NAME}/g; s/_NAMESPACE/${_NAMESPACE}/g; s/_PROTOCOL_HTTP/${_PROTOCOL_HTTP}/g; s/_APP_PORT/${_APP_PORT}/g; s/_DB_ADDRESS/${_DB_ADDRESS}/g; s/_DB_NAME/${_DB_NAME}/g; s/_DB_USER/${_DB_USER}/g; s/_DB_PASSWORD/${_DB_PASSWORD}/g; s/_NODE_ENV/${_NODE_ENV}/g; s/_REDIS_SERVER/${_REDIS_SERVER}/g; s/_APP_SEARCH_EP/${_APP_SEARCH_EP}/g; s/_APP_SEARCH_ENGINE/${_APP_SEARCH_ENGINE}/g; s/_APP_SEARCH_KEY/ ${_APP_SEARCH_KEY}/g; s/_REPLICA_IP/ ${_REPLICA_IP}/g;' \
+      hypr_backend/live_kubernetes/service.yaml > hypr_backend/live_kubernetes/final.yaml\
+
+
+# deploy service to Knative cluster using the above gen'd manifest
+- name: 'gcr.io/cloud-builders/kubectl'
+  id: Deploy
+  args: ['apply','-f','hypr_backend/live_kubernetes/final.yaml']
+  env:
+  - 'CLOUDSDK_COMPUTE_ZONE=${_CLUSTER_ZONE}'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=${_CLUSTER_NAME}'

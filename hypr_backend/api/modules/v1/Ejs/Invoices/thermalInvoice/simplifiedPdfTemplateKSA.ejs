@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pos Invoice</title>
+  <style>
+    @font-face {
+      font-family: 'Dubai';
+      src: url("https://dev-retailo-images.s3.me-south-1.amazonaws.com/Dubai-Bold.ttf");
+    }
+
+    html,
+    body {
+      font-family: 'Dubai', Arial, Helvetica, sans-serif;
+      margin: 0;
+      padding: 0;
+      height: auto;
+      -webkit-print-color-adjust: exact;
+      box-sizing: border-box;
+    }
+
+    .container {
+      width: 60mm;
+    }
+
+    table {
+      width: 100%;
+      font-size: 8px;
+    }
+
+    .header,
+    .footer {
+      display: flex;
+    }
+
+    .header-img,
+    .footer-img {
+      width: 100%;
+      display: block
+    }
+
+    .title {
+      text-align: center;
+      font-size: 10px;
+      font-weight: 600;
+      margin: 0;
+      margin: 5px 0;
+    }
+
+    .sub-title {
+      text-align: center;
+      font-size: 8px;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    p {
+      font-size: 7px;
+      font-weight: 600;
+      margin-top: 0;
+      margin-bottom: 5px;
+      font-family: 'Dubai';
+      line-height: 1;
+    }
+
+    .rtl {
+      text-align: right;
+    }
+
+    .ltr {
+      direction: ltr;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 10px;
+      font-weight: 600;
+      margin: 0;
+      padding: 4px 0;
+      border-top: solid 1px black;
+      border-bottom: solid 1px black;
+    }
+
+    .contents {
+      padding: 15px 5px;
+    }
+
+    table {
+      font-weight: 600;
+    }
+
+    thead td {
+      font-size: 7px;
+    }
+
+    .sub-text {
+      font-size: 6px;
+      font-weight: normal;
+    }
+
+    .items-table tbody tr {
+      border-bottom: dashed 1px black;
+    }
+
+    .items-table tbody tr:last-child {
+      border-bottom: none;
+    }
+
+    tbody td {
+      font-size: 7px;
+    }
+
+    .invoice-total {
+      border-top: 1px solid #000;
+      margin-top: 10px;
+    }
+
+    .invoice-total td {
+      padding-left: 3px;
+      padding-right: 3px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+      <img src="https://prod-retailo-images.s3.me-south-1.amazonaws.com/thermal-invoice-header-80mm%20figma.png"
+        class="header-img" alt="">
+    </div>
+    <!-- Title -->
+    <h1 class="title">الفاتورة المبسطة</h1>
+    <% if (invoice.isCreditNoteInvoice) { %>
+      <h3 class="sub-title">اﺷﻌﺎر داﺋﻦ</h3>
+    <% } %>
+    <!-- section 1 -->
+    <table width="100%" border="0" cellpadding="5" cellspacing="0"
+      style="table-layout: fixed; border-collapse: collapse;">
+      <tr>
+        <td width="30%" valign="top">
+          <%- invoice.qr %>
+        </td>
+        <td width="70%" valign="top">
+          <p class="rtl">
+            <%= invoice.invoiceNumber %> : رقم الفاتورة
+          </p>
+          <p class="rtl">
+            <%= invoice.orderId %> : رقم الطلب
+          </p>
+          <p>&nbsp;</p>
+          <p class="rtl">
+            <%= invoice.issueDate %> : تاريخ إصدار الفاتورة
+          </p>
+          <p class="rtl">
+            <%= invoice.supplyDate %> : تاريخ التوريد
+          </p>
+        </td>
+      </tr>
+    </table>
+
+    <div class="section">
+      <h1 class="section-title">البائع</h1>
+      <div class="contents rtl">
+        <table width="100%" cellpadding="0" cellspacing="0" style="table-layout: fixed; border-collapse: collapse;">
+          <tr>
+            <td align="right">
+              <table cellpadding="1" cellspacing="0" border="0" width="auto" style="border-collapse: collapse;">
+                <tr>
+                  <td align="right">
+                    <%= invoice.seller.name %>
+                  </td>
+                  <td align="right" valign="top" style="white-space: nowrap;" width="5%"> : الاسم الكامل</td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td align="right">
+              <table cellpadding="1" cellspacing="0" style="border-collapse: collapse;">
+                <tr>
+                  <td align="right">
+                    <%= invoice.seller.businessName %>
+                  </td>
+                  <td align="right" valign="top" style="white-space: nowrap;" width="5%"> : اسم الشركة</td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td align="right">
+              <table cellpadding="1" cellspacing="0" style="border-collapse: collapse;">
+                <tr>
+                  <td align="right">
+                    <%= invoice.seller.address %>
+                  </td>
+                  <td align="right" valign="top" style="white-space: nowrap;" width="5%"> : العنوان الكامل
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td align="right">
+              <table cellpadding="1" cellspacing="0" style="border-collapse: collapse;">
+                <tr>
+                  <td align="right">
+                    <%= invoice.seller.phone %>
+                  </td>
+                  <td align="right" valign="top" style="white-space: nowrap;" width="5%"> : رقم الاتصال
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td align="right">
+              <table cellpadding="1" cellspacing="0" style="border-collapse: collapse;">
+                <tr>
+                  <td align="right">
+                    <%= invoice.seller.vat %>
+                  </td>
+                  <td align="right" valign="top" style="white-space: nowrap;" width="5%"> : رقم ضريبة القيمة المضافة
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </div>
+
+    </div>
+
+
+    <div class="section">
+      <h1 class="section-title">توصيف المنتجات</h1>
+      <div class="contents">
+        <table dir="rtl" class="items-table" width="100%" border="0" cellpadding="3" cellspacing="0"
+          style="table-layout: fixed; border-collapse: collapse;">
+          <thead>
+            <tr>
+              <td  width="16.5%">اسم المنتج</td>
+              <td align="center">سعر الصنف بدون الضريبة</td>
+              <td align="center">الكمية</td>
+              <td align="center">
+                <span>السعر الإجمالي</span> <br>
+                <span class="sub-text">(غير شامل ضريبة القيمة المضافة)</span>
+              </td>
+              <td align="center">ضريبة القيمة %</td>
+              <td align="center">ضريبة القيمة المضافة</td>
+              <td align="center">
+                <span>السعر الإجمالي</span> <br>
+                <span class="sub-text">(شامل ضريبة القيمة المضافة)</span>
+              </td>
+            </tr>
+          </thead>
+          <tbody>
+            <% invoice.lineItems.forEach(function(item){ %>
+              <tr>
+                <td width="5%">
+                  <%= item.name %>
+                </td>
+                <td align="center">
+                  <%= item.basePrice %>
+                </td>
+                <td align="center">
+                  <%= item.quantity %>
+                </td>
+                <td align="center">
+                  <%= item.totalPrice.toFixed(2) %>
+                </td>
+                <td align="center">
+                  <%= item.taxRate %>
+                </td>
+                <td align="center">
+                  <%= item.taxAmount.toFixed(2) %>
+                </td>
+                <td align="center">
+                  <%= item.totalPriceWithTax.toFixed(2) %>
+                </td>
+              </tr>
+              <% }); %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- section 5 -->
+    <div class="section">
+      <h1 class="section-title">إجمالي المبالغ</h1>
+      <div class="contents">
+        <table dir="rtl" width="100%" border="0" cellpadding="3" cellspacing="0"
+          style="table-layout: fixed; border-collapse: collapse;">
+          <tr>
+            <td width="70%" align="right">السعر الإجمالي (شامل ضريبة القيمة المضافة) : </td>
+            <td width="30%" align="left" dir=ltr>
+             <%= invoice.totalPriceTaxExcl.toFixed(2) %> SAR
+            </td>
+          </tr>
+          <tr>
+            <td width="70%" align="right" dir=ltr> : (-)الخصم</td>
+            <td width="30%" align="left" dir=ltr>
+              <%= invoice.totalDiscount.toFixed(2) %> SAR
+            </td>
+          </tr>
+          <tr>
+            <td width="70%" align="right" dir=ltr> : مبلغ الضريبة بعد الخصم</td>
+            <td width="30%" align="left" dir=ltr>
+              <%= invoice.taxAdjustment.toFixed(2) %> SAR
+            </td>
+          </tr>
+          <tr>
+            <td width="70%" align="right" dir=ltr> : صافي الخصم</td>
+            <td width="30%" align="left" dir=ltr>
+              <%= invoice.netDiscount.toFixed(2) %> SAR
+            </td>
+          </tr>
+          <tr>
+            <td width="70%" align="right" dir=ltr> : رسوم الدفع الآجل</td>
+            <td width="30%" align="left" dir=ltr>
+              <%= invoice.ajilHandlingFee.toFixed(2) %> SAR
+            </td>
+          </tr>
+          <tr>
+            <td width="70%" align="right" dir=ltr> : المبلغ الخاضع للضريبة</td>
+            <td width="30%" align="left" dir=ltr>
+              <%= invoice.taxableAmount.toFixed(2) %> SAR
+            </td>
+          </tr>
+          <tr>
+            <td width="70%" align="right" dir=ltr> : ضريبة القيمة المضافة</td>
+            <td width="30%" align="left" dir=ltr>
+              <%= invoice.totalTax.toFixed(2) %> SAR
+            </td>
+          </tr>
+        </table>
+        <table class="invoice-total" dir="rtl" width="100%" border="0" cellpadding="5" cellspacing="0"
+          style="table-layout: fixed; border-collapse: collapse;">
+          <tr>
+            <td width="70%" align="right" dir=ltr> : المبلغ يشمل ضريبة القيمة المضافة</td>
+            <td width="30%" align="left" dir=ltr>
+              <%= invoice.totalAmount.toFixed(2) %> SAR
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="footer">
+      <img src="https://prod-retailo-images.s3.me-south-1.amazonaws.com/thermal-invoice-footer-ar.png"
+        class="footer-img" alt="">
+    </div>
+  </div>
+</body>
+
+</html>

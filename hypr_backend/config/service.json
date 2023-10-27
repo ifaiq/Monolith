@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "hypr-shopdev",
+  "private_key_id": "4ab16700face11c0802656f270995b0c355889fb",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEuwIBADANBgkqhkiG9w0BAQEFAASCBKUwggShAgEAAoIBAQDHHPEsnuPM6aKX\nOi7sW8B7MUmCIHKRNrqwl9dpcY640uHZemD3fOVzvb4CcWPSy5eMVa6oL+HAyItX\nYwwCU0DtEjrq2aaLbpCEgo66leZlJUD1bEJ4Du2uIQhazr4cglb9wq1FCvJC9zK5\nIm3faBCQErspmPFMsFLZOi9m1UjEk/Fz/DcFpqKy5kxPBklySvofqkJDlUw29UX6\nAwZeukda3pGJZFCBmqb0CbO/vJnZuRaC9jxJKDwvEETy09/5N0J0Y0w+SC9K0Sd8\nBV3uzFotn5RGKUZsQ5Pg6qMTf+GkCosVouZLGdhPZXGMviuB1pijkF7xq4UdoTpT\neYck8kB9AgMBAAECggEACURnVDKT+yxPmTbHys/taj5tw6zzcB9KOqBikgGLST5l\nbRwVSceKHWQyJQZ2hS/dHpa5UZIi8XhUBe3x9+S8k5wi2l3lcr1jZAt4jaYe6ku8\n1X9jq5dUSCO48hMHxadqWZa3PkynYGcFeRjpYLnE9ZOtmt7HslBNltcusBxSrfV4\nnuzA/lkHDf8ZfGTmO4E69924TvI9rvl0V/PpdVPqytDw3wQ7WOkhePPHc333i465\nKVZmR64tvupE7ZWHSrR5Ml/sbYoRpJpq7jm5aREFztpFquyuZ+/FuRN5dgJhv6TW\nUmxMt07v8aca5nGaxlRcKGxTieBU1wxMjPrApw8LOQKBgQD+r+6d4StdYXPCZ//7\nKdp/dKSAbP0rl1V1NPA3iBf7qJUzeRRJLeMFexTC3aPei2st7ymMFSzSaIpfXOxV\nj+n+bB/xOkrCv69mQYpKUJRIN5R5fDx906tenv3jm6suvxq65F+4P4HcwgX6pGFc\nx9GxYCmehgtMTzcpc/cMq8bBOQKBgQDII62XihL0/1pz9LbmU2UhVw7kAPk4gPqp\nT4hQYaZATf6dPmazUxb2FeFUu/VaY3PYqwAa46VaB/w6EimvnRV2UU/bN9DCXa4U\nLcYTUiTx+WTM7fFJtW4ABKl/dCa3YdsQpd6aHSnj9gbFBOXCSjdjCFwTOArVbNuc\nkW5+GRktZQKBgQCHm4dy+uSLGQt49MUgp51WhfXdB6sZnb97488P0l/quE2RFaQO\nfudFEM7yHu9U3GkaESDPHKs78TvUIPcZa8JMnKe5Wq9Z2JR83uLSROtfNHDS6qqO\n2LiDbiaDHWzdPBXwcw7gXLg5oflrBkFtFFv7lNc0N+0mGXumj794OLJgSQKBgDeY\nWZdX3o46BMljOA9hKR2KznMdph1BDuBLXIVfqswAHnNVqzezJBS13UMpdy1lpP+R\n+NR/WiZZQ4JqGzRSQWz9h15Q8eecGEg4suYZEnQ5H/whOL6N7IGKyf7CqCKWx0Cn\not9SrJlLdXPzOVOwRBR5dQJNtgy1UYf7iiLzG+BVAn9SuPAYHySwCFL9mXIgb2qp\nMHW2F4nC+HuoD4YEjCPYvri6QSgHpQaBrCKw3eLTim+FmlBLYD7oneZnjzYJ6cdo\nBZCsBTWr6aSXS7Xpno7jmceOSJW0C5AxVVcRhw+aMiiQxZn7pf1q7+03pviUs5jH\ngp0nUpdXuTeZ4zbZq+h6\n-----END PRIVATE KEY-----\n",
+  "client_email": "hypr-etl-dev@hypr-shopdev.iam.gserviceaccount.com",
+  "client_id": "106773908290333876183",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/hypr-etl-dev%40hypr-shopdev.iam.gserviceaccount.com"
+}

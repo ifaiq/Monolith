@@ -1,0 +1,26 @@
+<div class="row">
+  <div class="col">
+    <table class="table">
+      <thead>
+        <tr class="colored-thead">
+          <th>Name</th>
+          <th>Company Name</th>
+          <th>Current Version</th>
+          <th>One Signal App Id</th>
+          <th>One Signal App Key</th>
+          <th class="text-right">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let version of appVersions; let i = index">
+          <td>{{version.name}}</td>
+          <td>{{version.company_id? version.company_id.name: ''}}</td>
+          <td><input type="number" class="form-control" [(ngModel)]="version.current_version" /></td>
+          <td><input type="text" class="form-control" [(ngModel)]="version.app_id" /></td>
+          <td><input type="text" class="form-control" [(ngModel)]="version.app_key" /></td>
+          <td><button class="skewbtn-primary pull-right" (click)="updateVersion(version)"> Update </button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

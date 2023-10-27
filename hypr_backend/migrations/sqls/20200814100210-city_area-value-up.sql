@@ -1,0 +1,26 @@
+INSERT INTO
+    city_areas (id, name, disabled, created_at, updated_at)
+VALUES
+    (1, 'Baldia Town', false, now(), now()),
+    (2, 'Bin Qasim Town', false, now(), now()),
+    (3, 'Gadap Town', false, now(), now()),
+    (4, 'Gulberg Town', false, now(), now()),
+    (5, 'Gulshan Town', false, now(), now()),
+    (6, 'Jamshed Town', false, now(), now()),
+    (7, 'Kiamari Town', false, now(), now()),
+    (8, 'Korangi Town', false, now(), now()),
+    (9, 'Landhi Town', false, now(), now()),
+    (10, 'Liaquatabad Town', false, now(), now()),
+    (11, 'Lyari Town', false, now(), now()),
+    (12, 'Malir Town', false, now(), now()),
+    (13, 'New Karachi Town', false, now(), now()),
+    (14, 'North Nazimabad Town', false, now(), now()),
+    (15, 'Orangi Town', false, now(), now()),
+    (16, 'Saddar Town', false, now(), now()),
+    (17, 'Shah Faisal Town', false, now(), now()),
+    (18, 'SITE Town', false, now(), now()),
+    (19, 'F.B.Area', false, now(), now()),
+    (20, 'Gulistan e jouhar', false, now(), now()),
+    (21, 'Gulshan e Maymar', false, now(), now()),
+    (22, 'North Karachi', false, now(), now()),
+    (23, 'Nazimabad', false, now(), now());

@@ -1,0 +1,1 @@
+DELETE FROM permissions WHERE code = 'G_ORDERS_BY_BATCH_RBAC';

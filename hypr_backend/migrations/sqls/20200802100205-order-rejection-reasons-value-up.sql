@@ -1,0 +1,10 @@
+INSERT INTO order_rejection_reason (reason, description, created_at, updated_at) VALUES ('Need bill', 'Retailer asked printed invoice and we didn’t provide so retailer asked to cancel',now(),now()),
+('I didnt order', 'Retailer said he didn’t order (cancelled)',now(),now()),
+('No cash', 'Retailer don’t have cash and asking for credit(cancelled)',now(),now()),
+('Price expectation', 'Mis-commitment on price or delivery time to retailers from sales agents',now(),now()),
+('shop is closed', 'Shop is closed and retailer asked to cancel on call or we attempted twice',now(),now()),
+('Expiry is short', 'Expiry is short',now(),now()),
+('Items not available', 'Missing SKUs in the order',now(),now()),
+('Wrong location', 'Unable to find and contact retailer',now(),now()),
+('Come again later', 'come after some time or next day',now(),now()),
+('Others', 'Any other reason',now(),now());

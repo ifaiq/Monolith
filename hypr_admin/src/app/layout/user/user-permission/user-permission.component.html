@@ -1,0 +1,15 @@
+<div *ngxPermissionsOnly="['*','C_ROLE']">
+  <div class="row mb-20">
+    <h2>User Role</h2>
+  </div>
+  <div class="row mb-20">
+    <div class="col">
+        <input type="text" [(ngModel)]="role_name" class="form-control">
+    </div>
+    <div class="col">
+        <button (click)="createNewRole(role_name)" class="btn btn-primary skewbtn-primary">Create Role</button>
+    </div>
+  </div>
+
+</div>
+  

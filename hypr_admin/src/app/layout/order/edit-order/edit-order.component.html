@@ -1,0 +1,27 @@
+<div *ngxPermissionsOnly="['*', 'EDIT_ORDER']">
+  <h3>Order Id: {{order.id}}</h3>
+  <table style="width:100%" class="table">
+    <thead>
+      <th>Sku</th>
+      <th>Name</th>
+      <th>Brand</th>
+      <th>Size</th>
+      <th>Quantity</th>
+      <th>Item Total</th>
+      <th>Status</th>
+    </thead>
+    <tr *ngFor="let ite of order.items;  let i = index">
+      <td>{{ite.sku.sku}}</td>
+      <td>{{ite.sku.name}}</td>
+      <td> {{ite.sku.brand}}</td>
+      <td>{{ite.sku.size}}</td>
+      <td><input type="number" [(ngModel)]="ite.quantity" (blur)="setItemTotal(i)"></td>
+      <td>{{ite.price}}</td>
+      <td>{{ite.status_id.name}}</td>
+      <td (click)="removeItem(i, ite.id)">X</td>
+    </tr>
+  </table>
+  <h3>Total Price: {{order.total_price}}</h3>
+
+  <button (click)="editOrder()">Update</button>
+</div>

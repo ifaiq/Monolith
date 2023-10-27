@@ -1,0 +1,125 @@
+<div *ngxPermissionsOnly="['*', 'L_COMP']">
+  <div class="row">
+    <div class="col-12">
+      <div class="page-title">
+        <span class="h1">Company Management</span>
+        <button class="btn btn-icon btn-refresh ml-20" (click)="getCompanies(true)"><span></span></button>
+        <!-- <button routerLink="/hierarchy/company/create" class="ml-20 skewbtn-secondary"
+          *ngxPermissionsOnly="['*', 'C_COMP']">Create
+          Company</button> -->
+      </div>
+    </div>
+  </div>
+  <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+  <div class="row">
+    <div class="col-12">
+      <div class="table-responsive">
+        <div class="custom-table">
+          <ul class="row thead">
+            <li class="col-2"><span>#</span></li>
+            <li class="col-3"><span>Name</span></li>
+            <li class="col-3"><span>Code</span></li>
+            <!-- <li class="col-2"><span>Emails</span></li> -->
+            <li class="col-2"><span>Status</span></li>
+            <!-- <li class="col-2"><span>Action</span></li> -->
+          </ul>
+          <ul class="table-body">
+            <li class="row table-row align-items-center"
+              *ngFor="let company of
+              companies | paginate: { id:paginationId , itemsPerPage: itemsPerPage, currentPage: currentPage,totalItems: totalItems}; let i= index">
+              <div class="col-2 tcell"><span>{{sharedFunctions.getRowCount(itemsPerPage,currentPage,i)}}</span></div>
+              <div class="col-3 tcell"><span>{{company.name}}</span></div>
+              <div class="col-3 tcell"><span>{{company.code?company.code:'-----'}}</span></div>
+              <!-- <div class="col-3 tcell"><span>{{company.emails}}</span></div> -->
+              <div class="col-2 tcell"><span>{{company.disabled?'Disabled':'Enabled'}}</span></div>
+              <!-- <div class="col-2 tcell"><span><button class="btn btn-icon btn-edit"
+                    (click)="rowClick(i)"><span></span></button></span></div> -->
+              <div class="col-12 table-row-details bundle-details-wrapper" *ngxPermissionsOnly="['*', 'U_COMP']"
+                [hidden]="!(activeIndex == i)">
+                <div class="table-expand-box row">
+                  <div class="col-sm-4 sm-mb-10">
+                    <div class="form-group fg1">
+                      <label>Name</label>
+                      <input type="text" class="form-control" [(ngModel)]="company.name">
+                    </div>
+                  </div>
+                  <div class="col-sm-4 sm-mb-10">
+                    <div class="form-group fg1">
+                      <label>Code</label>
+                      <input type="text" class="form-control" [(ngModel)]="company.code">
+                    </div>
+                  </div>
+                  <!-- <div class="col-sm-4 sm-mb-10">
+                    <div class="form-group fg1">
+                      <label>Emails</label>
+                      <input type="email" class="form-control" [(ngModel)]="company.emails">
+                    </div>
+                  </div> -->
+                  <!--<div class="col-sm-4 sm-mb-10">
+                    <div class="form-group fg2">
+                      <label>Service Charge Type</label>
+                      <input type="text" class="form-control" [(ngModel)]="company.service_charge_type">
+                    </div>
+                  </div>
+                  <div class="col-sm-4 sm-mb-10">
+                    <div class="form-group fg2">
+                      <label>Service Charge Value</label>
+                      <input type="number" class="form-control" [(ngModel)]="company.service_charge_value">
+                    </div>
+                  </div>
+                  <div class="col-sm-4 sm-mb-10">
+                    <div class="form-group fg2">
+                      <label>Delivery Charge Type</label>
+                      <input type="text" class="form-control" [(ngModel)]="company.delivery_charge_type">
+                    </div>
+                  </div>
+                  <div class="col-sm-4 sm-mb-10">
+                    <div class="form-group fg2">
+                      <label>Delivery Charge Value</label>
+                      <input type="number" class="form-control" [(ngModel)]="company.delivery_charge_value">
+                    </div>
+                  </div>
+                  <div class="col-sm-2 sm-mb-10">
+                    <div class="form-group fg1">
+                      <label class="d-block">Send Events</label>
+                      <div class="cutom-switch">
+                        <label> No </label>
+                        <ui-switch class="switchHolder" [(ngModel)]="company.send_events" color="#e65400" size="small"
+                          checkedLabel="on">
+                        </ui-switch>
+                        <label> Yes </label>
+                      </div>
+                    </div>
+                  </div>-->
+                  <div class="col-sm-3 sm-mb-10">
+                    <div class="form-group fg1">
+                      <label class="d-block">Status</label>
+                      <div class="cutom-switch">
+                        <label> Enabled </label>
+                        <ui-switch class="switchHolder" [(ngModel)]="company.disabled" color="#e65400" size="small"
+                          checkedLabel="on" reverse>
+                        </ui-switch>
+                        <label> Disabled </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- <div class="table-expand-box row">
+                  <div class="col-12">
+                    <div class="buttons-wrapper text-right">
+                      <button class="skewbtn-secondary" (click)="rowClick(i)"><span>Cancel</span></button>
+                      <button class="skewbtn-primary" (click)="updateCompany(i)"><span>Update
+                          Company</span></button>
+                    </div>
+                  </div>
+                </div> -->
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <pagination-controls class="mt-30" (pageChange)="pagination($event)" id="{{paginationId}}" autoHide="{{totalItems<itemsPerPage}">
+  </pagination-controls>
+</div>

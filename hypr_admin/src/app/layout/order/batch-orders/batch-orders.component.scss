@@ -1,0 +1,84 @@
+.batchEditArea {
+  .ml-5 {
+    margin-left: 5%;
+  }
+  .mr-5 {
+    margin-right: 5%;
+  }
+}
+
+.border-4 {
+  height: 40px;
+  border-top: 1px solid #f1a275 !important;
+  border-bottom: 1px solid #f1a275 !important;
+  border: 1px solid #f1a275;
+}
+.border-4 th {
+  text-align: center;
+  background: #fff;
+  font-size: 12px;
+  padding: 5px 5px;
+  border-top: 1px solid #f1a275 !important;
+  vertical-align: middle;
+  border-bottom: 1px solid #f1a275 !important;
+}
+
+.user-table {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.user-table tbody tr {
+  background-color: #fafafa;
+}
+
+.user-table tbody tr td {
+  font-size: 12px;
+  border-top: 0px solid #eceeef;
+}
+
+.user-table.middle  tbody tr td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.delivery-agent-button {
+  width: 140%;
+}
+
+.option {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 75%;
+}
+
+.closing {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.user-table.closing {
+  width: 150%;
+}
+
+.middle {
+  padding-top: 12px;
+}
+
+.closing-input {
+  width: 150%;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+.disabled {
+  color: grey;
+}

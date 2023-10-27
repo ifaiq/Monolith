@@ -1,0 +1,265 @@
+<div *ngxPermissionsOnly="['*','C_COUPON']">
+    <div>
+        <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title">
+                <span class="h1">Create Coupon</span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-sm-8">
+            <div class="form-group">
+                <label>Name*</label>
+                <input type="text" class="form-control" placeholder="Enter Coupon Name" [(ngModel)]="coupon.name"
+                    minlength="1" required pattern={{couponService.couponNameRegex}}>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-sm-8">
+            <div class="form-group">
+                <label>Description</label>
+                <label style="font-weight: normal !important;">[Use "|" for line break and "|-" for bullet points]</label>
+                <input type="text" class="form-control" placeholder="Enter Coupon Description" [(ngModel)]="coupon.description">
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-20">
+        <div class="col-12 col-sm-4">
+            <div class="form-group">
+                <label>Start Date</label>
+                <angular2-date-picker [(ngModel)]="coupon.startDate" [settings]="couponService.settings">
+                </angular2-date-picker>
+            </div>
+        </div>
+        <div class="col-12 col-sm-4">
+            <div class="form-group">
+                <label>End Date</label>
+                <angular2-date-picker [(ngModel)]="coupon.endDate" [settings]="couponService.settings">
+                </angular2-date-picker>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-20">
+        <div class="col-12 col-sm-4">
+            <div class="form-group">
+                <label for="">Select Coupon Type</label>
+                <select [(ngModel)]="coupon.discountTypeId" name="discount_type" class="form-control" (ngModelChange)="setNumberToOneDecimal('discountValue')">
+                    <option *ngFor="let type of couponService.coupon_discount_types" [value]="type.id">{{type.name}}
+                    </option>
+                </select>
+            </div>
+        </div>
+        <div class="col-12 col-sm-4">
+            <div class="form-group">
+                <label for="">Select Coupon User</label>
+                <select [(ngModel)]="coupon.userTypeId" name="user_type" class="form-control" >
+                    <option *ngFor="let user of couponService.coupon_user_types" [value]="user.value">{{user.name}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-12 col-sm-4">
+            <div class="form-group">
+                <label for="">Discount Value*</label>
+                <input type="number" class="form-control" [(ngModel)]="coupon.discountValue" maxlength="9"
+                    id="discountValue"
+                    onkeydown="return ![8, 37, 39].includes(event.keyCode)?(/[0-9.]/g.test(event.key)):true"
+                    (ngModelChange)="setNumberToOneDecimal('discountValue')">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="">Coupon Min Discount Limit*</label>
+            <input type="text" class="form-control" (keypress)="couponService.isNumberKey($event)"
+                [(ngModel)]="coupon.minCouponLimit" maxlength="9">
+        </div>
+        <div *ngIf="coupon.discountTypeId == 1" class="form-group">
+            <label for="">Coupon Max Discount Value*</label>
+            <input type="text" class="form-control" (keypress)="couponService.isNumberKey($event)"
+                [(ngModel)]="coupon.maxDiscountValue" maxlength="9">
+        </div>
+        <div class="form-group">
+            <label for="">Coupon Max Usage*</label>
+            <input type="text" class="form-control" (keypress)="couponService.isNumberKey($event)"
+                [(ngModel)]="coupon.maxUsagePerCustomer" maxlength="9">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12 col-sm-4" *ngxPermissionsOnly="['*', 'L_BU']">
+            <div class="form-group">
+                <label>Select Business Unit</label>
+                <select [(ngModel)]="coupon.businessUnitId" name="business_unit_id" class="form-control"
+                    (change)="getlocations()">
+                    <option *ngFor="let unit of business_units" [value]="unit.id">{{unit.name}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-12 col-sm-4" *ngxPermissionsOnly="['*', 'L_ALL_LOC']">
+            <div class="form-group">
+                <label>Select Location</label>
+                <select [(ngModel)]="coupon.locationId" name="location_id" class="form-control"
+                    (change)="locationChanged()">
+                    <option *ngFor="let location of locations" [value]="location.id">{{location.name}}</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-sm-4 mt-20">
+            <label>Enable/Disable Coupon</label>
+            <div class="form-group">
+                <div class="cutom-switch">
+                    <label>Enabled</label>
+                    <ui-switch class="switchHolder" [(ngModel)]="coupon.disabled" color="#e65400" size="small"
+                        checkedLabel="on" reverse>
+                    </ui-switch>
+                    <label>Disabled</label>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-4  mt-20">
+            <label>Show/Hide on Coupon Wallet</label>
+            <div class="form-group">
+                <div class="cutom-switch">
+                    <label>Show</label>
+                    <ui-switch class="switchHolder" [(ngModel)]="coupon.hideOnWallet" color="#e65400" size="small"
+                        checkedLabel="on" reverse>
+                    </ui-switch>
+                    <label>Hide</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-20">
+        <div class="col-12 col-sm-12 mb-10">
+            <b>Customer Eligibility</b>
+        </div>
+        <div class="col-12 col-sm-12">
+            <div class="row">
+                <div class="col-12 col-sm-4">
+                    <input type="radio" [value]="couponService.coupon_customer_options[0].id"
+                        name="coupon_customer_options_{{i}}" [(ngModel)]="coupon.couponCustomerOptionId">
+                    <span>
+                        {{couponService.coupon_customer_options[0].name}}
+                    </span>
+                </div>
+                <div class="col-12 col-sm-4">
+                    <input type="radio" [value]="couponService.coupon_customer_options[1].id"
+                        name="coupon_customer_options_{{i}}" [(ngModel)]="coupon.couponCustomerOptionId">
+                    <span>{{couponService.coupon_customer_options[1].name}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" *ngIf="coupon.couponCustomerOptionId == couponService.selectedCustomerOption">
+        <div class="col-12">
+            <div class="mb-20 mt-10">
+                <span class="h6">Customer Selection</span>
+                <button (click)="openCustomerSelectionPopover(customerSelection)" class="ml-20 skewbtn-secondary">Select
+                    Customers</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-20" *ngIf="coupon.couponCustomerOptionId == couponService.selectedCustomerOption">
+        <div class="col-12">
+            <div class="row">
+                <form class="col mt-10" id="fileFormCustomer">
+                    <input type="file" id="file_upload_field" #fileInput placeholder="Upload file..."
+                        class="form-control" (change)="onChangeCustomer($event)" />
+                </form>
+                <div class="col mt-10">
+                    <button type="button" class="skewbtn-primary" (click)="clearFileCustomer()">
+                        Clear File
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-20" *ngIf="coupon.discountTypeId == 1">
+        <div class="col-12 col-sm-12 mb-10">
+            <b>SKU Eligibility</b>
+        </div>
+        <div class="col-12 col-sm-12">
+            <div class="row">
+                <div class="col-12 col-sm-4">
+                    <input type="radio" [value]="couponService.coupon_sku_options[0].id"
+                        [(ngModel)]="coupon.productsListType">
+                    <span>
+                        {{couponService.coupon_sku_options[0].name}}
+                    </span>
+                </div>
+                <div class="col-12 col-sm-4">
+                    <input type="radio" [value]="couponService.coupon_sku_options[1].id"
+                        [(ngModel)]="coupon.productsListType">
+                    <span>{{couponService.coupon_sku_options[1].name}}</span>
+                </div>
+                <div class="col-12 col-sm-4">
+                    <input type="radio" [value]="couponService.coupon_sku_options[2].id"
+                        [(ngModel)]="coupon.productsListType">
+                    <span>{{couponService.coupon_sku_options[2].name}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-20" *ngIf="coupon.productsListType != couponService.allSkuOption && coupon.discountTypeId == 1">
+        <div class="col-12">
+            <div class="row">
+                <form class="col mt-10" id="fileFormSku">
+                    <input type="file" accept=".csv" id="csvFile" id="file_upload_field" #fileInput
+                        placeholder="Upload file..." class="form-control" (change)="onSkuListFileChange($event)" />
+                </form>
+                <div class="col mt-10">
+                    <button type="button" class="skewbtn-primary" (click)="clearFileSku()">
+                        Clear File
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" *ngIf="coupon.couponCustomerOptionId == couponService.selectedCustomerOption">
+        <div class="col-12 col-sm-4">
+            <div class="chipsContainer" *ngIf="coupon.couponCustomers.length">
+                <div class="label label-default chips" *ngFor="let customer of coupon.couponCustomers;let i=index">
+                    {{customer.name}} ({{customer.phone}})
+                    <i class="fa fa-times-circle pointer" (click)="removeSelectedCustomer(customer)"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="button-wrapper text-right mt-20">
+                <button class="btn btn-primary btn-text" (click)="createCoupon()"><span>Create</span></button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<ng-template #customerSelection let-c="close" let-d="dismiss">
+    <div class="help-popup padding20">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col">
+                <div class="pull-right">
+                    <a class="crossSignPopup"><span aria-hidden="true"
+                            (click)="closeCustomerSelection(0)">&times;</span></a>
+                </div>
+            </div>
+        </div>
+        <customer-selection [coupon_customers]="coupon.couponCustomers" [company_id]="coupon.companyId"
+            (closeCustomerSelection)="closeCustomerSelection($event)"></customer-selection>
+    </div>
+</ng-template>

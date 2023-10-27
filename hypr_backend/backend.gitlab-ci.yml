@@ -1,0 +1,81 @@
+image: node:14
+services:
+  - redis:alpine
+
+cache:
+  key: $CI_COMMIT_REF_SLUG-$CI_PROJECT_DIR
+  paths:
+    - hypr_backend/node_modules/
+
+variables:
+  REDIS_SERVER: redis
+  REDIS_PORT: 6379
+
+install_dependencies:
+  stage: init
+  script:
+    - cd hypr_backend/
+    - npm config set @development-team20:registry=https://gitlab.com/api/v4/packages/npm/
+    - npm config set '//gitlab.com/api/v4/packages/npm/:_authToken=${GL_NPM_TOKEN}'
+    - npm ci
+  rules:
+    - changes:
+        - hypr_backend/**/*
+
+run_eslint_on_backend:
+  stage: lint
+  script:
+    - cd hypr_backend/
+    - npm run lint
+  rules:
+    - changes:
+      - hypr_backend/api/modules/v1/**/*
+      - hypr_backend/api/controllers/v1/**/*
+
+unit_test:
+  stage: unit_test
+  script:
+    - cd hypr_backend/
+    - npm test
+  rules:
+    - changes:
+      - hypr_backend/**/*
+      
+e2e_test:
+  image: docker/compose:latest
+  stage: e2e_test
+  services:
+    - docker:dind
+  variables:
+    DOCKER_HOST: tcp://docker:2375/
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: ''
+  script:
+    - cd hypr_backend/
+    - cp .env.localDocker .env
+    - docker-compose -f docker-compose.ci.yml up --abort-on-container-exit --exit-code-from hypr_backend
+  artifacts:
+    paths:
+      - hypr_backend/coverage/
+  rules:
+    - changes:
+      - hypr_backend/**/*
+
+load_test:
+  stage: load_test
+  image:
+    name: loadimpact/k6:latest
+    entrypoint: ['']
+  script:
+    - k6 run hypr_backend/test/load-testing/getCategoriesForConsumer.load-spec.ts
+    - k6 run hypr_backend/test/load-testing/getProductsForConsumer.load-spec.ts
+    - k6 run hypr_backend/test/load-testing/placeOrderForConsumer.load-spec.ts
+    - k6 run hypr_backend/test/load-testing/getDeliverySlotsForConsumer.load-spec.ts
+    - k6 run hypr_backend/test/load-testing/getDeliverySlotsForPortal.load-spec.ts
+    - k6 run hypr_backend/test/load-testing/updateDeliverySlotsForPortal.load-spec.ts
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: never
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+      when: on_success
+    - when: manual

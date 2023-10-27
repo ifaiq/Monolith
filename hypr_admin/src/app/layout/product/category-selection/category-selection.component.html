@@ -1,0 +1,52 @@
+<div class="new-onboard-popup">
+  <div>
+    <h6>Select Categories *</h6>
+    <div class="categorySelection">
+      <div class="scrollable">
+        <li *ngFor="let category of categoryList"
+          (click)="category.selected=!category.selected;toggleSelection(category)"
+          [ngClass]="{'highlight': category.selected}">{{category.name}}
+        </li>
+      </div>
+    </div>
+    <div class="subCategoryArea" *ngIf="showSubCat">
+      <h6>Select Sub Categories <span style="color:red">* (required)</span></h6>
+      <div class="categorySelection">
+        <span class="head">Sub Categories</span>
+        <div class="scrollable">
+          <li *ngFor="let subcat of subCategories" (click)="removeSubCatSelection(subcat)"
+            [ngClass]="{'highlight': subcat.selected}">{{subcat.name}}</li>
+        </div>
+      </div>
+    </div>
+    <button class="btn btn-primary skewbtn-primary" (click)="addCategory()">Add</button>
+
+    <div class="selectedCategories">
+      <h6 *ngIf="mappedCategories.length > 0">Selected Categories</h6>
+
+      <div class="categories" *ngIf="mappedCategories.length > 0">
+        <div class="holder" *ngFor="let cat of mappedCategories; let i = index">
+
+          <div class="categorytitle">
+            <span class="cateName">{{cat.name}}</span>
+            <button aria-hidden="true" (click)="removeSelectedCat(cat, 0)"
+              class="btn btn-link fa fa-times crossbtn"></button>
+          </div>
+
+          <!-- this is for L1 childs SPECIFICALLY-->
+          <div class="subCategories" *ngFor="let subcat of cat.sub_categories; let i = index">
+            <div class="row">
+              <div class="col-lg-6">
+                <span class="cateName">{{subcat.name}}</span>
+              </div>
+              <div class="col-lg-6">
+                <button aria-hidden="true" (click)="removeSelectedCat(cat, subcat.id)"
+                  class="btn btn-link fa fa-times crossbtn"></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>

@@ -1,0 +1,461 @@
+<div [@routerTransition] *ngxPermissionsOnly="['*', 'L_DASH_DATA']">
+    <div class="my-container">
+        <ngx-loading [show]="loading"></ngx-loading>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title">
+                <span class="h1">Dashboard</span>
+                <button
+                    class="btn btn-icon btn-refresh ml-20"
+                    (click)="getData()"
+                >
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-20">
+        <div class="col-md-2" *ngxPermissionsOnly="['*', 'L_ALL_COMP']">
+            <div class="form-group" style="padding: 0 5px !important">
+                <label>Select Company: </label>
+                <select
+                    [(ngModel)]="companyId"
+                    class="form-control"
+                    (change)="getbusinessUnits(); setCompanyType()"
+                >
+                    <option class="option" [value]="''">All</option>
+                    <option
+                        *ngFor="let company of companies"
+                        [value]="company.id"
+                    >
+                        {{ company.name }}
+                    </option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-2" *ngxPermissionsOnly="['*', 'L_BU']">
+            <div class="form-group" style="padding: 0 5px !important">
+                <label>Select Business Unit: </label>
+                <select
+                    [(ngModel)]="businessUnitId"
+                    class="form-control"
+                    (change)="getLocations()"
+                >
+                    <option class="option" [value]="''">All</option>
+                    <option *ngFor="let bu of businessUnits" [value]="bu.id">
+                        {{ bu.name }}
+                    </option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-1" *ngxPermissionsOnly="['*', 'L_ALL_LOC']">
+            <div class="form-group" style="padding: 0 5px !important">
+                <label>Select Cell: </label>
+                <select [(ngModel)]="userLocation" class="form-control">
+                    <option class="option" [value]="''">All</option>
+                    <option
+                        *ngFor="let location of locations"
+                        [value]="location.id"
+                    >
+                        {{ location.name }}
+                    </option>
+                </select>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <angular2-date-picker
+                [(ngModel)]="startDate"
+                [settings]="settings"
+            ></angular2-date-picker>
+        </div>
+
+        <div class="col-md-3">
+            <angular2-date-picker
+                [(ngModel)]="endDate"
+                [settings]="settings"
+            ></angular2-date-picker>
+        </div>
+        <div class="col-md-1">
+            <button (click)="getData()" class="skewbtn-primary">GO</button>
+        </div>
+    </div>
+
+    <div class="row dash-panel-wrapper">
+        <!-- <div class="col-md-12">
+            <button
+                *ngIf="isB2B"
+                class="skewbtn-secondary ml-20"
+                (click)="saveLastSync()"
+            >
+                Save Last Sync
+            </button>
+        </div> -->
+        <div class="col-lg-12 col-sm-6 dash-panel">
+            <div class="panel-title">
+                <h3>Metrics</h3>
+            </div>
+            <div class="panel-content">
+                <div class="row">
+                    <div class="col-lg-3">
+                        <div class="widgetArea">
+                            <i class="fa fa-percent" aria-hidden="true"></i>
+                            <span class="value">{{
+                                dashBoardData.averageOrderPrice | number
+                            }}</span>
+                            <span class="label">Avg. Basket Value</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-3" routerLink="/customers/all-customers" [queryParams]="{startDate:startDate,endDate:endDate}">
+                        <div class="widgetArea">
+                            <i class="fa fa-users" aria-hidden="true"></i>
+                            <span class="value">{{
+                                dashBoardData.totalCustomers | number
+                            }}</span>
+                            <span class="label">Number of Customers</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="widgetArea">
+                            <i class="fa fa-repeat" aria-hidden="true"></i>
+                            <span class="value">{{
+                                dashBoardData.repeatingCustomers | number
+                            }}</span>
+                            <span class="label">Repeating Customers</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="widgetArea">
+                            <i class="fa fa-percent" aria-hidden="true"></i>
+                            <span class="value">{{
+                                dashBoardData.averageOrderItems | number
+                            }}</span>
+                            <span class="label"
+                                >Avg. no. of items in Basket</span
+                            >
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="widgetArea">
+                            <i class="fa fa-line-chart" aria-hidden="true"></i>
+                            <span class="value"
+                                ><span class="lign"
+                                    >{{ accountService.currency }}.
+                                </span>
+                                {{ fetchSum(dashBoardData, true) }}</span
+                            >
+                            <span class="label">Total GMV</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="widgetArea">
+                            <i class="fa fa-line-chart" aria-hidden="true"></i>
+                            <span class="value"
+                                ><span class="lign"
+                                    >{{ accountService.currency }}.
+                                </span>
+                                {{
+                                    sharedFunctions.getFormattedAmount(
+                                        dashBoardData.notPackedSales
+                                    )
+                                }}</span
+                            >
+                            <span class="label">Not-Packed GMV</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="widgetArea">
+                            <i class="fa fa-line-chart" aria-hidden="true"></i>
+                            <span class="value"
+                                ><span class="lign"
+                                    >{{ accountService.currency }}.
+                                </span>
+                                {{
+                                    sharedFunctions.getFormattedAmount(
+                                        dashBoardData.packedSales
+                                    )
+                                }}</span
+                            >
+                            <span class="label">Packed GMV</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="widgetArea">
+                            <i class="fa fa-line-chart" aria-hidden="true"></i>
+                            <span class="value"
+                                ><span class="lign"
+                                    >{{ accountService.currency }}.
+                                </span>
+                                {{
+                                    sharedFunctions.getFormattedAmount(
+                                        dashBoardData.inTransitSales
+                                    )
+                                }}</span
+                            >
+                            <span class="label">In Transit GMV</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="widgetArea">
+                            <i class="fa fa-line-chart" aria-hidden="true"></i>
+                            <span class="value"
+                                ><span class="lign"
+                                    >{{ accountService.currency }}.
+                                </span>
+                                {{
+                                    sharedFunctions.getFormattedAmount(
+                                        dashBoardData.actualSales
+                                    )
+                                }}</span
+                            >
+                            <span class="label">Delivered GMV</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="widgetArea">
+                            <i class="fa fa-line-chart" aria-hidden="true"></i>
+                            <span class="value"
+                                ><span class="lign"
+                                    >{{ accountService.currency }}.
+                                </span>
+                                {{
+                                    sharedFunctions.getFormattedAmount(
+                                        dashBoardData.cancelledSales
+                                    )
+                                }}</span
+                            >
+                            <span class="label">Cancelled GMV</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="widgetArea">
+                            <i class="fa fa-line-chart" aria-hidden="true"></i>
+                            <span class="value"
+                                ><span class="lign"
+                                    >{{ accountService.currency }}.
+                                </span>
+                                {{ fetchSum(dashBoardData, false) }}</span
+                            >
+                            <span class="label">Returned GMV</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="widgetArea">
+                            <i class="fa fa-line-chart" aria-hidden="true"></i>
+                            <span class="value"
+                                ><span class="lign"
+                                    >{{ accountService.currency }}.
+                                </span>
+                                {{
+                                    sharedFunctions.getFormattedAmount(
+                                        dashBoardData.inventory_value
+                                    )
+                                }}</span
+                            >
+                            <span class="label">Inventory Value</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="widgetArea">
+                            <i class="fa fa-tasks" aria-hidden="true"></i>
+                            <span class="value">{{
+                                dashBoardData.dailyOrders | number
+                            }}</span>
+                            <span class="label">total orders</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="widgetArea">
+                            <i class="fa fa-first-order" aria-hidden="true"></i>
+                            <span class="value">{{
+                                dashBoardData.completedOrders | number
+                            }}</span>
+                            <span class="label">completed orders</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="widgetArea">
+                            <i class="fa fa-ban" aria-hidden="true"></i>
+                            <span class="value">{{
+                                dashBoardData.rejectedOrders | number
+                            }}</span>
+                            <span class="label">Rejected Orders</span>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3">
+                        <div class="widgetArea">
+                            <i class="fa fa-edit" aria-hidden="true"></i>
+                            <span class="value">{{
+                                dashBoardData.modifiedOrders | number
+                            }}</span>
+                            <span class="label"> Modified Orders</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="widgetArea">
+                            <i class="fa fa-clock-o" aria-hidden="true"></i>
+                            <span class="value"
+                                >hrs {{ dashBoardData.leadTime }}</span
+                            >
+                            <span class="label">Avg. Lead Time</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="widgetArea">
+                            <i class="fa fa-clock-o" aria-hidden="true"></i>
+                            <span class="value"
+                                >hrs {{ dashBoardData.packingTime }}</span
+                            >
+                            <span class="label">Avg. Packaging time</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="widgetArea">
+                            <i class="fa fa-clock-o" aria-hidden="true"></i>
+                            <span class="value"
+                                >hrs {{ dashBoardData.transitTime }}</span
+                            >
+                            <span class="label">Avg. Transit time</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row dash-panel-wrapper">
+        <div class="col-12 dash-panel full-panel">
+            <div class="panel-content">
+                <div class="row">
+                    <div
+                        class="col-12 col-sm-6 panel-col mb-0"
+                        *ngIf="leadTimeLineChartLabels.length"
+                    >
+                        <span class="label">Lead time</span>
+                        <div class="graph-wrapper mt-20">
+                            <div class="graph-wrapper mt-20">
+                                <div
+                                    class="grpy"
+                                    *ngIf="leadTimeLineChartLabels.length"
+                                >
+                                    <canvas
+                                        baseChart
+                                        [datasets]="leadTimeLineChartData"
+                                        id="leadTimeLineChart"
+                                        [labels]="leadTimeLineChartLabels"
+                                        [options]="lineChartOptions"
+                                        [colors]="leadTimeLineChartColors"
+                                        [legend]="lineChartLegend"
+                                        [chartType]="lineChartType"
+                                    >
+                                    </canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="col-12 col-sm-6 panel-col mb-0"
+                        *ngIf="packingTimeLineChartLabels.length"
+                    >
+                        <span class="label">Packaging time</span>
+                        <div class="graph-wrapper mt-20">
+                            <div class="graph-wrapper mt-20">
+                                <div class="grpy">
+                                    <canvas
+                                        baseChart
+                                        [datasets]="packingTimeLineChartData"
+                                        id="packingTimeLineChart"
+                                        [labels]="packingTimeLineChartLabels"
+                                        [options]="lineChartOptions"
+                                        [colors]="packingTimeLineChartColors"
+                                        [legend]="lineChartLegend"
+                                        [chartType]="lineChartType"
+                                    >
+                                    </canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="col-12 col-sm-6 panel-col mb-0"
+                        *ngIf="transitTimeLineChartLabels.length"
+                    >
+                        <span class="label">Transit time</span>
+                        <div class="graph-wrapper mt-20">
+                            <div class="graph-wrapper mt-20">
+                                <div class="grpy">
+                                    <canvas
+                                        baseChart
+                                        [datasets]="transitTimeLineChartData"
+                                        id="transitTimeLineChart"
+                                        [labels]="transitTimeLineChartLabels"
+                                        [options]="lineChartOptions"
+                                        [colors]="transitTimeLineChartColors"
+                                        [legend]="lineChartLegend"
+                                        [chartType]="lineChartType"
+                                    >
+                                    </canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row dash-panel-wrapper">
+        <div class="col-12 dash-panel full-panel">
+            <div class="panel-title">
+                <h3>Item Details</h3>
+            </div>
+            <div class="panel-content">
+                <div class="row">
+                    <div class="col-12 col-sm-6 panel-col mb-0">
+                        <span class="label">Top Five Catagories Sold</span>
+                        <div class="graph-wrapper mt-20">
+                            <div
+                                class="grpy"
+                                *ngIf="categoriesChartLabels.length"
+                            >
+                                <canvas
+                                    baseChart
+                                    [chartType]="
+                                        userLocation == '7' ? 'bar' : 'doughnut'
+                                    "
+                                    [datasets]="categoriesChartData"
+                                    [labels]="categoriesChartLabels"
+                                    [colors]="categoriesChartColors"
+                                    [options]="chartOptions"
+                                    [legend]="
+                                        userLocation == '7' ? false : true
+                                    "
+                                    (chartClick)="onChartClick($event)"
+                                >
+                                </canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 panel-col mb-0">
+                        <span class="label">Top Five Items In</span>
+                        <div class="graph-wrapper mt-20">
+                            <div class="grpy" *ngIf="skuChartName.length > 0">
+                                <canvas
+                                    baseChart
+                                    [chartType]="'bar'"
+                                    [datasets]="skuChartData"
+                                    [colors]="skuChartColors"
+                                    [labels]="skuChartName"
+                                    [options]="chartOptionsA"
+                                    [legend]="true"
+                                >
+                                </canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

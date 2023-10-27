@@ -1,0 +1,110 @@
+<div *ngxPermissionsOnly="['*', 'L_CUSTOMERS']">
+    <div>
+        <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title">
+                <span class="h1">Customers</span>
+                <button class="btn btn-icon btn-refresh ml-20" (click)="undoSearch()">
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-20">
+        <div class="col-sm search-cross-box">
+            <input type="text" placeholder="Search" [(ngModel)]="search" (keyup.enter)="searchCustomers()"
+                class="form-control" />
+            <button aria-hidden="true" (click)="undoSearch()" class="btn btn-link fa fa-times crossbtn"></button>
+        </div>
+        <div class="col"></div>
+        <div class="col"></div>
+    </div>
+    <div class="row all-orders">
+        <div class="col-6 col-lg-2" *ngxPermissionsOnly="['*', 'L_ALL_COMP']">
+            <div class="form-group">
+                <label>Select Company: </label>
+                <select [(ngModel)]="companyId" class="form-control" (change)="getbusinessUnits(); setCompanyType()">
+                    <option class='option' [value]="''">All</option>
+                    <option *ngFor='let company of companies' [value]="company.id">
+                        {{company.name}}
+                    </option>
+                </select>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="form-group" style="height: 70px;">
+                <label for="">From</label>
+                <input type="date" [(ngModel)]="startDate" class="form-control" />
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="form-group" style="height: 70px;">
+                <label for="">To</label>
+                <input type="date" [(ngModel)]="endDate" class="form-control" />
+            </div>
+        </div>
+        <div class="col">
+            <button class="skewbtn-primary mt-10" (click)="getCustomers(true)">
+                GO
+            </button>
+        </div>
+        <div class="col"></div>
+    </div>
+    <div class="row" [hidden]="loading">
+        <div class="col-12">
+            <div class="table-responsive">
+                <div class="custom-table">
+                    <ul class="row thead">
+                        <li class="col-1"><span>#</span></li>
+                        <li class="col-2"><span>Name</span></li>
+                        <li class="col-2"><span>{{isB2B?'Phone':'Primary Phone'}}</span></li>
+                        <li class="col-1"><span>Secondary Phone</span></li>
+                        <li class="col-2"><span>City Area</span></li>
+                        <li class="col-1"><span>Company</span></li>
+                        <li class="col-3"><span>Address</span></li>
+                    </ul>
+                    <ul class="table-body">
+                        <li class="row table-row bb align-items-center clickable" *ngFor="
+                                let customer of customers
+                                    | paginate
+                                        : {
+                                              id: paginationId,
+                                              itemsPerPage: itemsPerPage,
+                                              currentPage: currentPage,
+                                              totalItems: totalItems
+                                          };
+                                let i = index
+                            " (click)="rowClick(customer.id)">
+                            <div class="col-1 tcell">
+                                <span>{{ customer.rowCount }}</span>
+                            </div>
+                            <div class="col-2 tcell">
+                                <span>{{ customer.name }}</span>
+                            </div>
+                            <div class="col-2 tcell">
+                                <span>{{ customer.phone }}</span>
+                            </div>
+                            <div class="col-1 tcell">
+                                <span>{{ customer.secondary_phone }}</span>
+                            </div>
+                            <div class="col-2 tcell">
+                                <span>{{ customer.city_area }}</span>
+                            </div>
+                            <div class="col-1 tcell">
+                                <span>{{ customer.company_name }}</span>
+                            </div>
+                            <div class="col-3 tcell">
+                                <span>{{ customer.address }}</span>
+                            </div>
+                        </li>
+                        <pagination-controls class="mt-30" (pageChange)="pagination($event)" id="{{ paginationId }}"
+                            autoHide="{{totalItems<itemsPerPage}">
+                        </pagination-controls>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

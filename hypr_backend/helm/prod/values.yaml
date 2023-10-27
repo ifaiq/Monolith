@@ -1,0 +1,85 @@
+# Default values for chart.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 6
+
+image:
+  repository: 008046943346.dkr.ecr.me-south-1.amazonaws.com/monolith-backend
+  pullPolicy: Always
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "latest"
+  container_port: 8080
+
+nameOverride: "hyper-backend-app"
+fullnameOverride: "hyper-backend"
+environment: "Prod"
+
+command: ["/bin/bash"]
+args:
+  - "-c"
+  - "db-migrate up --config config/database.json -e production; node app.js"
+healthCheckPath: "/"
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::718230964299:role/ecsTaskExecutionRole
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: "sa-voyager"
+
+podAnnotations: {}
+
+
+service:
+  type: ClusterIP
+  port: 8080
+
+ingress:
+  enabled: true
+  className: "alb"
+  annotations: 
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/group.name: retailo-prod
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:me-south-1:008046943346:certificate/25c7a0b3-8628-4531-b9c1-2d1e63f032de
+    alb.ingress.kubernetes.io/healthcheck-path: /
+    alb.ingress.kubernetes.io/group.order: '1000'
+  hosts:
+    - host: 
+      paths:
+        - path: /
+          pathType: Prefix
+
+initalDelaySeconds: 120
+
+resources:
+  limits:
+    cpu: 4000m
+    memory: 12288Mi
+  requests:
+    cpu: 3000m
+    memory: 8192Mi
+
+autoscaling:
+  enabled: true
+  minReplicas: 6
+  maxReplicas: 12
+  targetCPUUtilizationPercentage: 70
+  targetMemoryUtilizationPercentage: 70
+
+
+AppName: "monolith-backend"
+
+tolerations: 
+    - effect: "NoSchedule"
+      key: "app"
+      operator: "Equal"
+      value: "monolith-backend" 
+
+nodeSelector: {}
+
+affinity: {}

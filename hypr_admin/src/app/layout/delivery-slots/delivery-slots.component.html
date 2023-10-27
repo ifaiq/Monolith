@@ -1,0 +1,258 @@
+<div *ngxPermissionsOnly="['*', 'L_DELIVERY_SLOTS']">
+  <div class="row">
+    <div class="col-12">
+      <div class="page-title">
+        <span class="h1">Delivery Slots</span>
+        <button
+          class="btn btn-icon btn-refresh ml-20"
+          (click)="refresh()"
+        ></button>
+        <button
+          class="skewbtn-secondary ml-20"
+          type="button"
+          (click)="fileInput.click()"
+        >
+          Upload File
+        </button>
+        <input
+          hidden
+          (change)="uploadFile($event)"
+          #fileInput
+          type="file"
+          id="file"
+          accept=".csv"
+        />
+      </div>
+    </div>
+  </div>
+
+  <ngx-loading
+    [show]="loading"
+    [config]="{ backdropBorderRadius: '14px' }"
+  ></ngx-loading>
+
+  <div class="row all-orders">
+    <div class="col-6 col-lg-3">
+      <div class="form-group">
+        <label>Business Unit</label>
+        <select
+          [(ngModel)]="selectedBusinessUnitId"
+          (change)="getlocations()"
+          class="form-control"
+        >
+          <option *ngFor="let bu of businessUnits" [value]="bu.id">
+            {{ bu.name }}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="form-group">
+        <label>Location</label>
+        <select
+          [(ngModel)]="selectedLocationId"
+          (change)="getDeliverySlots(); getActiveDeliverySlots()"
+          class="form-control"
+        >
+          <option *ngFor="let location of locations" [value]="location.id">
+            {{ location.name }}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="form-group">
+        <label>Advance Bookable Days</label>
+        <select
+          [(ngModel)]="selectedDeliverySlotDay"
+          (change)="setAdvanceBookableDays()"
+          class="form-control"
+        >
+          <ng-container
+            *ngIf="selectedDeliverySlotDay || selectedDeliverySlotDay === 0"
+          >
+            <option *ngFor="let day of deliverySlotDays" [value]="day">
+              {{ day }}
+            </option>
+          </ng-container>
+        </select>
+      </div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="form-group">
+        <label>Default Cut-off Time</label>
+        <select
+          [(ngModel)]="selectedDeliverySlotCutOffTime"
+          (change)="setAdvanceBookableDays()"
+          class="form-control"
+        >
+          <ng-container
+            *ngIf="
+              selectedDeliverySlotCutOffTime ||
+              selectedDeliverySlotCutOffTime === 0
+            "
+          >
+            <option
+              *ngFor="let time of deliverySlotCutOffTimes"
+              [value]="time.value"
+            >
+              {{ time.view }}
+            </option>
+          </ng-container>
+        </select>
+      </div>
+    </div>
+
+    <div class="col-12">
+      <div class="table-responsive">
+        <div class="custom-table fixed-header">
+          <ul class="row thead">
+            <li class="col-1"><span>Day</span></li>
+            <li class="col-1"><span>Date</span></li>
+            <li class="col-3"><span>Cut-off Time</span></li>
+            <li class="col-2"><span>TP Capacity</span></li>
+            <li class="col-2"><span>TP Booked</span></li>
+            <li class="col-2"><span>KG Booked</span></li>
+            <li class="col-1"><span>Enabled</span></li>
+          </ul>
+          <ul *ngIf="deliverySlots.length === 0">
+            <div style="text-align: center">
+              Please select Business Unit and Location
+            </div>
+          </ul>
+          <ul class="table-body">
+            <li
+              class="row table-row align-items-center"
+              style="padding-top: 5px; padding-bottom: 5px"
+              *ngFor="let deliverySlot of deliverySlots; let i = index"
+            >
+              <div class="col-1 tcell" *ngIf="i === 0">Today</div>
+              <div class="col-1 tcell" *ngIf="i > 0">Today + {{ i }}</div>
+              <div class="col-1 tcell">{{ deliverySlot.date }}</div>
+              <div
+                class="col-3 tcell row"
+                *ngIf="!deliverySlot.editTime"
+                style="margin: 0"
+              >
+                <div class="col" style="text-align: right; margin-top: 1px">
+                  <i class="fa-clock-o" aria-hidden="true"></i>
+                </div>
+                <div class="col-7" style="text-align: center">
+                  {{ deliverySlot.cutOff }}
+                </div>
+                <div class="col" style="text-align: left">
+                  <i
+                    class="fa-pencil"
+                    aria-hidden="true"
+                    style="cursor: pointer"
+                    (click)="editDeliverySlots(i, 'time')"
+                  ></i>
+                </div>
+              </div>
+              <div
+                class="col-3 tcell"
+                *ngIf="deliverySlot.editTime"
+                style="display: flex; justify-content: center"
+              >
+                <mat-form-field>
+                  <input
+                    matInput
+                    type="datetime-local"
+                    step="1"
+                    [(ngModel)]="deliverySlot.cutOff"
+                  />
+                </mat-form-field>
+              </div>
+              <div
+                class="col-2 tcell row"
+                *ngIf="!deliverySlot.editTp"
+                style="margin: 0"
+              >
+                <div class="col" style="text-align: right; padding-right: 0">
+                  #
+                </div>
+                <div class="col" style="text-align: right">
+                  {{ deliverySlot.touchpointCapacity }}
+                </div>
+                <div class="col" style="text-align: left">
+                  <i
+                    class="fa-pencil"
+                    aria-hidden="true"
+                    style="cursor: pointer"
+                    (click)="editDeliverySlots(i, 'tp')"
+                  ></i>
+                </div>
+              </div>
+              <div
+                class="col-2 tcell"
+                *ngIf="deliverySlot.editTp"
+                style="display: flex; justify-content: center"
+              >
+                <input
+                  type="number"
+                  min="0"
+                  onkeydown="return ![8, 32, 37, 39].includes(event.keyCode)?(/[0-9]/g.test(event.key)):true"
+                  class="form-control tp-input"
+                  [(ngModel)]="deliverySlot.touchpointCapacity"
+                />
+              </div>
+              <div class="col-2 tcell row" style="margin: 0">
+                <div class="col" style="text-align: right; padding-right: 0">
+                  <i class="fa-map-marker" aria-hidden="true"></i>
+                </div>
+                <div class="col" style="text-align: right">
+                  {{ deliverySlot.touchpointBooked }}
+                </div>
+                <div class="col"></div>
+              </div>
+              <div class="col-2 tcell row" style="margin: 0">
+                <div class="col" style="text-align: right; padding-right: 0">
+                  <i class="fa-balance-scale" aria-hidden="true"></i>
+                </div>
+                <div class="col" style="text-align: right; padding-right: 0">
+                  {{ deliverySlot.kgBooked }}
+                </div>
+                <div class="col" style="text-align: left; padding-left: 0">
+                  &nbsp;kg
+                </div>
+              </div>
+              <div class="col-1 tcell">
+                <ui-switch
+                  class="switchHolder"
+                  [ngModel]="!deliverySlot.disabled"
+                  (ngModelChange)="deliverySlot.disabled = !$event"
+                  (change)="save = true"
+                  color="#e65400"
+                  size="small"
+                >
+                </ui-switch>
+              </div>
+            </li>
+          </ul>
+          <ul *ngIf="save">
+            <div class="row mt-20">
+              <div class="col mr-10" style="text-align: right">
+                <button
+                  class="skewbtn-secondary"
+                  style="width: 30%"
+                  (click)="getDeliverySlots()"
+                >
+                  Cancel
+                </button>
+              </div>
+              <div class="col ml-10" style="text-align: left">
+                <button
+                  class="skewbtn-primary"
+                  style="width: 30%"
+                  (click)="updateDeliverySlots()"
+                >
+                  Save
+                </button>
+              </div>
+            </div>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

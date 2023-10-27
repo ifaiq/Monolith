@@ -1,0 +1,18 @@
+<div class="row">
+  <div class="col">
+    <table class="table">
+      <thead>
+        <tr class="colored-thead">
+          <th>Name</th>
+          <th class="text-right">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let method of shipmentMethods; let i = index">
+          <td>{{method.name}}</td>
+          <td><button class="skewbtn-primary pull-right" (click)="updateShipmentMethods(method)"> Update </button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

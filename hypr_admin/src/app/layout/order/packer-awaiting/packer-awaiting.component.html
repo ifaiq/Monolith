@@ -1,0 +1,487 @@
+<div *ngxPermissionsOnly="['*', 'L_ORDER_BY_STATUS']">
+    <div>
+        <ngx-loading
+            [show]="loading"
+            [config]="{ backdropBorderRadius: '14px' }"
+        ></ngx-loading>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title">
+                <span class="h1"> Awaiting Packing Orders</span>
+                <button
+                    class="btn btn-icon btn-refresh ml-20"
+                    (click)="refresh(true)"
+                >
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-20">
+        <div class="col-sm search-cross-box">
+            <input
+                type="text"
+                placeholder="Search"
+                [(ngModel)]="search"
+                (keyup.enter)="SearchOrders()"
+                class="form-control"
+            />
+            <button
+                class="create"
+                aria-hidden="true"
+                (click)="undoSearch()"
+                class="btn btn-link fa fa-times crossbtn"
+            ></button>
+        </div>
+        <div class="col-sm"></div>
+        <div class="col-sm"></div>
+    </div>
+    <div class="row">
+        <div class="col" *ngxPermissionsOnly="['*', 'L_BU']">
+            <div class="form-group">
+                <label for="exampleInputPassword1"
+                    >Select Business Unit :</label
+                >
+                <select
+                    [(ngModel)]="selectedBusinessUnitId"
+                    (change)="getlocations()"
+                    class="form-control"
+                >
+                    <option class="option" [value]="''">All</option>
+                    <option *ngFor="let bu of businessUnits" [value]="bu.id">
+                        {{ bu.name }}
+                    </option>
+                </select>
+            </div>
+        </div>
+
+        <div class="col" *ngxPermissionsOnly="['*', 'L_ALL_LOC']">
+            <div class="form-group">
+                <label for="exampleInputPassword1">Select Cell :</label>
+                <select [(ngModel)]="selectedLocationId" class="form-control">
+                    <!--(change)="refresh()"-->
+                    <option class="option" [value]="''">All</option>
+                    <option
+                        *ngFor="let location of locations"
+                        [value]="location.id"
+                    >
+                        {{ location.name }}
+                    </option>
+                </select>
+            </div>
+        </div>
+        <div class="col">
+            <button class="skewbtn-primary mt-10" (click)="refresh()">
+                GO
+            </button>
+        </div>
+        <div class="col"></div>
+    </div>
+    <div [hidden]="loading" *ngxPermissionsOnly="['*', 'L_ORDER_BY_STATUS']">
+        <div class="col-12">
+            <div class="table-responsive">
+                <div class="custom-table">
+                    <ul class="row thead">
+                        <li class="col-1"><span>#</span></li>
+                        <li class="col-1"><span>ID</span></li>
+                        <li class="col-1"><span>Customer Name</span></li>
+                        <li class="col-1"><span>Customer Address</span></li>
+                        <li class="col-1"><span>Telephone</span></li>
+                        <li class="col-1"><span>Total Amount</span></li>
+                        <li class="col-1"><span>Order Date</span></li>
+                        <li class="col-2"><span>Deliver Time</span></li>
+                        <li class="col-1"><span>Status</span></li>
+                        <li class="col-1"><span>Cell Name</span></li>
+                        <li class="col-1"><span>Action</span></li>
+                    </ul>
+                    <ul class="table-body">
+                        <li
+                            class="row table-row bb align-items-center"
+                            *ngFor="
+                                let order of tableData
+                                    | paginate
+                                        : {
+                                              id: paginationId,
+                                              itemsPerPage: itemsPerPage,
+                                              currentPage: currentPage,
+                                              totalItems: totalItems
+                                          };
+                                let i = index
+                            "
+                        >
+                            <div class="col-1 tcell">
+                                <span>{{ order.rowCount }}</span>
+                            </div>
+                            <div class="col-1 tcell">
+                                <span>{{ order.id }}</span>
+                            </div>
+                            <div class="col-1 tcell">
+                                <span>{{ order.name }}</span>
+                            </div>
+                            <div class="col-1 tcell">
+                                <span>{{ order.delivery_address }}</span>
+                            </div>
+                            <div class="col-1 tcell">
+                                <span>{{ order.phone }}</span>
+                            </div>
+                            <div class="col-1 tcell">
+                                <span
+                                    >{{ order.currency }}
+                                    {{ order.grand_total }}</span
+                                >
+                            </div>
+                            <div class="col-1 tcell">
+                                <span>{{ order.placed_at }}</span>
+                            </div>
+                            <div class="col-2 tcell">
+                                <span>{{ order.delivery_time }}</span>
+                            </div>
+                            <div class="col-1 tcell">
+                                <span>{{ order.status }}</span>
+                            </div>
+                            <div class="col-1 tcell">
+                                <span>{{ order.cell_name }}</span>
+                            </div>
+
+                            <div class="col-1 tcell">
+                                <button
+                                    class="btn btn-icon btn-edit"
+                                    (click)="setActiveIndex('activeIndex', i)"
+                                ></button>
+                            </div>
+                            <div
+                                class="col-12 table-row-details bundle-details-wrapper orderEditArea"
+                                [hidden]="!(activeIndex == i)"
+                            >
+                                <div class="row">
+                                    <div class="table-expand-box col-12">
+                                        <div class="col-lg-2 orderdetail">
+                                            <h5 class="h5Margin">
+                                                Order Details
+                                            </h5>
+                                            <table class="table user-table">
+                                                <tr>
+                                                    <td class="tdFont">ID</td>
+                                                    <td class="tdFont">
+                                                        {{ order.id }}
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td class="tdFont">
+                                                        Customer Name
+                                                    </td>
+                                                    <td class="tdFont">
+                                                        {{ order.name }}
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td class="tdFont">
+                                                        Telephone
+                                                    </td>
+                                                    <td class="tdFont">
+                                                        {{ order.phone }}
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td class="tdFont">
+                                                        Order Date
+                                                    </td>
+                                                    <td class="tdFont">
+                                                        {{ order.placed_at }}
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td class="tdFont">
+                                                        Deliever Time
+                                                    </td>
+                                                    <td class="tdFont">
+                                                        {{
+                                                            order.delivery_time
+                                                        }}
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td class="tdFont">
+                                                        Status
+                                                    </td>
+                                                    <td class="tdFont">
+                                                        {{ order.status }}
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td class="tdFont">
+                                                        Store Name
+                                                    </td>
+                                                    <td class="tdFont">
+                                                        {{ order.cell_name }}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="tdFont">
+                                                        Coupon Discount
+                                                    </td>
+                                                    <td class="tdFont">
+                                                        {{ order.coupon_discount
+                                                        }}<br />{{
+                                                            order.currency
+                                                        }}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="tdFont">
+                                                        Volume Based Discount
+                                                    </td>
+                                                    <td class="tdFont">
+                                                        {{ order.volume_based_discount
+                                                        }}<br />{{
+                                                            order.currency
+                                                        }}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="tdFont">
+                                                        Grand Total
+                                                    </td>
+                                                    <td class="tdFont">
+                                                        {{ order.total_price
+                                                        }}<br />{{
+                                                            order.currency
+                                                        }}
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <h5>Order Items</h5>
+
+                                        <table
+                                            style="width: 100%"
+                                            class="table user-table table-striped"
+                                        >
+                                            <thead class="thead-dark">
+                                                <tr class="border-4">
+                                                    <th>Sku</th>
+                                                    <th>Name</th>
+                                                    <th>Brand</th>
+                                                    <th>Size</th>
+                                                    <th>Quantity</th>
+                                                    <th>Item Total</th>
+                                                </tr>
+                                            </thead>
+                                            <tr
+                                                *ngFor="
+                                                    let ite of order.order_items
+                                                "
+                                            >
+                                                <td>
+                                                    {{ ite.product_id.sku }}
+                                                </td>
+                                                <td>
+                                                    {{ ite.product_id.name }}
+                                                </td>
+                                                <td>
+                                                    {{ ite.product_id.brand }}
+                                                </td>
+                                                <td>
+                                                    {{ ite.product_id.size }}
+                                                </td>
+                                                <td>{{ ite.quantity }}</td>
+                                                <td>
+                                                    {{ order.currency }}
+                                                    {{ getAmount(ite) }}
+                                                </td>
+                                            </tr>
+                                        </table>
+
+                                        <div
+                                            class="form-group"
+                                            *ngIf="company_code === 'CHASE'"
+                                        >
+                                            <label>Change Order Cell :</label>
+                                            <select
+                                                [(ngModel)]="order.location_id"
+                                                class="form-control"
+                                                (change)="
+                                                    updateOrderlocation(
+                                                        order.index,
+                                                        order.location_id
+                                                    )
+                                                "
+                                            >
+                                                <option
+                                                    *ngFor="
+                                                        let loc of userLocations
+                                                    "
+                                                    [value]="loc.id"
+                                                >
+                                                    {{ loc.name }}
+                                                </option>
+                                            </select>
+                                        </div>
+
+                                        <div class="row mb-20">
+                                            <div
+                                                class="col"
+                                                *ngxPermissionsOnly="[
+                                                    '*',
+                                                    'L_ROLE_USER'
+                                                ]"
+                                            >
+                                                <label>Select Packer Boy</label>
+                                                <select
+                                                    [(ngModel)]="
+                                                        selectedPackerBoyId
+                                                    "
+                                                    class="form-control"
+                                                >
+                                                    <option
+                                                        *ngFor="
+                                                            let boy of packerBoys
+                                                        "
+                                                        [value]="boy.id"
+                                                    >
+                                                        {{ boy.name }}
+                                                    </option>
+                                                </select>
+                                            </div>
+
+                                            <div
+                                                class="col"
+                                                *ngxPermissionsOnly="[
+                                                    '*',
+                                                    'ASSN_PACKER'
+                                                ]"
+                                            >
+                                                <button
+                                                    (click)="
+                                                        updateOrder(order.index)
+                                                    "
+                                                    class="skewbtn-primary mt-30"
+                                                >
+                                                    Assign
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <pagination-controls
+                            class="mt-30"
+                            (pageChange)="pagination($event)"
+                            id="{{ paginationId }}"
+                            autoHide="{{totalItems<itemsPerPage}"
+                        >
+                        </pagination-controls>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--<div  *ngxPermissionsOnly="['*','L_ORDER_BY_STATUS']">
+  <div>
+    <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+  </div>
+  <div class="row">
+    <div class="col" *ngxPermissionsOnly="['*', 'L_BU']">
+      <div class="form-group" >
+        <label for="exampleInputPassword1">Select Business Unit :</label>
+        <select [(ngModel)]="selectedBusinessUnitId" (change)="getlocations()" class="form-control">
+          <option class='option' [value]="''">All</option>
+          <option *ngFor='let bu of businessUnits' [value]="bu.id">
+            {{bu.name}}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <div class=" col" *ngxPermissionsOnly="['*', 'L_ALL_LOC']">
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">Select Cell :</label>
+                                <select [(ngModel)]="selectedLocationId" (change)="refresh()" class="form-control">
+                                    <option class='option' [value]="''">All</option>
+                                    <option *ngFor='let location of locations' [value]="location.id">
+                                        {{location.name}}
+                                    </option>
+                                </select>
+                            </div>
+                </div>
+                <div class="col"></div>
+            </div>
+
+            <div class="row mb-20">
+                <div [hidden]="!(tableData.length == 0)" class="row mb-20">
+                    <h3 class="ml-5">No Orders Available</h3>
+                    <span class="refresh">
+                        <img (click)="refresh()" src="assets/images/refresh-icon.png" />
+                    </span>
+                </div>
+
+                <div [hidden]="tableData.length == 0">
+                    <data-table id="orders"
+                        [items]="tableData| paginate: { id:paginationId , itemsPerPage: itemsPerPage, currentPage: currentPage,totalItems: totalItems}"
+                        headerTitle="Packer Awaiting" [expandableRows]="true" [pagination]="false"
+                        [itemCount]="totalItems" [indexColumn]="false">
+                        <ng-template #dataTableExpand let-item="item">
+                            <strong>Order Items</strong>
+
+                            <table style="width:100%" class="table user-table table-striped">
+                                <thead class="thead-dark">
+                                    <tr class="border-4">
+                                        <th>Sku</th>
+                                        <th>Name</th>
+                                        <th>Brand</th>
+                                        <th>Size</th>
+                                        <th>Quantity</th>
+                                        <th>Item Total</th>
+                                    </tr>
+                                </thead>
+                                <tr *ngFor="let ite of item.order_items">
+                                    <td>{{ite.product_id.sku}}</td>
+                                    <td>{{ite.product_id.name}}</td>
+                                    <td> {{ite.product_id.brand}}</td>
+                                    <td>{{ite.product_id.size}}</td>
+                                    <td>{{ite.quantity}}</td>
+                                    <td>{{getAmount(ite)}}</td>
+                                </tr>
+                            </table>
+                            <div class="row mb-20">
+                                <div class="col" *ngxPermissionsOnly="['*','L_ROLE_USER']">
+                                    <label>Select Packer Boy</label>
+                                    <select [(ngModel)]="selectedPackerBoyId" class="form-control">
+                                        <option *ngFor='let boy of packerBoys' [value]="boy.id">
+                                            {{boy.name}}
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <div class="col" *ngxPermissionsOnly="['*','ASSN_PACKER']">
+                                    <button (click)="updateOrder(item.index)"
+                                        class="skewbtn-primary mt-30">Assign</button>
+                                </div>
+                            </div>
+                        </ng-template>
+                        <data-table-column [property]="'rowCount'">
+                        </data-table-column>
+                        <data-table-column [property]="'id'" [header]="'Id'"></data-table-column>
+                        <data-table-column [property]="'name'" [header]="'Name'"></data-table-column>
+                        <data-table-column [property]="'phone'" [header]="'Telephone'"></data-table-column>
+                        <data-table-column [property]="'grand_total'" [header]="'Total Amount'"></data-table-column>
+                        <data-table-column [property]="'placed_at'" [header]="'Order Date'"></data-table-column>
+                        <data-table-column [property]="'delivery_time'" [header]="'Deliver Time'"></data-table-column>
+                        <data-table-column [property]="'status'" [header]="'Status'"></data-table-column>
+                        <data-table-column [property]="'cell_name'" [header]="'Cell Name'"></data-table-column>
+
+                    </data-table>
+                    <pagination-controls class="mt-30" (pageChange)="pagination($event)" id="{{paginationId}}" autoHide="{{totalItems<itemsPerPage}"></pagination-controls>
+    </div>
+  </div>
+</div>-->

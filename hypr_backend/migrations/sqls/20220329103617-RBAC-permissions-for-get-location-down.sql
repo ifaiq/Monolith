@@ -1,0 +1,1 @@
+DELETE FROM permissions WHERE code = 'G_LOCATION_BY_ID_PORTAL';

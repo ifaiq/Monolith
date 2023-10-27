@@ -1,0 +1,71 @@
+<div>
+  <div>
+    <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <div class="page-title">
+        <span class="h1">Select Customers</span>
+        <button class="btn ml-20" class="ml-20 skewbtn-secondary" (click)="add()"><span>Update Coupon Customers</span></button>
+      </div>
+    </div>
+  </div>
+  <div class="row mb-20">
+    <div class="col-sm search-cross-box">
+      <input type="text" [(ngModel)]="search" (keyup.enter)="getCustomersByLocation()" placeholder="Search By Name or Phone"
+        class="form-control">
+      <button class="btn btn-link fa fa-times crossbtn" (click)="undoSearch()"></button>
+    </div>
+    <div class="col-sm"></div>
+    <div class="col-sm"></div>
+  </div>
+  <div *ngIf="!loading && customers.length==0">
+    No Customer found for selection
+  </div>
+  <div class="row" [hidden]="loading || customers.length==0">
+    <div class="col-12">
+      <div class="table-responsive">
+        <div class="custom-table">
+          <ul class="row thead">
+            <li class="col-2"><span>#</span></li>
+            <li class="col-2"><span><input type="checkbox" [(ngModel)]="allChecked"
+              (change)="toggleAllSelection()" id="select-all-option" /></span>
+            </li>
+            <li class="col-4"><span>Customer Name</span></li>
+            <li class="col-4"><span>Customer Phone</span></li>
+          </ul>
+          <ul class="table-body">
+            <li class="row table-row bb align-items-center" *ngFor="let customer of customers| paginate
+              : {
+                  id: paginationId,
+                  itemsPerPage: itemsPerPage,
+                  currentPage: currentPage,
+                  totalItems: totalItems
+                };
+              let i = index
+            ">
+              <div class="col-2 tcell">
+                <span>{{ customer.rowCount }}</span>
+              </div>
+              <div class="col-2 tcell">
+                <span>
+                  <input type="checkbox" [(ngModel)]="customer.checked" 
+                  (change)="selectionChanged(i)" 
+                  name="checkbox_{{customer.rowCount}}" id="checkbox_{{customer.rowCount}}" />
+                </span>
+              </div>
+              <div class="col-4 tcell">
+                <span>{{ customer.name }}</span>
+              </div>
+              <div class="col-4 tcell">
+                <span>{{ customer.phone }}</span>
+              </div>
+            </li>
+            <pagination-controls class="mt-30" (pageChange)="pagination($event)" id="{{ paginationId }}" autoHide="{{totalItems<itemsPerPage}">
+            </pagination-controls>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

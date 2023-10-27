@@ -1,0 +1,88 @@
+<div *ngxPermissionsOnly="['*', 'L_BU_H']">
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title">
+                <span class="h1">Business Unit Management</span>
+                <button class="btn btn-icon btn-refresh ml-20" (click)="getBusinessUnits(true)"><span></span></button>
+                <button routerLink="/hierarchy/business-unit/create" class="ml-20 skewbtn-secondary"
+                    *ngxPermissionsOnly="['*', 'C_BU']">Create
+                    Business Unit</button>
+            </div>
+        </div>
+    </div>
+    <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+    <div class="row">
+        <div class="col-12">
+            <div class="table-responsive">
+                <div class="custom-table">
+                    <ul class="row thead">
+                        <li class="col-1"><span>#</span></li>
+                        <li class="col-4"><span>Name</span></li>
+                        <li class="col-2"><span>Company Name</span></li>
+                        <li class="col-3"><span>Status</span></li>
+                        <li class="col-2"><span>Action</span></li>
+                    </ul>
+                    <ul class="table-body">
+                        <li class="row table-row align-items-center"
+                            *ngFor="let unit of
+                businessUnits| paginate: { id:paginationId , itemsPerPage: itemsPerPage, currentPage: currentPage,totalItems: totalItems}; let i= index">
+                            <div class="col-1 tcell">
+                                <span>{{sharedFunctions.getRowCount(itemsPerPage,currentPage,i)}}</span>
+                            </div>
+                            <div class="col-2 tcell" *ngIf="(activeIndex == i)">
+                                <div class="block">Name</div>
+                                <div class="block">Currency</div>
+                            </div>
+                            <div class="col-4 tcell" *ngIf="!(activeIndex == i)"><span>{{unit.name}}</span></div>
+                            <div class="col-2 tcell" *ngIf="(activeIndex == i)">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" [(ngModel)]="unit.name">
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" [(ngModel)]="unit.currency">
+                                </div>
+                            </div>
+                            <div class="col-2 tcell"><span>{{unit.company?unit.company.name:'NONE'}}</span></div>
+                            <div class="col-3 tcell" *ngIf="!(activeIndex == i)">
+                                <span>{{unit.disabled?'Disabled':'Enabled'}}</span>
+                            </div>
+                            <div class="col-3 tcell" *ngIf="(activeIndex == i)">
+                                <span>
+                                    <div class="form-group">
+                                        <div class="cutom-switch">
+                                            <label> Enabled </label>
+                                            <ui-switch class="switchHolder" [(ngModel)]="unit.disabled" color="#e65400"
+                                                size="small" checkedLabel="on" reverse>
+                                            </ui-switch>
+                                            <label> Disabled </label>
+                                        </div>
+                                    </div>
+                                </span>
+                            </div>
+                            <div class="col-2 tcell" *ngxPermissionsOnly="['*', 'U_BU']"><span><button
+                                        class="btn btn-icon btn-edit"
+                                        (click)="rowClick(i)"><span></span></button></span></div>
+                            <div class="table-expand-box col-12 table-row-details bundle-details-wrapper"
+                                [hidden]="!(activeIndex == i)">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="buttons-wrapper text-right mt-20">
+                                            <button class="skewbtn-secondary"
+                                                (click)="rowClick(i)"><span>Cancel</span></button>
+                                            <button *ngxPermissionsOnly="['*', 'U_BU']" class="skewbtn-primary"
+                                                (click)="updateBusinessUnit(i)"><span>Update
+                                                    Business Unit</span></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <pagination-controls class="mt-30" (pageChange)="pagination($event)" id="{{paginationId}}"
+        autoHide="{{totalItems<itemsPerPage}">
+    </pagination-controls>
+</div>

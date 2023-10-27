@@ -1,0 +1,80 @@
+<div class="row" *ngxPermissionsOnly="['*', 'L_PROD']">
+    <div class="col-12">
+        <div class="page-title">
+            <span class="h1">Tags</span>
+            <button class="btn btn-icon btn-refresh ml-20" (click)="refresh()">
+                <span></span>
+            </button>
+            <button routerLink="/product/tag/create-tag" class="ml-20 skewbtn-secondary"
+                *ngxPermissionsOnly="['*', 'L_PROD']">
+                Create Tags
+            </button>
+        </div>
+    </div>
+</div>
+<div>
+    <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+    <div class="row">
+        <div class="col-12">
+            <div class="table-responsive">
+                <div class="custom-table">
+                    <ul class="row thead">
+                        <li class="col-2"><span>#</span></li>
+                        <li class="col-2"><span>ID</span></li>
+                        <li class="col-3"><span>Tags</span></li>
+                        <li class="col-3"><span>Status</span></li>
+                        <li class="col-2"><span>Action</span></li>
+                    </ul>
+                    <ul class="table-body">
+                        <li
+                            class="row table-row align-items-center"
+                            *ngFor="
+                                let tag of tags
+                                    | paginate
+                                        : {
+                                            id: paginationId,
+                                            itemsPerPage: itemsPerPage,
+                                            currentPage: currentPage,
+                                            totalItems: totalItems
+                                        };
+                                let i = index
+                            "
+                        >
+                            <div class="col-2 tcell">{{ tag.rowCount }}</div>
+                            <div class="col-2 tcell">{{ tag.id }}</div>
+                            <div class="col-3 tcell">{{ tag.name }}</div>
+                            <div class="col-3 tcell">{{ tag.status }}</div>
+                            <div class="col-2 tcell">
+                                <button class="btn btn-icon btn-edit" (click)="rowClick(i)"></button>
+                            </div>
+                            <div class="col-12 table-row-details bundle-details-wrapper orderEditArea"
+                                [hidden]="!(activeIndex == i)">
+                                <div class="table-expand-box">
+                                    <div class="row mb-20">
+                                        <div class="col-12 col-sm-4">
+                                            <div class="form-group">
+                                                <label for="">Name*</label>
+                                                <input type="text" class="form-control" placeholder="Enter Tag Name"
+                                                    [ngModel]="tag.name" #updatedTag="ngModel" minlength="1"
+                                                    maxlength="45" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-sm-6">
+                                        </div>
+                                        <div class="col-12 col-sm-2">
+                                            <button class="skewbtn-primary mt-10"
+                                                (click)="update(updatedTag.value, tag)">Update</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <pagination-controls class="mt-30" (pageChange)="pagination($event)" id="{{ paginationId }}"
+                        autoHide="{{totalItems<itemsPerPage}">
+                    </pagination-controls>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

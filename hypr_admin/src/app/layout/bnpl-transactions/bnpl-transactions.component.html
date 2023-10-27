@@ -1,0 +1,132 @@
+<div>
+    <div class="my-container">
+        <ngx-loading [show]="loading"></ngx-loading>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title">
+                <span class="h1">BNPL Transactions</span>
+                <button
+                    class="btn btn-icon btn-refresh ml-20"
+                    (click)="refresh()"
+                >
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-20">
+        <div class="col mt-20">
+            <form class="col mt-10" id="fileFormCustomer">
+                <input
+                    type="file"
+                    #fileInput
+                    placeholder="Upload file..."
+                    class="form-control"
+                    (change)="onChange($event)"
+                />
+            </form>
+        </div>
+        <div class="col mt-20">
+            <button type="button" class="skewbtn-primary" (click)="upload()" [disabled]="!file">
+                Upload Transactions
+            </button>
+        </div>
+    </div>
+
+    <div class="row all-orders">
+        <div class="col-6 col-lg-3">
+            <div class="form-group" style="height: 70px">
+                <label for="">From</label>
+                <input
+                    type="date"
+                    [(ngModel)]="startDate"
+                    class="form-control"
+                />
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="form-group" style="height: 70px">
+                <label for="">To</label>
+                <input type="date" [(ngModel)]="endDate" class="form-control" />
+            </div>
+        </div>
+        <div class="col">
+            <button
+                class="skewbtn-primary mt-10"
+                (click)="getTransactions()"
+            >
+                GO
+            </button>
+        </div>
+        <div class="col"></div>
+    </div>
+
+    <div class="row" [hidden]="loading">
+        <div class="col-12">
+            <div class="table-responsive">
+                <div class="custom-table">
+                    <ul class="row thead">
+                        <li class="col-1"><span>Transaction ID</span></li>
+                        <li class="col-2"><span>Date</span></li>
+                        <li class="col-1"><span>Retailer Id</span></li>
+                        <li class="col-2"><span>Amount</span></li>
+                        <li class="col-1"><span>Currency</span></li>
+                    </ul>
+                    <ul class="table-body">
+                        <li
+                            class="
+                                row
+                                table-row
+                                bb
+                                align-items-center
+                                clickable
+                            "
+                            *ngFor="
+                                let transaction of tableData
+                                    | paginate
+                                        : {
+                                              id: paginationId,
+                                              itemsPerPage: itemsPerPage,
+                                              currentPage: currentPage,
+                                              totalItems: totalItems
+                                          };
+                                let i = index
+                            "
+                        >
+                            <div class="col-1 tcell">
+                                <span>{{ transaction.id }}</span>
+                            </div>
+                            <div class="col-2 tcell">
+                                <span>{{ transaction.date }}</span>
+                            </div>
+                            <div class="col-1 tcell">
+                                <span>{{ transaction.retailerId }}</span>
+                            </div>
+                            <div class="col-2 tcell">
+                                <span>{{ transaction.amount }}</span>
+                            </div>
+                            <div class="col-1 tcell">
+                                <span>{{ transaction.currency }}</span>
+                            </div>
+                        </li>
+                        <pagination-controls
+                            class="mt-30"
+                            (pageChange)="pagination($event)"
+                            id="{{ paginationId }}"
+                            autoHide="{{totalItems<itemsPerPage}"
+                        >
+                        </pagination-controls>
+                    </ul>
+                </div>
+            </div>
+            <div
+            class="mt-30"
+            *ngIf="!tableData.length"
+        >
+            <h5>No Transactions Found</h5>
+        </div>
+        </div>
+    </div>
+</div>

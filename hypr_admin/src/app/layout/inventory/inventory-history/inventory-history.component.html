@@ -1,0 +1,106 @@
+<div>
+  <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+</div>
+<div *ngxPermissionsOnly="['*', 'L_INV']">
+  <div class="row">
+    <div class="col-12">
+      <div class="page-title">
+        <span class="h1">Inventory History</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-20">
+    <div class="col-sm search-cross-box">
+      <input type="text" [(ngModel)]="searchParam" (keyup.enter)="searchInvHistory()" placeholder="Search"
+        class="form-control">
+      <button class="btn btn-link fa fa-times crossbtn" (click)="undoInvSearch()"></button>
+    </div>
+    <div class="col-sm"></div>
+    <div class="col-sm"></div>
+  </div>
+
+  <div class="row">
+
+    <div class="col-6 col-lg-2 sm-mb-10" *ngxPermissionsOnly="['*', 'L_BU']">
+      <div class="form-group">
+        <label for="exampleInputPassword1">Select Business Unit :</label>
+        <select [(ngModel)]="selectedBusinessUnitId" (change)="getlocations(); reset()" class="form-control">
+          <option class='option' [value]="''">All</option>
+          <option *ngFor='let bu of businessUnits' [value]="bu.id">
+            {{bu.name}}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <div class="col-6 col-lg-2 sm-mb-10" *ngxPermissionsOnly="['*', 'L_ALL_LOC']">
+      <div class="form-group">
+        <label for="exampleInputPassword1">Select Cell :</label>
+        <select [(ngModel)]="selectedLocationId" class="form-control">
+          <option class='option' [value]="''">All</option>
+          <option *ngFor='let location of locations' [value]="location.id">
+            {{location.name}}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <div class="col-6 col-lg-2">
+      <div class="form-group" style="height: 70px;">
+        <label for="">From</label>
+        <input type="date" [(ngModel)]="startDate" class="form-control" />
+      </div>
+    </div>
+
+    <div class="col-6 col-lg-2">
+      <div class="form-group" style="height: 70px;">
+        <label for="">To</label>
+        <input type="date" [(ngModel)]="endDate" class="form-control" />
+      </div>
+    </div>
+
+    <div class="col-12 col-lg-3 sm-mb-10">
+      <label for="exampleInputPassword1"></label>
+      <button (click)="getInvHistory()" style="display: block" class="skewbtn-primary">GO</button>
+    </div>
+
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="table-responsive">
+        <div class="custom-table">
+          <ul class="row thead">
+            <li class="col-1"><span>#</span></li>
+            <li class="col-2"><span>Name</span></li>
+            <li class="col-1"><span>SKU</span></li>
+            <li class="col-1"><span>Brand</span></li>
+            <li class="col-1"><span>Previous Qty</span></li>
+            <li class="col-1"><span>Qty Change</span></li>
+            <li class="col-1"><span>Updated Qty</span></li>
+            <li class="col-2"><span>Reason</span></li>
+            <li class="col-1"><span>User</span></li>
+          </ul>
+          <ul class="table-body">
+            <li class="row table-row align-items-center"
+              *ngFor="let inventory of
+              inventoryHistory | paginate: { id:paginationId , itemsPerPage: itemsPerPage, currentPage: currentPage,totalItems: totalItems}">
+              <div class="col-1 tcell">{{inventory.rowCount}}</div>
+              <div class="col-2 tcell">{{inventory.name}}</div>
+              <div class="col-1 tcell">{{inventory.sku}}</div>
+              <div class="col-1 tcell">{{inventory.brand}}</div>
+              <div class="col-1 tcell">{{inventory.previous_qty}}</div>
+              <div class="col-1 tcell">{{inventory.qty_change}}</div>
+              <div class="col-1 tcell">{{inventory.updated_qty}}</div>
+              <div class="col-2 tcell">{{inventory.reason}}</div>
+              <div class="col-1 tcell">{{inventory.updated_by_user}}</div>
+            </li>
+          </ul>
+          <pagination-controls class="mt-30" (pageChange)="pagination($event)" id="{{paginationId}}" autoHide="{{totalItems<itemsPerPage}">
+          </pagination-controls>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

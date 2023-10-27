@@ -1,0 +1,92 @@
+<div [hidden]="Products.length == 0">
+  <table style="width:100%">
+    <br />
+    <br />
+    <p>Product Prices Update Requests</p>
+    <tr>
+      <th>Name</th>
+      <th>SKU</th>
+      <th>Cost Price</th>
+      <th>New Cost Price</th>
+      <th>User</th>
+      <th>Image</th>
+    </tr>
+    <tr *ngFor="let product of Products">
+      <td>{{product.sku.name}}</td>
+      <td>{{product.sku.sku}} </td>
+      <td>{{product.sku.cost_price}} </td>
+      <td><input type="number" [(ngModel)]="product.price" /></td>
+      <td>{{product.by.name}}</td>
+      <td><img src="{{product.image_url}}" height="80" width="80"></td>
+      <td>
+        <button (click)="accept(product,'Accepted')">Accept</button>
+        <button (click)="accept(product,'Rejected')">Reject</button>
+      </td>
+      <td>
+    </tr>
+  </table>
+
+</div>
+
+<div>
+  <div class="row">
+    <div class="col-12 col-lg-3 sm-mb-10" *ngxPermissionsOnly="['*', 'L_BU']">
+      <div class="form-group" >
+        <label for="exampleInputPassword1">Select Business Unit :</label>
+        <select [(ngModel)]="selectedBusinessUnitId" (change)="getlocations()" class="form-control">
+          <option class='option' [value]="''">All</option>
+          <option *ngFor='let bu of businessUnits' [value]="bu.id">
+            {{bu.name}}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <div class="col-12 col-lg-3 sm-mb-10">
+      <div class="form-group">
+        <label for="exampleInputPassword1">Select Cell :</label>
+        <select [(ngModel)]="selectedLocationId" (change)="getPackages()" class="form-control">
+          <option class='option' [value]="''">All</option>
+          <option *ngFor='let location of cellLocations' [value]="location.id">
+            {{location.name}}
+          </option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div
+    *ngFor="let location of locations| paginate: { id:paginationId , itemsPerPage: itemsPerPage, currentPage: currentPage,totalItems: totalItems};let i = index">
+    <div class="mb-20 clearfix">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">SKU</th>
+            <th scope="col">Name</th>
+            <th scope="col">Brand</th>
+            <th scope="col">Size</th>
+            <th scope="col">Procurement Qty</th>
+            <th scope="col">Bought Qty</th>
+            <th scope="col">Cost Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of location.items;let j = index">
+            <td>{{item.sku}}</td>
+            <td>{{item.name}}</td>
+            <td>{{item.brand}}</td>
+            <td>{{item.size}}</td>
+            <td>{{item.procurement_quantity}}</td>
+            <td><span (click)="setQuantity(-1, i, j)"></span> {{item.quantity}} <span
+                (click)="setQuantity(1, i, j)"></span></td>
+            <td><input tyep="number" [(ngModel)]="item.price" /></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <button class="skewbtn-primary" (click)="updateInventory(i)" [hidden]="Products.length > 0">Update</button>
+  </div>
+  <pagination-controls class="mt-30" (pageChange)="pagination($event)" id="{{paginationId}}" autoHide="{{totalItems<itemsPerPage}">
+  </pagination-controls>
+</div>

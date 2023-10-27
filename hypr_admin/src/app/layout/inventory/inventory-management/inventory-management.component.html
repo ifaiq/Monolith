@@ -1,0 +1,241 @@
+<div>
+  <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+</div>
+<div *ngxPermissionsOnly="['*', 'L_INV']">
+  <div class="row">
+    <div class="col-12">
+      <div class="page-title">
+        <span class="h1">Inventory Management</span>
+        <button class="btn btn-icon btn-refresh ml-20" (click)="refresh()"><span></span></button>
+        <button class="skewbtn-secondary ml-20" *ngxPermissionsOnly="['*', 'STOCK_IN']"
+          (click)="open(onboardInventory)"> Inventory Onboard</button>
+        <button class="skewbtn-secondary ml-20" (click)="exportInventory()">Export</button>
+      </div>
+    </div>
+  </div>
+  <div class="row mb-20">
+    <div class="col-sm search-cross-box">
+      <input type="text" [(ngModel)]="search" (keyup.enter)="getInventory('search')" placeholder="Search"
+        class="form-control">
+      <button class="btn btn-link fa fa-times crossbtn" (click)="undoInvSearch()"></button>
+    </div>
+    <div class="col-sm"></div>
+    <div class="col-sm"></div>
+  </div>
+
+  <div class="row">
+    
+    <div class="col-6 col-lg-2 sm-mb-10" *ngxPermissionsOnly="['*', 'L_BU']">
+      <div class="form-group">
+        <label for="exampleInputPassword1">Select Business Unit :</label>
+        <select [(ngModel)]="selectedBusinessUnitId" (change)="getlocations();" class="form-control">
+          <option class='option' [value]="''">All</option>
+          <option *ngFor='let bu of businessUnits' [value]="bu.id">
+            {{bu.name}}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <div class="col-6 col-lg-2 sm-mb-10" *ngxPermissionsOnly="['*', 'L_ALL_LOC']">
+      <div class="form-group">
+        <label for="exampleInputPassword1">Select Cell :</label>
+        <select (change)="searchProduct()" [(ngModel)]="selectedLocationId" class="form-control">
+          <option class='option' [value]="''">All</option>
+          <option *ngFor='let location of locations' [value]="location.id">
+            {{location.name}}
+          </option>
+        </select>
+      </div>
+    </div>
+  
+    <div class="col-6 col-lg-2 sm-mb-10">
+      <div class="form-group">
+        <label for="">Select Status</label>
+        <select class='select-option' [(ngModel)]="selectedStatus" class="form-control">
+          <option class='option' [value]="''">All</option>
+          <option class='option' [value]="1">Disabled</option>
+          <option class='option' [value]="0">Enabled</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="col-6 col-lg-2 sm-mb-10">
+      <div class="form-group">
+        <label for="">Select Quantity</label>
+        <select [(ngModel)]="selectedvalue" class="form-control">
+          <option class='option' [value]="''">All</option>
+          <option class='option' [value]="0">Zero</option>
+          <option class='option' [value]="1">1-50</option>
+          <option class='option' [value]="2">51-100</option>
+          <option class='option' [value]="3">Non-zero</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="col-12 col-lg-3 sm-mb-10">
+      <label for="exampleInputPassword1"></label>
+      <button (click)="getInventory('search')" style="display: block" class="skewbtn-primary">GO</button>
+    </div>
+
+  </div>
+
+
+  <div class="row">
+    <div class="col-12">
+      <div class="table-responsive">
+        <div class="custom-table">
+          <ul class="row thead">
+            <li class="col-1"><span>#</span></li>
+            <li class="col-3"><span>Name</span></li>
+            <li class="col-3"><span>SKU</span></li>
+            <li class="col-2"><span>Brand</span></li>
+            <li class="col-1"><span>Size</span></li>
+            <li class="col-2"><span>Available Qty</span></li>
+            <!--<li class="col-2"><span>Action</span></li>-->
+          </ul>
+          <ul class="table-body">
+            <li class="row table-row align-items-center"
+              *ngFor="let inventory of
+              inventory | paginate: { id:paginationId , itemsPerPage: itemsPerPage, currentPage: currentPage,totalItems: totalItems}">
+              <div class="col-1 tcell">{{inventory.rowCount}}</div>
+              <div class="col-3 tcell">{{inventory.name}}</div>
+              <div class="col-3 tcell"><span>{{inventory.sku}}</span></div>
+              <div class="col-2 tcell"><span>{{inventory.brand}}</span></div>
+              <div class="col-1 tcell"><span>{{inventory.size}}</span></div>
+              <div class="col-2 tcell"><span><input type="number" [(ngModel)]="inventory.stock_quantity"
+                    class="form-control" readonly></span></div>
+              <!--<div class="col-2 tcell">
+                <i class="fa fa-check"></i>
+              </div>-->
+            </li>
+          </ul>
+          <pagination-controls class="mt-30" (pageChange)="pagination($event)" id="{{paginationId}}" autoHide="{{totalItems<itemsPerPage}">
+          </pagination-controls>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <ng-template #onboardInventory let-c="close" let-d="dismiss">
+    <div *ngxPermissionsOnly="['*', 'STOCK_IN']">
+      <div class="row mb-20">
+        <button type="button" class="close closepopupbtn" aria-label="Close" (click)="d('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <div class="col" style="margin: 10px 15px 0;" *ngxPermissionsOnly="['*', 'L_ALL_LOC']">
+          <label>Select Cell</label>
+          <select [(ngModel)]="selectedLocationId" class="form-control" (change)="searchProduct()">
+            <option *ngFor='let location of locations' [value]="location.id">
+              {{location.name}}
+            </option>
+          </select>
+        </div>
+        <div class=" col mt-40">
+          <input type="file" #fileInput placeholder="Upload file..." class="form-control"
+          (change)="onChange($event)" />
+        </div>
+        <div *ngxPermissionsOnly="['*', 'CSV_STOCKIN']" class="col mt-40"><button type="button" class="skewbtn-primary" (click)="upload()">Upload</button></div>
+      </div>
+      <div class="modal-header">
+        <h4 class="modal-title">Added Items</h4>
+      </div>
+      <div *ngxPermissionsOnly="['*', 'L_PROD']">
+  
+  
+  
+        <table class="table">
+          <thead>
+            <tr>
+              <th>SKU</th>
+              <th>Name</th>
+              <th>Brand</th>
+              <th>Price</th>
+              <th>Size</th>
+              <th>Quantity</th>
+              <th>Reason</th>
+              <!--<th>Batch Price/Unit</th>-->
+              <th>Stock</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let product of inventoryEntries; let i= index">
+              <td>{{product.product_id.sku}}</td>
+              <td>{{product.product_id.name }}</td>
+              <td>{{product.product_id.brand}}</td>
+              <td>{{product.product_id.price}}</td>
+              <td>{{product.product_id.size}}</td>
+              <td><input type="number" [(ngModel)]="product.quantity" class="form-control"></td>
+              <!--<td><input type="number" [(ngModel)]="product.batchPrice" class="form-control"></td>-->
+              <td><input type="text" [(ngModel)]="product.reason" class="form-control"></td>
+              <td>{{product.product_id.stock_quantity}}</td>
+              <td class="text-center action" (click)="removeProduct(i)"><i class="fa fa-times"></i></td>
+            </tr>
+          </tbody>
+        </table>
+  
+        <div class="row margin10">
+  
+          <div class="col">
+            <button (click)="stockin()" class="btn btn-primary mt-30">Update
+              Inventory</button>
+          </div>
+          <div class="col"></div>
+        </div>
+  
+      </div>
+      <div *ngxPermissionsOnly="['*', 'L_PROD']">
+        <div class="row margin10">
+          <div class="col crossbtn-holder">
+            <label>Add Items</label>
+            <input type="text" class="form-control" placeholder="Search Product" [(ngModel)]="searchProductStr"
+              (keyup.enter)="searchProduct()">
+            <button (click)="searchProduct('clear')" class="btn btn-link fa fa-times
+            crossbtn"></button>
+          </div>
+          <div class="col">
+            <button type="button" class="btn btn-primary mt-30" (click)="searchProduct()">Search</button>
+          </div>
+          <div class="col"></div>
+        </div>
+    
+    
+    
+        <table style="width:100%" class="table mt-20">
+          <tr>
+            <th>SKU</th>
+            <th>Name</th>
+            <th>Brand</th>
+            <th>Price</th>
+            <th>Size</th>
+            <th>Stock</th>
+            <th>Action</th>
+          </tr>
+          <tr *ngFor="let product of products">
+            <td>{{product.sku}}</td>
+            <td>{{ product.name }}</td>
+            <td> {{product.brand}}</td>
+            <td>{{product.price}}</td>
+            <td>{{product.size}}</td>
+            <td>{{product.stock_quantity}}</td>
+            <td class="text-center action" (click)="addProduct(product)"><i class="fa
+              fa-check"></i></td>
+          </tr>
+        </table>
+    
+        <div class="row mb-20">
+          <div class="col"></div>
+          <div class="col text-center"><button (click)="searchProduct('loadMore')" class="btn
+            btn-primary">Load More</button></div>
+          <div class="col"></div>
+        </div>
+    
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" (click)="c('Close click')">Close</button>
+        </div>
+  
+      </div>
+    </div>
+    
+  </ng-template>
+</div>

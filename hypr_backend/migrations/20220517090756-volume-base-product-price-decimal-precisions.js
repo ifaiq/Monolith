@@ -1,0 +1,54 @@
+"use strict";
+
+var dbm;
+var type;
+var seed;
+
+/**
+ * We receive the dbmigrate dependency from dbmigrate initially.
+ * This enables us to not have to rely on NODE_PATH.
+ */
+exports.setup = function (options, seedLink) {
+  dbm = options.dbmigrate;
+  type = dbm.dataType;
+  seed = seedLink;
+};
+
+exports.up = function (db) {
+  // Add Indexes in the master while fixing the bug. 
+  // Adding these below scripts just to have the record
+  db.runSql(
+    "CREATE INDEX IDX_CustomerID ON orders (customer_id)",
+    [],
+    function (err) {
+      if (err) console.log(err);
+    }
+  );
+  db.runSql(
+    "CREATE INDEX IDX_OrderID ON order_items (order_id)",
+    [],
+    function (err) {
+      if (err) console.log(err);
+    }
+  );
+  // type:'decimal', precision: 10, scale: 2
+  return db.changeColumn(
+    "volume_based_product_price",
+    "price",
+    { type: "decimal", precision: 10, scale: 2 },
+    function (err) {
+      if (err) {
+        console.log(err);
+      } 
+      return Promise.resolve();
+    }
+  );
+};
+
+exports.down = function (db) {
+  return null;
+};
+
+exports._meta = {
+  version: 1,
+};
